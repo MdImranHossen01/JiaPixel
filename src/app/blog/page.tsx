@@ -1,11 +1,13 @@
 import React from 'react';
+import Image from 'next/image';
+
 import { FiCalendar, FiUser, FiTag, FiArrowRight, FiSearch, FiClock } from 'react-icons/fi';
 
 const BlogPostCard = ({ title, excerpt, date, author, category, readTime, image }) => {
   return (
     <article className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <div className="h-48 overflow-hidden">
-        <img 
+        <Image
           src={image} 
           alt={title} 
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
@@ -105,7 +107,7 @@ const BlogSidebar = () => {
           {popularPosts.map((post, index) => (
             <div key={index} className="flex items-center space-x-3">
               <div className="flex-shrink-0">
-                <img 
+                <Image
                   src={post.image} 
                   alt={post.title} 
                   className="w-16 h-16 object-cover rounded-lg"

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { FiTarget, FiEye, FiUsers, FiAward, FiGlobe } from 'react-icons/fi';
 
 const MissionAndVision = () => {
@@ -47,7 +48,7 @@ const MissionAndVision = () => {
             </div>
             <div className="order-1 lg:order-2">
               <div className="rounded-xl overflow-hidden shadow-xl">
-                <img 
+                <Image
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
                   alt="Our team working together" 
                   className="w-full h-auto object-cover"
@@ -64,7 +65,7 @@ const MissionAndVision = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <div className="rounded-xl overflow-hidden shadow-xl">
-                <img 
+                <Image
                   src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
                   alt="Future vision" 
                   className="w-full h-auto object-cover"

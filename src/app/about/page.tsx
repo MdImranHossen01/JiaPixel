@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { FiUsers, FiAward, FiGlobe, FiHeart } from 'react-icons/fi';
 import { FaLinkedin, FaTwitter, FaGithub } from 'react-icons/fa';
 
@@ -6,7 +7,7 @@ const TeamMember = ({ name, role, image, social }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow duration-300">
       <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-purple-100">
-        <img 
+        <Image 
           src={image} 
           alt={name} 
           className="w-full h-full object-cover"
@@ -149,7 +150,7 @@ const About = () => {
               </button>
             </div>
             <div className="rounded-xl overflow-hidden shadow-xl">
-              <img 
+              <Image
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
                 alt="Our team working together" 
                 className="w-full h-auto object-cover"
