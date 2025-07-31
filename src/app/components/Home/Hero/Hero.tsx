@@ -2,7 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 
-const Slide = ({ id, image, subtitle, title, active }) => {
+interface SlideProps {
+    id: string;
+    image: string;
+    subtitle: string;
+    title: string;
+    active: boolean;
+}
+
+const Slide: React.FC<SlideProps> = ({ id, image, subtitle, title, active }) => {
     return (
         <div 
             id={id} 
@@ -96,7 +104,7 @@ const Hero = () => {
         return () => clearInterval(interval);
     }, [isAutoPlaying, slides.length]);
 
-    const goToSlide = (index) => {
+    const goToSlide = (index: number) => {
         setIsAutoPlaying(false);
         setCurrentSlide(index);
         setTimeout(() => setIsAutoPlaying(true), 10000);

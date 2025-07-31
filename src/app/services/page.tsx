@@ -1,7 +1,14 @@
 import React from 'react';
 import { FiCode, FiLayers, FiSmartphone, FiDatabase, FiCloud, FiShield } from 'react-icons/fi';
 
-const ServiceCard = ({ icon, title, description, features }) => {
+interface ServiceCardProps {
+  icon: React.ReactElement<{ size?: number; className?: string }>;
+  title: string;
+  description: string;
+  features: string[];
+}
+
+const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, features }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100">
       <div className="p-6">

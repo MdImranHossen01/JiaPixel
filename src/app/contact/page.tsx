@@ -1,7 +1,14 @@
 import React from 'react';
 import { FiMail, FiPhone, FiMapPin, FiSend, FiClock } from 'react-icons/fi';
 
-const ContactInfoCard = ({ icon, title, description, additional }) => {
+interface ContactInfoCardProps {
+  icon: React.ReactElement<{ size?: number }>;
+  title: string;
+  description: string;
+  additional?: string;
+}
+
+const ContactInfoCard: React.FC<ContactInfoCardProps> = ({ icon, title, description, additional }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full">
       <div className="text-purple-600 mb-4">
@@ -164,7 +171,7 @@ const Contact = () => {
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
-                allowFullScreen=""
+                allowFullScreen
                 loading="lazy"
                 title="Our Location"
               ></iframe>

@@ -3,14 +3,29 @@ import Image from 'next/image';
 import { FiUsers, FiAward, FiGlobe, FiHeart } from 'react-icons/fi';
 import { FaLinkedin, FaTwitter, FaGithub } from 'react-icons/fa';
 
-const TeamMember = ({ name, role, image, social }) => {
+interface SocialLinks {
+  linkedin?: string;
+  twitter?: string;
+  github?: string;
+}
+
+interface TeamMemberProps {
+  name: string;
+  role: string;
+  image: string;
+  social: SocialLinks;
+}
+
+const TeamMember: React.FC<TeamMemberProps> = ({ name, role, image, social }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-lg transition-shadow duration-300">
       <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-purple-100">
-        <Image 
-          src={image} 
-          alt={name} 
+        <Image
+          src={image}
+          alt={name}
           className="w-full h-full object-cover"
+          width={128}
+          height={128}
         />
       </div>
       <h3 className="text-xl font-bold text-gray-800 mb-1">{name}</h3>
@@ -18,17 +33,17 @@ const TeamMember = ({ name, role, image, social }) => {
       <p className="text-gray-600 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
       <div className="flex justify-center space-x-3">
         {social.linkedin && (
-          <a href={social.linkedin} className="text-gray-500 hover:text-blue-600 transition-colors duration-300">
+          <a href={social.linkedin} className="text-gray-500 hover:text-blue-600 transition-colors duration-300" target="_blank" rel="noopener noreferrer">
             <FaLinkedin size={18} />
           </a>
         )}
         {social.twitter && (
-          <a href={social.twitter} className="text-gray-500 hover:text-blue-400 transition-colors duration-300">
+          <a href={social.twitter} className="text-gray-500 hover:text-blue-400 transition-colors duration-300" target="_blank" rel="noopener noreferrer">
             <FaTwitter size={18} />
           </a>
         )}
         {social.github && (
-          <a href={social.github} className="text-gray-500 hover:text-gray-700 transition-colors duration-300">
+          <a href={social.github} className="text-gray-500 hover:text-gray-700 transition-colors duration-300" target="_blank" rel="noopener noreferrer">
             <FaGithub size={18} />
           </a>
         )}
@@ -37,11 +52,17 @@ const TeamMember = ({ name, role, image, social }) => {
   );
 };
 
-const ValueCard = ({ icon, title, description }) => {
+interface ValueCardProps {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
+
+const ValueCard: React.FC<ValueCardProps> = ({ icon: Icon, title, description }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="text-purple-600 mb-4">
-        {React.cloneElement(icon, { size: 32 })}
+        <Icon size={32} />
       </div>
       <h3 className="text-xl font-bold text-gray-800 mb-2">{title}</h3>
       <p className="text-gray-600">{description}</p>
@@ -49,8 +70,8 @@ const ValueCard = ({ icon, title, description }) => {
   );
 };
 
-const About = () => {
-  const teamMembers = [
+const About: React.FC = () => {
+  const teamMembers: TeamMemberProps[] = [
     {
       name: "Alex Johnson",
       role: "CEO & Founder",
@@ -90,24 +111,24 @@ const About = () => {
     }
   ];
 
-  const companyValues = [
+  const companyValues: ValueCardProps[] = [
     {
-      icon: <FiUsers />,
+      icon: FiUsers,
       title: "Collaboration",
       description: "We believe in working together to achieve extraordinary results for our clients."
     },
     {
-      icon: <FiAward />,
+      icon: FiAward,
       title: "Excellence",
       description: "We strive for the highest quality in everything we do, never settling for mediocrity."
     },
     {
-      icon: <FiGlobe />,
+      icon: FiGlobe,
       title: "Innovation",
       description: "We embrace change and constantly seek new ways to solve problems creatively."
     },
     {
-      icon: <FiHeart />,
+      icon: FiHeart,
       title: "Integrity",
       description: "We do business with honesty and transparency, building trust with every interaction."
     }
@@ -154,6 +175,8 @@ const About = () => {
                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
                 alt="Our team working together" 
                 className="w-full h-auto object-cover"
+                width={800}
+                height={533}
               />
             </div>
           </div>

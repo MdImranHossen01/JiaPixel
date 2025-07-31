@@ -3,7 +3,17 @@ import Image from 'next/image';
 
 import { FiCalendar, FiUser, FiTag, FiArrowRight, FiSearch, FiClock } from 'react-icons/fi';
 
-const BlogPostCard = ({ title, excerpt, date, author, category, readTime, image }) => {
+interface BlogPostCardProps {
+  title: string;
+  excerpt: string;
+  date: string;
+  author: string;
+  category: string;
+  readTime: string;
+  image: string;
+}
+
+const BlogPostCard: React.FC<BlogPostCardProps> = ({ title, excerpt, date, author, category, readTime, image }) => {
   return (
     <article className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
       <div className="h-48 overflow-hidden">

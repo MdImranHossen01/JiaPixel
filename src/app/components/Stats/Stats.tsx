@@ -2,7 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { FiUsers, FiAward, FiBriefcase, FiSmile } from 'react-icons/fi';
 
-const StatCard = ({ icon, value, label, suffix }) => {
+import { IconType } from 'react-icons';
+
+interface StatCardProps {
+  icon: IconType;
+  value: number;
+  label: string;
+  suffix: string;
+}
+
+const StatCard: React.FC<StatCardProps> = ({ icon: Icon, value, label, suffix }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -18,7 +27,7 @@ const StatCard = ({ icon, value, label, suffix }) => {
   return (
     <div className="bg-white p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
       <div className="text-purple-600 mb-4 flex justify-center">
-        {React.cloneElement(icon, { size: 48, className: 'p-2 bg-purple-50 rounded-full' })}
+        <Icon size={48} className="p-2 bg-purple-50 rounded-full" />
       </div>
       <div className="text-5xl font-bold text-gray-800 mb-2">
         {count}{suffix}
@@ -30,28 +39,28 @@ const StatCard = ({ icon, value, label, suffix }) => {
   );
 };
 
-const Stats = () => {
+const Stats: React.FC = () => {
   const statsData = [
     {
-      icon: <FiUsers />,
+      icon: FiUsers,
       value: 250,
       label: "Happy Clients",
       suffix: "+"
     },
     {
-      icon: <FiBriefcase />,
+      icon: FiBriefcase,
       value: 500,
       label: "Projects Completed",
       suffix: "+"
     },
     {
-      icon: <FiAward />,
+      icon: FiAward,
       value: 25,
       label: "Industry Awards",
       suffix: ""
     },
     {
-      icon: <FiSmile />,
+      icon: FiSmile,
       value: 98,
       label: "Client Satisfaction",
       suffix: "%"
