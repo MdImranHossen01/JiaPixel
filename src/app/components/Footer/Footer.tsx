@@ -94,7 +94,7 @@ const Footer = () => {
                         <form className="flex">
                             <input
                                 type="email"
-                                placeholder="Enter your email..."
+                                placeholder="mail.jiapixel@gmail.com"
                                 className="w-full bg-gray-700 text-white px-4 py-3 rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                             />
                             <button

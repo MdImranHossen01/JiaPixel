@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 
@@ -77,10 +78,10 @@ const TermsAndConditions = () => {
                   <h2 className="text-2xl font-bold text-gray-800 mb-4">1. Intellectual Property</h2>
                   <div className="space-y-4 text-gray-600">
                     <p>
-                      The Service and its original content, features, and functionality are and will remain the exclusive property of [Your Company Name] and its licensors. The Service is protected by copyright, trademark, and other laws of both the United States and foreign countries.
+                      The Service and its original content, features, and functionality are and will remain the exclusive property of  <Link href="https://jiapixel.com">Jiapixel</Link> and its licensors. The Service is protected by copyright, trademark, and other laws of both the United States and foreign countries.
                     </p>
                     <p>
-                      Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of [Your Company Name].
+                      Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of  <Link href="https://jiapixel.com">Jiapixel</Link>.
                     </p>
                   </div>
                 </section>
@@ -119,7 +120,7 @@ const TermsAndConditions = () => {
                   <h2 className="text-2xl font-bold text-gray-800 mb-4">4. Limitation of Liability</h2>
                   <div className="space-y-4 text-gray-600">
                     <p>
-                      In no event shall [Your Company Name], nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:
+                      In no event shall <Link href="https://jiapixel.com">jiapixel.com</Link>, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:
                     </p>
                     <ul className="list-disc pl-6 space-y-2">
                       <li>Your access to or use of or inability to access or use the Service</li>
@@ -134,7 +135,7 @@ const TermsAndConditions = () => {
                   <h2 className="text-2xl font-bold text-gray-800 mb-4">5. Governing Law</h2>
                   <div className="space-y-4 text-gray-600">
                     <p>
-                      These Terms shall be governed and construed in accordance with the laws of [Your Country/State], without regard to its conflict of law provisions.
+                      These Terms shall be governed and construed in accordance with the laws of <Link href="https://jiapixel.com">Jiapixel</Link>, without regard to its conflict of law provisions.
                     </p>
                     <p>
                       Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect.
@@ -161,8 +162,8 @@ const TermsAndConditions = () => {
                       If you have any questions about these Terms, please contact us at:
                     </p>
                     <p>
-                      <strong>Email:</strong> legal@yourcompany.com<br />
-                      <strong>Address:</strong> 123 Legal Street, Suite 100, [Your City], [Your Country]
+                      <strong>Email:</strong> mail.jiapixel@gmail.com<br />
+                      <strong>Address:</strong> Nabokalosh, Matlabgonj (3640), Matlab, Chandpur
                     </p>
                   </div>
                 </section>

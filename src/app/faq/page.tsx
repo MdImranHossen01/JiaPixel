@@ -86,7 +86,7 @@ const Faq = () => {
         },
         {
           question: "How can I contact your support team?",
-          answer: "You can reach our support team by email at support@yourcompany.com, through our contact form, or by calling our support line at +1 (555) 123-4567 during business hours (9am-5pm EST, Monday-Friday)."
+          answer: "You can reach our support team by email at mail.jiapixel.@gmail.com, through our contact form, or by calling our support line at +1 (555) 123-4567 during business hours (9am-5pm EST, Monday-Friday)."
         },
         {
           question: "Do you offer free consultations?",
