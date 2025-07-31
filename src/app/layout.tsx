@@ -29,6 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <meta name="google-site-verification" content="JWpS0CTCZQueL8zbGQi3mvgV7kUrk2HDkB73M1B_aAM" />
       {/* The <head> tag is automatically populated by Next.js from your metadata */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* 3. Add the GTM component wrapped in Suspense here */}
