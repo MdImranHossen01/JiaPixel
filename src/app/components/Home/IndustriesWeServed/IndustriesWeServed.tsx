@@ -1,7 +1,13 @@
 import React from 'react';
 import { FaHospital, FaPiggyBank, FaGraduationCap, FaShoppingBag, FaIndustry, FaRobot } from 'react-icons/fa';
 
-const IndustryCard = ({ icon, title, description }) => {
+interface IndustryCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+
+const IndustryCard: React.FC<IndustryCardProps> = ({ icon, title, description }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-purple-100 group">
       <div className="flex items-start space-x-4">
@@ -19,7 +25,7 @@ const IndustryCard = ({ icon, title, description }) => {
   );
 };
 
-const IndustriesServed = () => {
+const IndustriesServed: React.FC = () => {
   const industries = [
     {
       icon: <FaHospital size={20} />,
