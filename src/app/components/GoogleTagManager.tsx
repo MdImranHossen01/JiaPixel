@@ -1,10 +1,17 @@
 "use client";
+// 1. Add this block to define window.dataLayer for TypeScript
+declare global {
+  interface Window {
+    dataLayer?: Record<string, unknown>[];
+  }
+}
+
+
 
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { useEffect } from "react";
 
-// This requires NEXT_PUBLIC_GTM_ID to be in your .env.local file
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 const pageview = (url: string) => {
