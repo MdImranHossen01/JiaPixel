@@ -2,7 +2,14 @@
 import React, { useState } from 'react';
 import { FiSearch, FiChevronDown, FiChevronUp, FiMail, FiMessageSquare } from 'react-icons/fi';
 
-const FAQItem = ({ question, answer, isOpen, toggle }) => {
+interface FAQItemProps {
+  question: string;
+  answer: string;
+  isOpen: boolean;
+  toggle: () => void;
+}
+
+const FAQItem: React.FC<FAQItemProps> = ({ question, answer, isOpen, toggle }) => {
   return (
     <div className="border-b border-gray-200 pb-4 mb-6">
       <button
@@ -27,7 +34,14 @@ const FAQItem = ({ question, answer, isOpen, toggle }) => {
   );
 };
 
-const FAQCategory = ({ title, items, openItems, toggleItem }) => {
+interface FAQCategoryProps {
+  title: string;
+  items: { question: string; answer: string }[];
+  openItems: number[];
+  toggleItem: (index: number) => void;
+}
+
+const FAQCategory: React.FC<FAQCategoryProps> = ({ title, items, openItems, toggleItem }) => {
   return (
     <div className="mb-12">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 pb-2 border-b border-gray-200">
@@ -50,11 +64,13 @@ const FAQCategory = ({ title, items, openItems, toggleItem }) => {
 
 const Faq = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [openItems, setOpenItems] = useState([]);
+  const [openItems, setOpenItems] = useState<number[]>([]);
 
-  const toggleItem = (index) => {
+  type ToggleItemFn = (index: number) => void;
+
+  const toggleItem: ToggleItemFn = (index) => {
     if (openItems.includes(index)) {
-      setOpenItems(openItems.filter(item => item !== index));
+      setOpenItems(openItems.filter((item) => item !== index));
     } else {
       setOpenItems([...openItems, index]);
     }

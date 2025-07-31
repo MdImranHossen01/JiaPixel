@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { FiExternalLink, FiGithub, FiFilter, FiX } from 'react-icons/fi';
+import { FiExternalLink, FiGithub, FiFilter } from 'react-icons/fi';
 
 const projects = [
   {

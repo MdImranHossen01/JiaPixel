@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "jiapixel",
   "version": "0.1.0",
   "private": true,
@@ -6,7 +7,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "npx eslint ./src --config eslint.config.mjs"
+
   },
   "dependencies": {
     "daisyui": "^5.0.50",
@@ -17,13 +19,15 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.32.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "^9.32.0",
     "eslint-config-next": "15.4.5",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0"
   }
 }
