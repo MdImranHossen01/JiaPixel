@@ -4,7 +4,8 @@ import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import { Suspense } from "react"; // 1. Import Suspense
-import GoogleTagManager from "./components/GoogleTagManager"; // 2. Import your GTM component
+import GoogleTagManager from "./components/GoogleTagManager"; // 2. Import your GTM 
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
         <Suspense fallback={null}>
           <GoogleTagManager />
         </Suspense>
+      
         
         <Navbar />
         {children}
