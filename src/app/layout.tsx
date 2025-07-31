@@ -3,7 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
-
+import { Suspense } from "react"; // 1. Import Suspense
+import GoogleTagManager from "./components/GoogleTagManager"; // 2. Import your GTM component
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,14 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-       
-
-      </head>
+      {/* The <head> tag is automatically populated by Next.js from your metadata */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-           
-
-        {/* Your layout content */}
+        {/* 3. Add the GTM component wrapped in Suspense here */}
+        <Suspense fallback={null}>
+          <GoogleTagManager />
+        </Suspense>
+        
         <Navbar />
         {children}
         <Footer />
