@@ -1,4 +1,3 @@
-"use client";
 // 1. Add this block to define window.dataLayer for TypeScript
 declare global {
   interface Window {
@@ -6,7 +5,7 @@ declare global {
   }
 }
 
-
+"use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
