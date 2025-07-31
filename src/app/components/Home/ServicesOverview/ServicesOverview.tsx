@@ -3,7 +3,13 @@ import React from 'react';
 import { FaLightbulb, FaBriefcase, FaHeartbeat, FaChartLine, FaBullhorn, FaCode } from 'react-icons/fa';
 
 // Reusable Service Card Component
-const ServiceCard = ({ icon, title, description }) => {
+interface ServiceCardProps {
+    icon: React.ReactNode;
+    title: string;
+    description: string;
+}
+
+const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description }) => {
     return (
         <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out text-center flex flex-col items-center">
             <div className="bg-purple-100 text-purple-600 w-20 h-20 rounded-lg flex items-center justify-center mb-6">

@@ -27,7 +27,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <NavMenu className="flex space-x-6" />
+            <NavMenu/>
           </nav>
 
           {/* CTA Button - Desktop */}
@@ -63,7 +63,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <div className={`lg:hidden ${mobileMenuOpen ? 'block' : 'hidden'} transition-all duration-300`}>
           <div className="pt-4 pb-6 space-y-2">
-            <NavMenu className="flex flex-col space-y-3" />
+            <NavMenu/>
             <a 
               href="#contact" 
               className="block w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-lg font-medium text-center hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 mt-4"
