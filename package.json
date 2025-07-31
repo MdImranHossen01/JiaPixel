@@ -8,9 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "npx eslint ./src --config eslint.config.mjs"
-
   },
   "dependencies": {
+    "@microsoft/clarity": "^1.0.0",
     "daisyui": "^5.0.50",
     "next": "15.4.5",
     "react": "19.1.0",
