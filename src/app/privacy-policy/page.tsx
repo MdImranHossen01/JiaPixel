@@ -1,6 +1,26 @@
 import Link from 'next/link';
 import React from 'react';
 import { FiArrowRight, FiShield, FiDatabase, FiUser, FiMail, FiLock } from 'react-icons/fi';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy | Jia Pixel',
+  description: 'Learn how Jia Pixel protects your personal information. Our Privacy Policy details the data we collect, how it\'s used, and your rights as a user.',
+  
+  keywords: ['Privacy Policy', 'Data Protection', 'User Rights', 'Cookies', 'Jia Pixel'],
+  
+
+  // Social sharing tags specific to this page
+  openGraph: {
+    title: 'Privacy Policy | Jia Pixel',
+    description: 'Learn how we protect your data and respect your privacy.',
+    url: 'https://www.jiapixel.com/privacy-policy',
+  },
+  twitter: {
+    title: 'Privacy Policy | Jia Pixel',
+    description: 'Learn how we protect your data and respect your privacy.',
+  },
+};
 
 const PrivacyPolicy = () => {
   return (
