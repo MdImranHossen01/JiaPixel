@@ -1,6 +1,7 @@
 // components/Logo.tsx
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
@@ -23,7 +24,9 @@ const Logo: React.FC<LogoProps> = ({
   const currentSize = sizes[size];
 
   return (
-    <div className={`flex items-center ${className}`}>
+    <>
+<Link href="/">
+<div className={`flex items-center ${className}`}>
       {/* Pixel Art Icon */}
       <Image 
         src="/Jia-Pixel-Logo.png" 
@@ -46,6 +49,8 @@ const Logo: React.FC<LogoProps> = ({
         </div>
       )}
     </div>
+</Link>
+    </>
   );
 };
 

@@ -1,9 +1,12 @@
 "use client"; // Add this if you are using Next.js App Router
 
 import React, { useState, useEffect } from 'react';
-import { FaFacebookF, FaGithub, FaYoutube, FaLinkedinIn, FaPaperPlane, FaArrowUp } from 'react-icons/fa';
+import { FaPaperPlane, FaArrowUp } from 'react-icons/fa';
 import Logo from '../Logo';
 import Link from 'next/link';
+import Contact from '../Contact';
+import SocialIcon from '../SocialIcon';
+
 
 
 
@@ -41,36 +44,21 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                     {/* Column 1: Logo and Social */}
                     <div className="mb-6 lg:mb-0">
-                        <Logo></Logo>
-                        <p className="mt-4 text-sm leading-relaxed">
-                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.
-                        </p>
-                        <div className="flex space-x-4 mt-6">
-                            <Link href="https://www.facebook.com/jiapixel" className="w-10 h-10 bg-gray-700 hover:bg-purple-600 rounded-full flex items-center justify-center transition-colors">
-                                <FaFacebookF className="text-white" />
-                            </Link>
-                            <Link href="https://github.com/MdImranHossen01" className="w-10 h-10 bg-gray-700 hover:bg-purple-600 rounded-full flex items-center justify-center transition-colors">
-                                <FaGithub className="text-white" />
-                            </Link>
-                            <Link href="https://www.youtube.com/@JiaPixel" className="w-10 h-10 bg-gray-700 hover:bg-purple-600 rounded-full flex items-center justify-center transition-colors">
-                                <FaYoutube className="text-white" />
-                            </Link>
-                            <Link href="https://www.linkedin.com/company/jiapixel" className="w-10 h-10 bg-gray-700 hover:bg-purple-600 rounded-full flex items-center justify-center transition-colors">
-                                <FaLinkedinIn className="text-white" />
-                            </Link>
-                           
-                        </div>
+                        <Logo></Logo> <br />
+                        <Contact></Contact>
+                        <SocialIcon></SocialIcon>
+                       
                     </div>
 
                     {/* Column 2: My Account */}
                     <div>
                         <h4 className="font-bold text-white uppercase mb-5">My Account</h4>
                         <ul className="space-y-3">
-                            <li><a href="#" className="hover:text-purple-400 transition-colors">My Account</a></li>
-                            <li><a href="#" className="hover:text-purple-400 transition-colors">Order History</a></li>
-                            <li><a href="#" className="hover:text-purple-400 transition-colors">Returns</a></li>
-                            <li><a href="#" className="hover:text-purple-400 transition-colors">Wish List</a></li>
-                            <li><a href="#" className="hover:text-purple-400 transition-colors">Newsletter</a></li>
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">My Account</a></li>
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">Order History</a></li>
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">Returns</a></li>
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">Wish List</a></li>
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">Newsletter</a></li>
                         </ul>
                     </div>
 
@@ -78,11 +66,11 @@ const Footer = () => {
                     <div>
                         <h4 className="font-bold text-white uppercase mb-5">Our Company</h4>
                         <ul className="space-y-3">
-                            <li><Link href="terms-and-conditions" className="hover:text-purple-400 transition-colors">Terms & Conditions</Link></li>
-                            <li><Link href="privacy-policy" className="hover:text-purple-400 transition-colors">Privacy Policy</Link></li>
-                            <li><Link href="faq" className="hover:text-purple-400 transition-colors">FAQ</Link></li>
-                            <li><Link href="return-policy" className="hover:text-purple-400 transition-colors">Return Policy</Link></li>
-                            <li><Link href="mission-vision" className="hover:text-purple-400 transition-colors">Mission & Vision</Link></li>
+                            <li><Link href="terms-and-conditions" className="hover:text-purple-600 transition-colors">Terms & Conditions</Link></li>
+                            <li><Link href="privacy-policy" className="hover:text-purple-600 transition-colors">Privacy Policy</Link></li>
+                            <li><Link href="faq" className="hover:text-purple-600 transition-colors">FAQ</Link></li>
+                            <li><Link href="return-policy" className="hover:text-purple-600 transition-colors">Return Policy</Link></li>
+                            <li><Link href="mission-vision" className="hover:text-purple-600 transition-colors">Mission & Vision</Link></li>
                         </ul>
                     </div>
 
