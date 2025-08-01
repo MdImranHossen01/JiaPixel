@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { FiArrowRight, FiShield, FiDatabase, FiUser, FiMail, FiLock } from 'react-icons/fi';
 
@@ -24,7 +25,7 @@ const PrivacyPolicy = () => {
             <div className="prose max-w-none">
               <div className="mb-12">
                 <p className="text-gray-600 mb-6">
-                  At [Your Company Name], we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
+                  At <Link href="/">Jia Pixel</Link>, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
                 </p>
                 <p className="text-gray-600">
                   Please read this privacy policy carefully. By using our services, you agree to the collection and use of information in accordance with this policy.
@@ -90,7 +91,7 @@ const PrivacyPolicy = () => {
                 <section id="use-of-data">
                   <h2 className="text-2xl font-bold text-gray-800 mb-4">2. Use of Data</h2>
                   <div className="space-y-4 text-gray-600">
-                    <p>[Your Company Name] uses the collected data for various purposes:</p>
+                    <p> <Link href="/" className='hover:underline'>Jia Pixel</Link> uses the collected data for various purposes:</p>
                     <ul className="list-disc pl-6 space-y-2">
                       <li>To provide and maintain our service</li>
                       <li>To notify you about changes to our service</li>
@@ -175,9 +176,9 @@ const PrivacyPolicy = () => {
                   <div className="space-y-4 text-gray-600">
                     <p>If you have any questions about this Privacy Policy, please contact us:</p>
                     <ul className="list-disc pl-6 space-y-2">
-                      <li><strong>By email:</strong> privacy@yourcompany.com</li>
-                      <li><strong>By mail:</strong> 123 Privacy Lane, Suite 100, [Your City], [Your Country]</li>
-                      <li><strong>By phone:</strong> +1 (555) 123-4567</li>
+                      <li><strong>By email:</strong> mail.jiapixel@gmail.com</li>
+                      <li><strong>By mail:</strong> 69, Nabokalosh, Matlobgoj 3640, Matlab, Chandpur</li>
+                      <li><strong>By phone:</strong> <Link href="https://wa.me/8801919011101">+8801919011101</Link></li>
                     </ul>
                   </div>
                 </section>
