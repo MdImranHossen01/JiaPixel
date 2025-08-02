@@ -9,17 +9,17 @@ interface BlogPostProps {
 }
 
 // Make this async (simulate database call)
-async function getPostBySlug(slug: string) {
+function getPostBySlug(slug: string) {
   const posts = [
     { slug: 'getting-started-with-nextjs', title: 'Getting Started with Next.js', content: 'This is the content for the Next.js post.' },
     { slug: 'the-complete-guide-to-css-grid', title: 'The Complete Guide to CSS Grid', content: 'This is the content for the CSS Grid post.' },
   ];
-  return posts.find((p) => p.slug === slug) || null;
+  return posts.find((p) => p.slug === slug) ?? null;
 }
 
 // ✅ Async Component
-export default async function BlogPostPage({ params }: BlogPostProps) {
-  const post = await getPostBySlug(params.slug);
+export default function BlogPostPage({ params }: BlogPostProps) {
+  const post = getPostBySlug(params.slug);
 
   if (!post) {
     notFound();
@@ -34,9 +34,9 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
 }
 
 // ✅ Async Metadata Generator
-export async function generateMetadata({ params }: BlogPostProps): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug);
+export function generateMetadata({ params }: BlogPostProps): Metadata {
+  const post = getPostBySlug(params.slug);
   return {
-    title: post?.title || 'Post Not Found',
+    title: post?.title ?? 'Post Not Found',
   };
 }
