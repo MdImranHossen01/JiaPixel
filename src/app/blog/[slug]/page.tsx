@@ -8,8 +8,8 @@ interface BlogPostProps {
   };
 }
 
-// --- Example Data Fetching (this function is async) ---
-async function getPostBySlug(slug: string) {
+// --- This data fetching function is async, which is correct ---
+function getPostBySlug(slug: string) {
   // In a real app, you would fetch this from a database or CMS
   const posts = [
     { slug: 'getting-started-with-nextjs', title: 'Getting Started with Next.js', content: 'This is the content for the Next.js post.' },
@@ -19,11 +19,11 @@ async function getPostBySlug(slug: string) {
   return post;
 }
 
-
-// --- Your Page Component (FIXED: The component is NOT async) ---
-export default async function BlogPostPage({ params }: BlogPostProps) {
-  // --- (FIXED: But you MUST use 'await' here to get the data) ---
-  const post = await getPostBySlug(params.slug);
+// --- THIS IS THE PAGE COMPONENT ---
+// --- It is NOT async. This is the fix. ---
+export default function BlogPostPage({ params }: BlogPostProps) {
+  // --- You can still use 'await' inside the component to call the async function ---
+  const post = getPostBySlug(params.slug);
 
   // Handle cases where the post doesn't exist
   if (!post) {
@@ -39,10 +39,10 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
   );
 }
 
-// The metadata function is async and works correctly
-export async function generateMetadata({ params }: BlogPostProps): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug);
+// The metadata function can and should be async
+export function generateMetadata({ params }: BlogPostProps): Metadata {
+  const post = getPostBySlug(params.slug);
   return {
-    title: post?.title || 'Post Not Found',
+    title: post?.title ?? 'Post Not Found',
   };
 }
