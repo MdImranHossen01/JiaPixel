@@ -8,7 +8,7 @@ interface BlogPostProps {
   };
 }
 
-// --- Example Data Fetching (this function can be async) ---
+// --- Example Data Fetching (this function is async) ---
 async function getPostBySlug(slug: string) {
   // In a real app, you would fetch this from a database or CMS
   const posts = [
@@ -20,10 +20,10 @@ async function getPostBySlug(slug: string) {
 }
 
 
-// --- Your Page Component (FIXED: removed the 'async' keyword) ---
-export default function BlogPostPage({ params }: BlogPostProps) {
-  // You can still use await for data fetching INSIDE the component
-  const post = getPostBySlug(params.slug);
+// --- Your Page Component (FIXED: The component is NOT async) ---
+export default async function BlogPostPage({ params }: BlogPostProps) {
+  // --- (FIXED: But you MUST use 'await' here to get the data) ---
+  const post = await getPostBySlug(params.slug);
 
   // Handle cases where the post doesn't exist
   if (!post) {
@@ -39,7 +39,7 @@ export default function BlogPostPage({ params }: BlogPostProps) {
   );
 }
 
-// You can also have a dynamic metadata function
+// The metadata function is async and works correctly
 export async function generateMetadata({ params }: BlogPostProps): Promise<Metadata> {
   const post = await getPostBySlug(params.slug);
   return {
