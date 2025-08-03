@@ -1,6 +1,6 @@
 import React from 'react';
 // Import icons from the library
-import { FaLightbulb, FaBriefcase, FaHeartbeat, FaChartLine, FaBullhorn, FaCode } from 'react-icons/fa';
+import { FaLightbulb, FaBriefcase, FaMobileAlt, FaChartLine, FaBullhorn, FaCode } from 'react-icons/fa';
 
 // Reusable Service Card Component
 interface ServiceCardProps {
@@ -28,34 +28,34 @@ const ServicesOverview = () => {
     // Array of service data to easily manage and render cards
     const services = [
         {
-            icon: <FaLightbulb size={36} />,
-            title: "Financial Planning",
-            description: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form."
+            icon: <FaCode size={36} />,
+            title: "Custom Web Development",
+            description: "We build responsive, high-performance websites and web applications tailored to your business needs using modern technologies."
         },
         {
-            icon: <FaBriefcase size={36} />,
-            title: "Business Consultation",
-            description: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form."
-        },
-        {
-            icon: <FaHeartbeat size={36} />,
-            title: "Life & Health Insurance",
-            description: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form."
-        },
-        {
-            icon: <FaChartLine size={36} />,
-            title: "SEO Optimization",
-            description: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form."
+            icon: <FaMobileAlt size={36} />,
+            title: "Mobile App Development",
+            description: "Create engaging mobile experiences with our cross-platform app development solutions that work seamlessly on iOS and Android."
         },
         {
             icon: <FaBullhorn size={36} />,
             title: "Digital Marketing",
-            description: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form."
+            description: "Comprehensive digital marketing strategies including social media, content marketing, and influencer campaigns to grow your online presence."
         },
         {
-            icon: <FaCode size={36} />,
-            title: "Web Development",
-            description: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form."
+            icon: <FaChartLine size={36} />,
+            title: "SEO Optimization",
+            description: "Boost your search engine rankings with our data-driven SEO strategies that drive organic traffic and improve conversion rates."
+        },
+        {
+            icon: <FaLightbulb size={36} />,
+            title: "UI/UX Design",
+            description: "Beautiful, intuitive user interfaces designed to enhance user experience and increase engagement with your digital products."
+        },
+        {
+            icon: <FaBriefcase size={36} />,
+            title: "Brand Strategy",
+            description: "Develop a strong brand identity with our comprehensive strategy services including logo design, messaging, and visual identity systems."
         }
     ];
 
@@ -68,7 +68,7 @@ const ServicesOverview = () => {
                         Our Services
                     </p>
                     <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2">
-                        Our Best Services
+                        Digital Solutions That Drive Growth
                     </h2>
                 </div>
 

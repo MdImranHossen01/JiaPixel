@@ -25,6 +25,8 @@ npm run dev
 
 ```
 - add `navbar` and `footer` at layout 
+- create main section for `children` and add classname h-screen
+- create component folder for add component footer, navbar
 - follow [pages and layout documentation](https://nextjs.org/docs/app/getting-started/layouts-and-pages)
 - To create new page create new folder and file in `app` folder
 ```
