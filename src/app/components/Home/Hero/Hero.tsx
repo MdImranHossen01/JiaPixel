@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 interface SlideProps {
@@ -47,20 +48,20 @@ const Slide: React.FC<SlideProps> = ({ id, image, subtitle, title, active }) => 
                     </h1>
 
                     <div className="flex flex-wrap gap-4 mt-10">
-                        <a
-                            href="#"
+                        <Link
+                            href="/services"
                             className="relative overflow-hidden bg-yellow-400 text-black font-bold py-4 px-10 rounded-lg hover:bg-yellow-500 transition-all duration-300"
                         >
                             <span className="relative z-10">Get Started</span>
                             <span className="absolute inset-0 bg-black opacity-0 hover:opacity-10 transition-opacity duration-300"></span>
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            href="https://wa.me/8801919011101"
                             className="relative overflow-hidden border-2 border-white text-white font-bold py-4 px-10 rounded-lg hover:bg-white hover:text-black transition-all duration-300"
                         >
                             <span className="relative z-10">Contact Us</span>
                             <span className="absolute inset-0 bg-white opacity-0 hover:opacity-10 transition-opacity duration-300"></span>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

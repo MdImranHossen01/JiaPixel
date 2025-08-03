@@ -78,12 +78,12 @@ const Footer = () => {
                     <div>
                         <h4 className="font-bold text-white uppercase mb-5">Newsletter</h4>
                         <p className="text-sm leading-relaxed mb-4">
-                            There are many variations of passages of Lorem Ipsum available, but the majority.
+                            Get exclusive updates, offers, and content directly to your inbox.
                         </p>
                         <form className="flex">
                             <input
                                 type="email"
-                                placeholder="mail.jiapixel@gmail.com"
+                                placeholder="your email address"
                                 className="w-full bg-gray-700 text-white px-4 py-3 rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                             />
                             <button
