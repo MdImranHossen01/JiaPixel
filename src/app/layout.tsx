@@ -66,7 +66,8 @@ export default function RootLayout({
     <html lang="en">
       <meta name="google-site-verification" content="JWpS0CTCZQueL8zbGQi3mvgV7kUrk2HDkB73M1B_aAM" />
       {/* The <head> tag is automatically populated by Next.js from your metadata */}
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      {/* <body className="min-h-screen flex flex-col {`${geistSans.variable} ${geistMono.variable} antialiased`}"> */}
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`}>
         {/* 3. Add the GTM component wrapped in Suspense here */}
         <Suspense fallback={null}>
           <GoogleTagManager />
@@ -93,7 +94,7 @@ export default function RootLayout({
       
         
         <Navbar />
-        {children}
+        <div className="grow-1">{children}</div>
         <Footer />
       </body>
     </html>

@@ -156,15 +156,18 @@ const Portfolio = () => {
           {filteredProjects.map(project => (
             <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <div className="relative h-48 overflow-hidden">
+                {/* FIX: Added 'fill' prop to handle image sizing and removed w-full/h-full classes */}
                 <Image 
                   src={project.image} 
                   alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-500 hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                   <div className="flex space-x-2">
                     {project.tags.map((tag, index) => (
-                      <span key={index} className="bg-white/90 text-gray-800 text-xs px-2 py-1 rounded">
+                      // FIX: Made the key more unique
+                      <span key={`${tag}-${index}`} className="bg-white/90 text-gray-800 text-xs px-2 py-1 rounded">
                         {tag}
                       </span>
                     ))}
