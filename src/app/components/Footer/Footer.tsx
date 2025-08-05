@@ -47,20 +47,10 @@ const Footer = () => {
                         <Logo></Logo> <br />
                         <Contact></Contact>
                         <SocialIcon></SocialIcon>
-                       
+
                     </div>
 
-                    {/* Column 2: My Account */}
-                    <div>
-                        <h4 className="font-bold text-white uppercase mb-5">My Account</h4>
-                        <ul className="space-y-3">
-                            <li><a href="#" className="hover:text-purple-600 transition-colors">My Account</a></li>
-                            <li><a href="#" className="hover:text-purple-600 transition-colors">Order History</a></li>
-                            <li><a href="#" className="hover:text-purple-600 transition-colors">Returns</a></li>
-                            <li><a href="#" className="hover:text-purple-600 transition-colors">Wish List</a></li>
-                            <li><a href="#" className="hover:text-purple-600 transition-colors">Newsletter</a></li>
-                        </ul>
-                    </div>
+
 
                     {/* Column 3: Our Company */}
                     <div>
@@ -73,6 +63,19 @@ const Footer = () => {
                             <li><Link href="mission-vision" className="hover:text-purple-600 transition-colors">Mission & Vision</Link></li>
                         </ul>
                     </div>
+
+                    {/* Column 2: My Account */}
+                    <div>
+                        <h4 className="font-bold text-white uppercase mb-5">Services</h4>
+                        <ul className="space-y-3">
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">Web Development</a></li>
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">Mobile Development</a></li>
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">SEO Optimization</a></li>
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">Digital Marketing</a></li>
+                            <li><a href="#" className="hover:text-purple-600 transition-colors">PPC Advertising</a></li>
+                        </ul>
+                    </div>
+
 
                     {/* Column 4: Newsletter */}
                     <div>
@@ -100,7 +103,7 @@ const Footer = () => {
                 {/* Bottom Bar */}
                 <div className="border-t border-gray-800 mt-10 py-6 flex flex-col items-center text-sm">
                     <p className="mb-4 sm:mb-0">Copyrighted by @JiaPixel | All Right Reserved</p>
-                    
+
                 </div>
             </div>
 
