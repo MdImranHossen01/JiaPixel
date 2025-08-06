@@ -39,3 +39,71 @@ npm run dev
 
  ```
  - For Nested route follow the same instruction as new route in nested route
+
+
+- ## Dynamic route setup for Service page
+
+```
+📦services
+ ┣ 📂[slug]
+ ┃ ┗ 📜page.tsx
+ ┗ 📜page.tsx
+ ```
+
+ ## Dynamic Page code for service page
+```ts
+import React from 'react';
+
+interface ServiceDetailsPageProps {
+    params: {
+        slug: string;
+    };
+}
+
+const ServiceDetailsPage: React.FC<ServiceDetailsPageProps> = ({ params }) => {
+    const slug = params?.slug;
+    return (
+        <div>
+            <h1>This is service details page for service: {slug}</h1>
+        </div>
+    );
+};
+
+export default ServiceDetailsPage;
+```
+- Navbar condition for dashboard
+
+- Create `not-found.jsx` and `loading.tsx`for error page in app folder
+- [middleware](https://nextjs.org/docs/app/getting-started/route-handlers-and-middleware)
+
+```ts
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+ 
+// This function can be marked `async` if using `await` inside
+export function middleware(request: NextRequest) {
+  return NextResponse.redirect(new URL('/home', request.url))
+}
+ 
+// See "Matching Paths" below to learn more
+export const config = {
+  matcher: '/about/:path*',
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

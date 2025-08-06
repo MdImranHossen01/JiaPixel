@@ -1,3 +1,5 @@
+'use client'
+
 import { useId } from "react"
 import { SearchIcon } from "lucide-react"
 
@@ -17,19 +19,15 @@ import {
 } from "@/components/ui/popover"
 import Logo from "../Logo"
 import NavMenu from "./NavMenu"
+import { usePathname } from "next/navigation"
 
-// Navigation links array to be used in both desktop and mobile menus
-// const navigationLinks = [
-//   { href: "#", label: "Home", active: true },
-//   { href: "#", label: "Features" },
-//   { href: "#", label: "Pricing" },
-//   { href: "#", label: "About" },
-// ]
+
 
 export default function Component() {
-  const id = useId()
-
-  return (
+    const id = useId()  
+  const pathname = usePathname()
+ if(!pathname.includes('dashboard')) {
+   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
         {/* Left side */}
@@ -72,17 +70,7 @@ export default function Component() {
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {/* {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink
-                        href={link.href}
-                        className="py-1.5"
-                        active={link.active}
-                      >
-                        {link.label}
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  ))} */}
+
                   <NavMenu />
                 </NavigationMenuList>
               </NavigationMenu>
@@ -90,9 +78,9 @@ export default function Component() {
           </Popover>
           {/* Logo */}
           <div className="flex items-center">
-            <a href="#" className="text-primary hover:text-primary/90">
+           
               <Logo />
-            </a>
+         
           </div>
         </div>
         {/* Middle area */}
@@ -128,21 +116,17 @@ export default function Component() {
         {/* Navigation menu */}
         <NavigationMenu>
           <NavigationMenuList className="gap-2">
-            {/* {navigationLinks.map((link, index) => (
-              <NavigationMenuItem key={index}>
-                <NavigationMenuLink
-                  active={link.active}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                >
-                  {link.label}
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))} */}
+
             <NavMenu />
           </NavigationMenuList>
         </NavigationMenu>
       </div>
     </header>
   )
+ }
+
+else {
+  return <></> // Return nothing if the pathname includes 'dashboard'
+ }
+ 
 }
