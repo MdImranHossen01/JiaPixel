@@ -3,10 +3,12 @@ import { NextResponse } from 'next/server';
 import { type Blog } from '@prisma/client';
 
 // Update a specific blog post
-export async function PUT(request: Request, { params }: { params: { id: string } }) { // REMOVE the type annotation from params
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
-    const data: Partial<Blog> = (await request.json()) as Partial<Blog>;
+    
+    // FIXED: Use a type assertion 'as' to correctly type the data from request.json()
+    const data = await request.json() as Partial<Blog>;
 
     const updatedBlog = await prisma.blog.update({
       where: { id },
@@ -20,7 +22,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 }
 
 // Delete a specific blog post
-export async function DELETE(request: Request, { params }: { params: { id: string } }) { // REMOVE the type annotation from params
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
     await prisma.blog.delete({
