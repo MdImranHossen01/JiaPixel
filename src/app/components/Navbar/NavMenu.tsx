@@ -44,12 +44,7 @@ const NavMenu = () => {
                         Contact
                     </Link>
                 </li>
-                <li>
-                    <Link href="/post" className="text-yellow-500 font-bold hover:text-indigo-600 hover:font-bold">
-                        Post
-                    </Link>
-                </li>
-
+            
 
             </ul>
         </div>
