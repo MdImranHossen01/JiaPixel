@@ -4,35 +4,33 @@ import { FiCode, FiLayers, FiSmartphone, FiDatabase, FiCloud, FiShield } from 'r
 import PageHeader from '../components/PageHeader';
 import CTA from '../components/CTA';
 import WhyChooseUs from '../components/WhyChooseUs';
+import prisma from '@/lib/prisma'; // 1. Import prisma directly
+import { type Service } from '@prisma/client'; // Import the Service type
 
 const iconMap: Record<string, React.ElementType> = {
   FiCode, FiLayers, FiSmartphone, FiDatabase, FiCloud, FiShield
 };
 
-interface Service {
-  id: string; icon: string; title: string; description: string; features: string[]; slug: string;
-}
-
+// 2. This function now talks directly to the database
 async function getServices(): Promise<Service[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/services`, {
-      cache: 'no-store',
+    const services = await prisma.service.findMany({
+      orderBy: { createdAt: 'asc' },
     });
-    if (!res.ok) {
-      console.error('Failed to fetch services');
-      return [];
-    }
-    return await res.json() as Service[];
+    return services;
   } catch (error) {
-    console.error('Error fetching services:', error);
+    console.error('Error fetching services directly:', error);
     return [];
   }
 }
 
+// ServiceCard component remains the same
+// ServiceCard component
 const ServiceCard: React.FC<Service> = ({ icon, title, description, features, slug }) => {
-  const IconComponent = iconMap[icon] || FiCode;
+  const IconComponent = iconMap[icon] || FiCode; // Look up the icon, with a fallback
+  
   return (
-    <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 h-full flex flex-col">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100 h-full flex flex-col">
       <div className="p-6 flex-grow">
         <div className="text-purple-600 mb-4">
           <IconComponent size={40} className='p-2 bg-purple-50 rounded-lg' />
@@ -51,29 +49,47 @@ const ServiceCard: React.FC<Service> = ({ icon, title, description, features, sl
         </ul>
       </div>
       <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 mt-auto">
-        <Link href={`/services/${slug}`} className="text-purple-600 hover:text-purple-800 font-medium flex items-center transition-colors duration-300">
+        <Link 
+          href={`/services/${slug}`} 
+          className="text-purple-600 hover:text-purple-800 font-medium flex items-center transition-colors duration-300"
+        >
           Learn more
-          {/* ... arrow svg ... */}
+          <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </Link>
       </div>
     </div>
   );
 };
 
+// Main page component
 export default async function ServicesPage() {
+  // 3. The page calls the direct database function
   const services = await getServices();
+
   return (
     <main>
-      <PageHeader title="Comprehensive Digital Solutions" subtitle="We deliver end-to-end services to help your business thrive in the digital world."/>
+      <PageHeader
+        title="Comprehensive Digital Solutions"
+        subtitle="We deliver end-to-end services to help your business thrive in the digital world."
+      />
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           {services.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service) => (<ServiceCard key={service.id} {...service} />))}
+              {services.map((service) => (
+                <ServiceCard key={service.id} {...service} />
+              ))}
             </div>
-          ) : ( <p className="text-center text-gray-500 text-lg">Loading services or no services found.</p> )}
+          ) : (
+            <p className="text-center text-gray-500 text-lg">No services found.</p>
+          )}
           <div className="mt-16 text-center">
-            <Link href="/contact" className="px-8 py-3.5 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+            <Link 
+              href="/contact" 
+              className="px-8 py-3.5 bg-gradient-to-r from-purple-600 to-blue-500 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+            >
               Get a Free Consultation
             </Link>
           </div>
