@@ -2,10 +2,12 @@ import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { type Blog } from '@prisma/client';
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+// Update a specific blog post
+export async function PUT(request: Request, { params }: { params: { id: string } }) { // REMOVE the type annotation from params
   try {
     const { id } = params;
     const data: Partial<Blog> = (await request.json()) as Partial<Blog>;
+
     const updatedBlog = await prisma.blog.update({
       where: { id },
       data,
@@ -17,7 +19,8 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+// Delete a specific blog post
+export async function DELETE(request: Request, { params }: { params: { id: string } }) { // REMOVE the type annotation from params
   try {
     const { id } = params;
     await prisma.blog.delete({
@@ -25,16 +28,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     });
     return NextResponse.json({ message: 'Blog deleted successfully' });
   } catch (error) {
-    // Check if the error is a PrismaClientKnownRequestError for record not found
-    if (error.code === 'P2025') {
-      return NextResponse.json(
-        { message: 'Blog not found.' },
-        { status: 404 }
-      );
-    }
-    // Generic error handling
     console.error("Error deleting blog:", error);
     return NextResponse.json({ message: 'Could not delete blog' }, { status: 500 });
   }
 }
- 
