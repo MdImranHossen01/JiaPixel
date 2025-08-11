@@ -5,11 +5,10 @@ import { type Blog } from '@prisma/client';
 // Update a specific blog post
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  context: { params: Record<string, string> }
 ) {
   try {
     const { id } = context.params;
-
     const data = (await request.json()) as Partial<Blog>;
 
     const updatedBlog = await prisma.blog.update({
@@ -30,7 +29,7 @@ export async function PUT(
 // Delete a specific blog post
 export async function DELETE(
   request: Request,
-  context: { params: { id: string } }
+  context: { params: Record<string, string> }
 ) {
   try {
     const { id } = context.params;
