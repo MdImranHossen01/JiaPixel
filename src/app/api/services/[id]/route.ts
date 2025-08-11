@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, type RouteContext } from 'next/server';
 import prisma from '@/lib/prisma';
 import { type Service } from '@prisma/client';
 
 // Update service by ID
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  context: RouteContext<{ id: string }>
 ) {
   const { id } = context.params;
   const body = (await request.json()) as Partial<Service>;
@@ -29,7 +29,7 @@ export async function PUT(
 // Delete service by ID
 export async function DELETE(
   request: Request,
-  context: { params: { id: string } }
+  context: RouteContext<{ id: string }>
 ) {
   const { id } = context.params;
 
