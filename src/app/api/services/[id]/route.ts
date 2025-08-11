@@ -1,11 +1,11 @@
-import { NextResponse, type RouteContext } from 'next/server';
+import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { type Service } from '@prisma/client';
+import type { Service } from '@prisma/client';
 
 // Update service by ID
 export async function PUT(
   request: Request,
-  context: RouteContext<{ id: string }>
+  context: { params: { id: string } }
 ) {
   const { id } = context.params;
   const body = (await request.json()) as Partial<Service>;
@@ -15,7 +15,6 @@ export async function PUT(
       where: { id },
       data: body,
     });
-
     return NextResponse.json(updatedService);
   } catch (error) {
     console.error('Error updating service:', error);
@@ -29,7 +28,7 @@ export async function PUT(
 // Delete service by ID
 export async function DELETE(
   request: Request,
-  context: RouteContext<{ id: string }>
+  context: { params: { id: string } }
 ) {
   const { id } = context.params;
 
@@ -37,7 +36,6 @@ export async function DELETE(
     await prisma.service.delete({
       where: { id },
     });
-
     return NextResponse.json({ message: 'Service deleted successfully' });
   } catch (error) {
     console.error('Error deleting service:', error);
