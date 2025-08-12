@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { type Service } from '@prisma/client';
+import Link from 'next/link';
 
 // This is the main component for the services management page
 export default function ManageServicesPage() {
@@ -124,7 +125,9 @@ export default function ManageServicesPage() {
                     <td>{service.title}</td>
                     <td>{service.slug}</td>
                     <td className="space-x-2">
-                      <button className="btn btn-sm btn-outline">Edit</button>
+                      <Link href={`/admin-dashboard/services/edit/${service.id}`} className="btn btn-sm btn-outline">
+                        Edit
+                      </Link>
                       <button
                         onClick={() => void handleDelete(service.id)} // ✅ Wrap async in void
                         className="btn btn-sm btn-outline btn-error"

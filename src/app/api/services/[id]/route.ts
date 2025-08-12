@@ -4,6 +4,24 @@ import type { Service } from '@prisma/client';
 
 /* eslint-disable no-console */
 
+
+
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+  try {
+    const { id } = params;
+    const service = await prisma.service.findUnique({
+      where: { id },
+    });
+    if (!service) {
+      return NextResponse.json({ message: "Service not found" }, { status: 404 });
+    }
+    return NextResponse.json(service);
+  } catch (error) {
+    console.error("Error fetching service:", error);
+    return NextResponse.json({ message: 'Could not fetch service' }, { status: 500 });
+  }
+}
+
 export async function PUT(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const id = url.pathname.split('/').pop() ?? '';
