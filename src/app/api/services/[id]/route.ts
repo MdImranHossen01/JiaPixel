@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Define an interface for the expected request body (instead of type)
+// Define an interface for the expected request body
 interface ServiceUpdateBody {
   title?: string;
   slug?: string;
@@ -27,7 +27,7 @@ const logError = (context: string, error: unknown) => {
  * UPDATE a specific service by its ID
  */
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -45,7 +45,7 @@ export async function PUT(
     // Create a type-safe update data object
     const updateData: Prisma.ServiceUpdateInput = {};
     
-    // Safely assign known properties (using T[] syntax instead of Array<T>)
+    // Safely assign known properties
     const knownProperties: (keyof ServiceUpdateBody)[] = [
       'title', 'slug', 'category', 'bannerImage', 
       'description', 'requirements', 'status'
@@ -72,6 +72,57 @@ export async function PUT(
     logError('PUT /api/services/[id]', error);
     return NextResponse.json(
       { message: 'Error updating service' }, 
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * DELETE a specific service by its ID
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = params;
+    
+    await prisma.service.delete({
+      where: { id },
+    });
+    
+    return new NextResponse(null, { status: 204 });
+  } catch (error: unknown) {
+    logError('DELETE /api/services/[id]', error);
+    return NextResponse.json(
+      { message: 'Error deleting service' }, 
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * GET a single service by its ID
+ */
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = params;
+    const service = await prisma.service.findUnique({
+      where: { id },
+    });
+    
+    if (!service) {
+      return NextResponse.json({ message: "Service not found" }, { status: 404 });
+    }
+    
+    return NextResponse.json(service);
+  } catch (error: unknown) {
+    logError('GET /api/services/[id]', error);
+    return NextResponse.json(
+      { message: 'Error fetching service' }, 
       { status: 500 }
     );
   }
