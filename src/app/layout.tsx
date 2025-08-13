@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = {  
   metadataBase: new URL('https://www.jiapixel.com'),
   title: "Jia Pixel",
   description: "A leading digital agency in Bangladesh.",
@@ -56,24 +56,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  // MOVED: The JSON-LD script is now part of the metadata object.
-  script: [
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Jia Pixel",
-        "url": "https://www.jiapixel.com",
-        "logo": "https://www.jiapixel.com/icon.png",
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "telephone": "+8801919011101",
-          "contactType": "Customer Service"
-        }
-      }),
-    },
-  ],
 };
 
 export default function RootLayout({
@@ -83,7 +65,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* REMOVED: No longer need an explicit <head> tag here. */}
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Jia Pixel",
+              "url": "https://www.jiapixel.com",
+              "logo": "https://www.jiapixel.com/icon.png",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+8801919011101",
+                "contactType": "Customer Service"
+              }
+            })
+          }}
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`} suppressHydrationWarning>
         <Suspense fallback={null}>
           <GoogleTagManager />
