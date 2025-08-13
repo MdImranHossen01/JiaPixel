@@ -3,40 +3,20 @@ import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-interface ServiceUpdateBody {
-  title?: string;
-  slug?: string;
-  category?: string;
-  bannerImage?: string;
-  pricing?: Prisma.InputJsonValue;
-  description?: string;
-  requirements?: string;
-  status?: string;
-}
-
 // GET a single service by ID
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
     const service = await prisma.service.findUnique({
-      where: { id },
+      where: { id: params.id },
     });
 
-    if (!service) {
-      return NextResponse.json(
-        { message: 'Service not found' },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(service);
+    return service 
+      ? NextResponse.json(service)
+      : NextResponse.json({ message: 'Service not found' }, { status: 404 });
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('GET Error:', error);
-    }
     return NextResponse.json(
       { message: 'Error fetching service' },
       { status: 500 }
@@ -50,24 +30,17 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
-    const body = await request.json() as Partial<ServiceUpdateBody>;
-
-    const updateData: Prisma.ServiceUpdateInput = {
-      ...body,
-      ...(body.pricing && { pricing: body.pricing }),
-    };
-
+    const body = await request.json();
     const updatedService = await prisma.service.update({
-      where: { id },
-      data: updateData,
+      where: { id: params.id },
+      data: {
+        ...body,
+        pricing: body.pricing ? JSON.parse(JSON.stringify(body.pricing)) : undefined,
+      },
     });
 
     return NextResponse.json(updatedService);
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('PUT Error:', error);
-    }
     return NextResponse.json(
       { message: 'Error updating service' },
       { status: 500 }
@@ -81,15 +54,11 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = params;
     await prisma.service.delete({
-      where: { id },
+      where: { id: params.id },
     });
     return new NextResponse(null, { status: 204 });
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error('DELETE Error:', error);
-    }
     return NextResponse.json(
       { message: 'Error deleting service' },
       { status: 500 }
