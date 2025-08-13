@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, type Service } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -11,7 +11,7 @@ export async function GET(
   context: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params; // Correctly access id from context
+    const { id } = context.params;
     const service = await prisma.service.findUnique({
       where: { id },
     });
@@ -21,8 +21,7 @@ export async function GET(
     }
 
     return NextResponse.json(service);
-  } catch (error) {
-    // Avoid console logs in production code
+  } catch { // FIXED: Removed unused 'error' variable
     return NextResponse.json({ message: 'Error fetching service' }, { status: 500 });
   }
 }
@@ -35,16 +34,18 @@ export async function PUT(
   context: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params; // Correctly access id from context
-    const body = await request.json();
+    const { id } = context.params;
+    // FIXED: Type the JSON body as 'unknown' first for type safety.
+    const body: unknown = await request.json();
 
     const updatedService = await prisma.service.update({
       where: { id },
-      data: body,
+      // Then, assert the type when passing it to Prisma.
+      data: body as Partial<Service>,
     });
 
     return NextResponse.json(updatedService);
-  } catch (error) {
+  } catch { // FIXED: Removed unused 'error' variable
     return NextResponse.json({ message: 'Error updating service' }, { status: 500 });
   }
 }
@@ -57,15 +58,14 @@ export async function DELETE(
   context: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params; // Correctly access id from context
+    const { id } = context.params;
     
     await prisma.service.delete({
       where: { id },
     });
 
-    // Return a 204 No Content response, which is standard for a successful DELETE
     return new NextResponse(null, { status: 204 });
-  } catch (error) {
+  } catch { // FIXED: Removed unused 'error' variable
     return NextResponse.json({ message: 'Error deleting service' }, { status: 500 });
   }
 }
