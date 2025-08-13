@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient, type Service } from '@prisma/client';
+import { PrismaClient, Prisma, type Service } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -35,11 +35,17 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const body: unknown = await request.json();
+    const body = await request.json() as Partial<Service>;
+    
+    // Convert null JSON values to Prisma.JsonNull
+    const processedData: Prisma.ServiceUpdateInput = {
+      ...body,
+      pricing: body.pricing === null ? Prisma.JsonNull : (body.pricing as Prisma.InputJsonValue | undefined),
+    };
     
     const updatedService = await prisma.service.update({
       where: { id },
-      data: body as Partial<Service>,
+      data: processedData,
     });
     
     return NextResponse.json(updatedService);
