@@ -8,7 +8,11 @@ async function main() {
     // Get all services that don't have a slug
     const servicesWithoutSlug = await prisma.service.findMany({
       where: {
-        slug: { isSet: false }  // Fixed: Using isSet instead of equals
+        OR: [
+          { slug: null },
+          { slug: { equals: null } },
+          { slug: { isSet: false } }
+        ]
       },
     });
     
