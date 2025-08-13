@@ -3,6 +3,10 @@ import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+interface ServiceUpdateData extends Partial<Prisma.ServiceUpdateInput> {
+  pricing?: Prisma.InputJsonValue;
+}
+
 export async function GET(
   _request: Request,
   { params }: { params: { id: string } }
@@ -15,7 +19,10 @@ export async function GET(
     return service
       ? NextResponse.json(service)
       : NextResponse.json({ error: 'Service not found' }, { status: 404 });
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -28,7 +35,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ): Promise<NextResponse> {
   try {
-    const body: unknown = await request.json();
+    const body = await request.json() as unknown;
     
     if (typeof body !== 'object' || body === null) {
       return NextResponse.json(
@@ -37,8 +44,9 @@ export async function PUT(
       );
     }
 
-    const updateData: Prisma.ServiceUpdateInput = {
-      ...(typeof body === 'object' ? body : {}),
+    const updateData: ServiceUpdateData = {
+      ...body,
+      pricing: body.pricing ? JSON.parse(JSON.stringify(body.pricing)) : undefined
     };
 
     const updatedService = await prisma.service.update({
@@ -47,7 +55,10 @@ export async function PUT(
     });
 
     return NextResponse.json(updatedService);
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -64,7 +75,10 @@ export async function DELETE(
       where: { id: params.id },
     });
     return new NextResponse(null, { status: 204 });
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
