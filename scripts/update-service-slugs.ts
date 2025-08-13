@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-
 const prisma = new PrismaClient();
 
 async function main() {
@@ -9,7 +8,7 @@ async function main() {
     // Get all services that don't have a slug
     const servicesWithoutSlug = await prisma.service.findMany({
       where: {
-        slug: null,
+        slug: { equals: null }  // Fixed: Changed from `null` to `{ equals: null }`
       },
     });
     
