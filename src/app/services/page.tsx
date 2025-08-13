@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Service } from '@prisma/client';
+import Link from 'next/link';
 
 export default function ServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
@@ -57,7 +58,7 @@ export default function ServicesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map(service => (
-            <div key={service.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div key={service.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
               {service.image && (
                 <img 
                   src={service.image} 
@@ -67,7 +68,13 @@ export default function ServicesPage() {
               )}
               <div className="p-6">
                 <h2 className="text-xl font-semibold mb-2">{service.title}</h2>
-                <p className="text-gray-600">{service.description}</p>
+                <p className="text-gray-600 mb-4">{service.description}</p>
+                <Link 
+                  href={`/services/${service.id}`}
+                  className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                >
+                  Learn More
+                </Link>
               </div>
             </div>
           ))}
