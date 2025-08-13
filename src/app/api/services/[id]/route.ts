@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+interface RouteParams {
+  params: Promise<{ id: string }>;
+}
+
 // GET a single service
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, context: RouteParams) {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
     const service = await prisma.service.findUnique({
       where: { id },
     });
@@ -16,19 +17,15 @@ export async function GET(
     }
     return NextResponse.json(service);
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('Failed to fetch service:', err);
     return NextResponse.json({ error: 'Failed to fetch service' }, { status: 500 });
   }
 }
 
 // PUT update a service
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PUT(request: NextRequest, context: RouteParams) {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
     const body = await request.json() as { 
       title: string; 
       description: string; 
@@ -43,25 +40,20 @@ export async function PUT(
     });
     return NextResponse.json(service);
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('Failed to update service:', err);
     return NextResponse.json({ error: 'Failed to update service' }, { status: 500 });
   }
 }
 
 // DELETE a service
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(request: NextRequest, context: RouteParams) {
   try {
-    const { id } = await params;
+    const { id } = await context.params;
     await prisma.service.delete({
       where: { id },
     });
     return NextResponse.json({ message: 'Service deleted successfully' });
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('Failed to delete service:', err);
     return NextResponse.json({ error: 'Failed to delete service' }, { status: 500 });
   }
