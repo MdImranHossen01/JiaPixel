@@ -3,7 +3,6 @@ import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Define interfaces for our requests
 interface ServiceUpdateBody {
   title?: string;
   slug?: string;
@@ -15,22 +14,11 @@ interface ServiceUpdateBody {
   status?: string;
 }
 
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
-// Development-only logger
-const devLogger = (context: string, error: unknown) => {
-  if (process.env.NODE_ENV !== 'production') {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    process.stderr.write(`[${context}] ${errorMessage}\n`);
-  }
-};
-
 // GET a single service by ID
-export async function GET(request: Request, { params }: RouteParams) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
     const service = await prisma.service.findUnique({
@@ -46,7 +34,9 @@ export async function GET(request: Request, { params }: RouteParams) {
 
     return NextResponse.json(service);
   } catch (error) {
-    devLogger('GET /api/services/[id]', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('GET Error:', error);
+    }
     return NextResponse.json(
       { message: 'Error fetching service' },
       { status: 500 }
@@ -55,7 +45,10 @@ export async function GET(request: Request, { params }: RouteParams) {
 }
 
 // UPDATE a service by ID
-export async function PUT(request: Request, { params }: RouteParams) {
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
     const body = await request.json() as Partial<ServiceUpdateBody>;
@@ -72,7 +65,9 @@ export async function PUT(request: Request, { params }: RouteParams) {
 
     return NextResponse.json(updatedService);
   } catch (error) {
-    devLogger('PUT /api/services/[id]', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('PUT Error:', error);
+    }
     return NextResponse.json(
       { message: 'Error updating service' },
       { status: 500 }
@@ -81,7 +76,10 @@ export async function PUT(request: Request, { params }: RouteParams) {
 }
 
 // DELETE a service by ID
-export async function DELETE(request: Request, { params }: RouteParams) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
   try {
     const { id } = params;
     await prisma.service.delete({
@@ -89,7 +87,9 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     });
     return new NextResponse(null, { status: 204 });
   } catch (error) {
-    devLogger('DELETE /api/services/[id]', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('DELETE Error:', error);
+    }
     return NextResponse.json(
       { message: 'Error deleting service' },
       { status: 500 }
