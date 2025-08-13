@@ -37,15 +37,30 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json() as Partial<Service>;
     
-    // Convert null JSON values to Prisma.JsonNull
-    const processedData: Prisma.ServiceUpdateInput = {
-      ...body,
-      pricing: body.pricing === null ? Prisma.JsonNull : (body.pricing as Prisma.InputJsonValue | undefined),
-    };
+    // Create a clean update data object
+    const updateData: Prisma.ServiceUpdateInput = {};
+    
+    // Copy all properties except pricing
+    Object.keys(body).forEach(key => {
+      if (key !== 'pricing') {
+        (updateData as any)[key] = (body as any)[key];
+      }
+    });
+    
+    // Handle pricing separately
+    if (body.pricing !== undefined) {
+      if (body.pricing === null) {
+        // If pricing is explicitly set to null, we need to use Prisma.JsonNull
+        updateData.pricing = Prisma.JsonNull;
+      } else {
+        // Otherwise, use the provided value
+        updateData.pricing = body.pricing as Prisma.InputJsonValue;
+      }
+    }
     
     const updatedService = await prisma.service.update({
       where: { id },
-      data: processedData,
+      data: updateData,
     });
     
     return NextResponse.json(updatedService);
