@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import { Suspense } from "react";
 import GoogleTagManager from "./components/GoogleTagManager";
+import StructuredData from "./components/StructuredData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
         url: 'https://www.jiapixel.com/icon.png',
         width: 1200,
         height: 630,
-        alt: 'Jia Pixel | Reliable Web Development & Digital Agency',
+        alt: 'Jia Pixel - Reliable Web Development & Digital Marketing Agency',
       },
     ],
   },
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
         url: 'https://www.jiapixel.com/icon.png',
         width: 1200,
         height: 630,
-        alt: 'Jia Pixel | Reliable Web Development & Digital Agency',
+        alt: 'Jia Pixel - Reliable Web Development & Digital Marketing Agency',
       },
     ],
   },
@@ -66,21 +67,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Jia Pixel",
-              "url": "https://www.jiapixel.com",
-              "logo": "https://www.jiapixel.com/icon.png",
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+8801919011101",
-                "contactType": "Customer Service"
-              }
-            })
+        <StructuredData
+          type="Organization"
+          data={{
+            name: "Jia Pixel",
+            url: "https://www.jiapixel.com",
+            logo: "https://www.jiapixel.com/icon.png",
+            contactPoint: {
+              "@type": "ContactPoint",
+              telephone: "+8801919011101",
+              contactType: "Customer Service"
+            }
           }}
         />
       </head>

@@ -1,8 +1,95 @@
 'use client';
+import StructuredData from '@/app/components/StructuredData';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Service } from '@prisma/client';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+// Function to generate metadata for the service page
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  try {
+    // Fetch the service data
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'}/api/services/slug/${params.slug}`);
+    
+    if (!response.ok) {
+      return {
+        title: 'Service Not Found | JiaPixel',
+        description: 'The service you are looking for could not be found.',
+      };
+    }
+    
+    const service = await response.json() as Service;
+    
+    // Generate a clean title and description
+    const title = `${service.title} | JiaPixel`;
+    const description = service.description.length > 160 
+      ? `${service.description.substring(0, 157)}...` 
+      : service.description;
+    
+    // OpenGraph image - use service image or fallback to default
+    const ogImage = service.image ?? 'https://www.jiapixel.com/icon.png';
+    
+    return {
+      title,
+      description,
+      keywords: [service.title, 'digital agency', 'web development', 'SEO', 'JiaPixel'],
+      authors: [{ name: 'JiaPixel' }],
+      creator: 'JiaPixel',
+      publisher: 'JiaPixel',
+      formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+      },
+      metadataBase: new URL('https://www.jiapixel.com'),
+      alternates: {
+        canonical: `/services/${service.slug}`,
+      },
+      openGraph: {
+        title,
+        description,
+        url: `https://www.jiapixel.com/services/${service.slug}`,
+        siteName: 'JiaPixel',
+        images: [
+          {
+            url: ogImage,
+            width: 1200,
+            height: 630,
+            alt: service.title,
+          },
+        ],
+        locale: 'en_US',
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [ogImage],
+        creator: '@jiapixel',
+        site: '@jiapixel',
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
+      },
+    };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (err) {
+    return {
+      title: 'Service Not Found | JiaPixel',
+      description: 'The service you are looking for could not be found.',
+    };
+  }
+}
 
 export default function ServiceDetailPage() {
   const [service, setService] = useState<Service | null>(null);
@@ -64,115 +151,134 @@ export default function ServiceDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">{service.title}</h1>
-            <p className="text-xl opacity-90 max-w-2xl mx-auto">
-              Professional {service.title} services tailored to your business needs
-            </p>
+    <>
+      {service && (
+        <StructuredData
+          type="Service"
+          data={{
+            name: service.title,
+            description: service.description,
+            provider: {
+              '@type': 'Organization',
+              name: 'JiaPixel',
+              url: 'https://www.jiapixel.com',
+            },
+            serviceType: service.title,
+            areaServed: 'Worldwide',
+            image: service.image ?? 'https://www.jiapixel.com/icon.png',
+          }}
+        />
+      )}
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{service.title}</h1>
+              <p className="text-xl opacity-90 max-w-2xl mx-auto">
+                Professional {service.title} services tailored to your business needs
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Service Content */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            {/* Service Image */}
-            {service.image && (
-              <div className="w-full h-64 md:h-96 bg-gray-200">
-                <img 
-                  src={service.image} 
-                  alt={service.title} 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
-            
-            {/* Service Description */}
-            <div className="p-8">
-              <div className="prose max-w-none">
-                <h2 className="text-2xl font-bold mb-4">Service Overview</h2>
-                <p className="text-gray-700 text-lg leading-relaxed mb-8">
-                  {service.description}
-                </p>
-                
-                {/* Additional sections you can customize */}
-                <h3 className="text-xl font-semibold mb-3">What We Offer</h3>
-                <ul className="list-disc pl-6 space-y-2 mb-8">
-                  <li>Customized solutions for your specific requirements</li>
-                  <li>Expert team with years of industry experience</li>
-                  <li>Cutting-edge technology and best practices</li>
-                  <li>Ongoing support and maintenance</li>
-                  <li>Competitive pricing and transparent processes</li>
-                </ul>
-                
-                <h3 className="text-xl font-semibold mb-3">Our Process</h3>
-                <ol className="list-decimal pl-6 space-y-2">
-                  <li>Initial consultation and requirement analysis</li>
-                  <li>Strategy development and planning</li>
-                  <li>Implementation and execution</li>
-                  <li>Testing and quality assurance</li>
-                  <li>Deployment and ongoing support</li>
-                </ol>
-              </div>
+        
+        {/* Service Content */}
+        <div className="container mx-auto px-4 py-16">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              {/* Service Image */}
+              {service.image && (
+                <div className="w-full h-64 md:h-96 bg-gray-200">
+                  <img 
+                    src={service.image} 
+                    alt={service.title} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
               
-              {/* CTA Section */}
-              <div className="mt-12 text-center">
-                <h3 className="text-2xl font-bold mb-4">Ready to Get Started?</h3>
-                <p className="text-gray-600 mb-6">
-                  Contact us today to discuss how our {service.title} services can help your business grow.
-                </p>
-                <div className="space-x-4">
-                  <Link 
-                    href="/contact" 
-                    className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Contact Us
-                  </Link>
-                  <Link 
-                    href="/services" 
-                    className="inline-block px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    View All Services
-                  </Link>
+              {/* Service Description */}
+              <div className="p-8">
+                <div className="prose max-w-none">
+                  <h2 className="text-2xl font-bold mb-4">Service Overview</h2>
+                  <p className="text-gray-700 text-lg leading-relaxed mb-8">
+                    {service.description}
+                  </p>
+                  
+                  {/* Additional sections you can customize */}
+                  <h3 className="text-xl font-semibold mb-3">What We Offer</h3>
+                  <ul className="list-disc pl-6 space-y-2 mb-8">
+                    <li>Customized solutions for your specific requirements</li>
+                    <li>Expert team with years of industry experience</li>
+                    <li>Cutting-edge technology and best practices</li>
+                    <li>Ongoing support and maintenance</li>
+                    <li>Competitive pricing and transparent processes</li>
+                  </ul>
+                  
+                  <h3 className="text-xl font-semibold mb-3">Our Process</h3>
+                  <ol className="list-decimal pl-6 space-y-2">
+                    <li>Initial consultation and requirement analysis</li>
+                    <li>Strategy development and planning</li>
+                    <li>Implementation and execution</li>
+                    <li>Testing and quality assurance</li>
+                    <li>Deployment and ongoing support</li>
+                  </ol>
+                </div>
+                
+                {/* CTA Section */}
+                <div className="mt-12 text-center">
+                  <h3 className="text-2xl font-bold mb-4">Ready to Get Started?</h3>
+                  <p className="text-gray-600 mb-6">
+                    Contact us today to discuss how our {service.title} services can help your business grow.
+                  </p>
+                  <div className="space-x-4">
+                    <Link 
+                      href="/contact" 
+                      className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Contact Us
+                    </Link>
+                    <Link 
+                      href="/services" 
+                      className="inline-block px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      View All Services
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Related Services Section (Optional) */}
-      <div className="bg-gray-100 py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Other Services</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Explore our other services that might interest you
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {/* Placeholder for related services - you can fetch and display actual related services */}
-            <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
-              <h3 className="text-xl font-semibold mb-3">Web Development</h3>
-              <p className="text-gray-600">Custom web applications tailored to your business needs</p>
+        
+        {/* Related Services Section (Optional) */}
+        <div className="bg-gray-100 py-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">Other Services</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Explore our other services that might interest you
+              </p>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
-              <h3 className="text-xl font-semibold mb-3">Mobile Development</h3>
-              <p className="text-gray-600">Native and cross-platform mobile applications</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
-              <h3 className="text-xl font-semibold mb-3">Digital Marketing</h3>
-              <p className="text-gray-600">Comprehensive digital marketing solutions</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {/* Placeholder for related services - you can fetch and display actual related services */}
+              <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                <h3 className="text-xl font-semibold mb-3">Web Development</h3>
+                <p className="text-gray-600">Custom web applications tailored to your business needs</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                <h3 className="text-xl font-semibold mb-3">Mobile Development</h3>
+                <p className="text-gray-600">Native and cross-platform mobile applications</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                <h3 className="text-xl font-semibold mb-3">Digital Marketing</h3>
+                <p className="text-gray-600">Comprehensive digital marketing solutions</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
