@@ -3,61 +3,61 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Updating services with slugs...');
-  
-  // Get all services that don't have a slug
-  const servicesWithoutSlug = await prisma.service.findMany({
-    where: {
-      slug: null,
-    },
-  });
-  
-  console.log(`Found ${servicesWithoutSlug.length} services without slugs`);
-  
-  for (const service of servicesWithoutSlug) {
-    // Generate slug from title
-    let slug = service.title
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '') // Remove special characters
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-      .trim(); // Remove leading/trailing hyphens
+  try {
+    console.log('Updating services with slugs...');
     
-    // Check if slug already exists
-    let existingService = await prisma.service.findFirst({
-      where: { slug }
+    // Get all services that don't have a slug
+    const servicesWithoutSlug = await prisma.service.findMany({
+      where: {
+        slug: null,
+      },
     });
     
-    if (existingService) {
-      // If slug exists, append a number
-      let counter = 1;
-      let newSlug = `${slug}-${counter}`;
+    console.log(`Found ${servicesWithoutSlug.length} services without slugs`);
+    
+    for (const service of servicesWithoutSlug) {
+      // Generate slug from title
+      let slug = service.title
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '') // Remove special characters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+        .trim(); // Remove leading/trailing hyphens
       
-      while (await prisma.service.findFirst({ where: { slug: newSlug } })) {
-        counter++;
-        newSlug = `${slug}-${counter}`;
+      // Check if slug already exists
+      const existingService = await prisma.service.findFirst({
+        where: { slug }
+      });
+      
+      if (existingService) {
+        // If slug exists, append a number
+        let counter = 1;
+        let newSlug = `${slug}-${counter}`;
+        
+        while (await prisma.service.findFirst({ where: { slug: newSlug } })) {
+          counter++;
+          newSlug = `${slug}-${counter}`;
+        }
+        
+        slug = newSlug;
       }
       
-      slug = newSlug;
+      // Update the service with the new slug
+      await prisma.service.update({
+        where: { id: service.id },
+        data: { slug }
+      });
+      
+      console.log(`Updated service "${service.title}" with slug "${slug}"`);
     }
     
-    // Update the service with the new slug
-    await prisma.service.update({
-      where: { id: service.id },
-      data: { slug }
-    });
-    
-    console.log(`Updated service "${service.title}" with slug "${slug}"`);
-  }
-  
-  console.log('All services have been updated with slugs.');
-}
-
-main()
-  .catch((e) => {
+    console.log('All services have been updated with slugs.');
+  } catch (e) {
     console.error(e);
     process.exit(1);
-  })
-  .finally(async () => {
+  } finally {
     await prisma.$disconnect();
-  });
+  }
+}
+
+main();
