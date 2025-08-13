@@ -1,66 +1,60 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// GET a single service by ID
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  _request: Request,
+  context: { params: { id: string } }
 ) {
   try {
     const service = await prisma.service.findUnique({
-      where: { id: params.id },
+      where: { id: context.params.id },
     });
 
-    return service 
+    return service
       ? NextResponse.json(service)
       : NextResponse.json({ message: 'Service not found' }, { status: 404 });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { message: 'Error fetching service' },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
-// UPDATE a service by ID
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const body = await request.json();
     const updatedService = await prisma.service.update({
-      where: { id: params.id },
-      data: {
-        ...body,
-        pricing: body.pricing ? JSON.parse(JSON.stringify(body.pricing)) : undefined,
-      },
+      where: { id: context.params.id },
+      data: body,
     });
 
     return NextResponse.json(updatedService);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { message: 'Error updating service' },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
-// DELETE a service by ID
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  _request: Request,
+  context: { params: { id: string } }
 ) {
   try {
     await prisma.service.delete({
-      where: { id: params.id },
+      where: { id: context.params.id },
     });
     return new NextResponse(null, { status: 204 });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { message: 'Error deleting service' },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }
