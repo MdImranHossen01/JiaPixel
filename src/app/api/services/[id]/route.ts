@@ -4,11 +4,11 @@ import prisma from '@/lib/prisma';
 // GET a single service
 export async function GET(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Record<string, string> }
 ) {
   try {
     const service = await prisma.service.findUnique({
-      where: { id: context.params.id },
+      where: { id: params.id },
     });
 
     if (!service) {
@@ -28,7 +28,7 @@ export async function GET(
 // PUT update a service
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Record<string, string> }
 ) {
   try {
     const body = (await request.json()) as {
@@ -40,7 +40,7 @@ export async function PUT(
     const { title, description, image } = body;
 
     const service = await prisma.service.update({
-      where: { id: context.params.id },
+      where: { id: params.id },
       data: { title, description, image },
     });
 
@@ -57,11 +57,11 @@ export async function PUT(
 // DELETE a service
 export async function DELETE(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: Record<string, string> }
 ) {
   try {
     await prisma.service.delete({
-      where: { id: context.params.id },
+      where: { id: params.id },
     });
 
     return NextResponse.json({ message: 'Service deleted successfully' });
