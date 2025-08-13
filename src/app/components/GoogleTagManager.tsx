@@ -1,12 +1,14 @@
 "use client"; // This MUST be the very first line
-
 // The 'declare global' block can come after "use client"
 declare global {
   interface Window {
     dataLayer?: Record<string, unknown>[];
+    clarity?: {
+      q?: unknown[];
+      (event: string, ...args: unknown[]): void;
+    };
   }
 }
-
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { useEffect } from "react";
@@ -14,7 +16,13 @@ import { useEffect } from "react";
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 const pageview = (url: string) => {
-  if (typeof window.dataLayer !== "undefined") {
+  // Initialize dataLayer if it doesn't exist
+  if (typeof window.dataLayer === 'undefined') {
+    window.dataLayer = [];
+  }
+  
+  // Ensure dataLayer is an array before pushing
+  if (Array.isArray(window.dataLayer)) {
     window.dataLayer.push({
       event: "pageview",
       page: url,
@@ -25,7 +33,7 @@ const pageview = (url: string) => {
 export default function GoogleTagManager() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
+  
   useEffect(() => {
     if (pathname) {
       pageview(pathname);

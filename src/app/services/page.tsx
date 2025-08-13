@@ -70,7 +70,7 @@ export default function ServicesPage() {
                 <h2 className="text-xl font-semibold mb-2">{service.title}</h2>
                 <p className="text-gray-600 mb-4">{service.description}</p>
                 <Link 
-                  href={`/services/${service.id}`}
+                  href={`/services/${service.slug}`}
                   className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                 >
                   Learn More

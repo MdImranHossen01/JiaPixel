@@ -1,17 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+// Helper function to generate slug from title
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+    .trim(); // Remove leading/trailing hyphens
+}
+
 // GET all services
 export async function GET() {
   try {
     console.log("API: Fetching services...");
     
-    // Test database connection
     await prisma.$connect();
     console.log("API: Database connected");
     
     const services = await prisma.service.findMany({
-      orderBy: { id: 'desc' }, // Sort by ID instead of DateTime
+      orderBy: { id: 'desc' },
     });
     
     console.log(`API: Found ${services.length} services`);
@@ -39,9 +48,35 @@ export async function POST(request: NextRequest) {
     
     const { title, description, image } = body;
     
-    const service = await prisma.service.create({
-      data: { title, description, image },
+    // Generate slug from title
+    const slug = generateSlug(title);
+    
+    // Check if slug already exists
+    const existingService = await prisma.service.findUnique({
+      where: { slug },
     });
+    
+    if (existingService) {
+      // If slug exists, append a number
+      let counter = 1;
+      let newSlug = `${slug}-${counter}`;
+      
+      while (await prisma.service.findUnique({ where: { slug: newSlug } })) {
+        counter++;
+        newSlug = `${slug}-${counter}`;
+      }
+      
+      const service = await prisma.service.create({
+        data: { title, description, image, slug: newSlug },
+      });
+      
+      return NextResponse.json(service, { status: 201 });
+    }
+    
+    const service = await prisma.service.create({
+      data: { title, description, image, slug },
+    });
+    
     return NextResponse.json(service, { status: 201 });
   } catch (err) {
     console.error('API Error:', err);

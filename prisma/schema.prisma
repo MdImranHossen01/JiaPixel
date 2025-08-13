@@ -1,3 +1,4 @@
+// prisma/schema.prisma
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,6 +11,7 @@ datasource db {
 model Service {
   id          String   @id @map("_id") @default(cuid())
   title       String
+  slug        String   @unique // Add this field
   description String
   image       String?
 }

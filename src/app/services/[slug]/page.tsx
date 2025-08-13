@@ -9,12 +9,12 @@ export default function ServiceDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const params = useParams();
-  const id = params.id as string;
+  const slug = params.slug as string;
 
   useEffect(() => {
     const fetchService = async () => {
       try {
-        const res = await fetch(`/api/services/${id}`);
+        const res = await fetch(`/api/services/slug/${slug}`);
         
         if (!res.ok) {
           if (res.status === 404) {
@@ -36,10 +36,10 @@ export default function ServiceDetailPage() {
       }
     };
 
-    if (id) {
+    if (slug) {
       void fetchService();
     }
-  }, [id]);
+  }, [slug]);
 
   if (loading) {
     return (

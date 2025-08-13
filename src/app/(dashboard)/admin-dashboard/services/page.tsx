@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Service } from '@prisma/client';
@@ -22,7 +21,7 @@ export default function ServicesManagementPage() {
         setLoading(false);
       }
     };
-    
+
     void fetchServices();
   }, []);
 
@@ -59,11 +58,13 @@ export default function ServicesManagementPage() {
           Add New Service
         </Link>
       </div>
+
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
@@ -71,6 +72,7 @@ export default function ServicesManagementPage() {
             {services.map(service => (
               <tr key={service.id}>
                 <td className="px-6 py-4 whitespace-nowrap">{service.title}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{service.slug}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <Link 
                     href={`/admin-dashboard/services/${service.id}/edit`} 
@@ -78,10 +80,15 @@ export default function ServicesManagementPage() {
                   >
                     Edit
                   </Link>
+                  <Link 
+                    href={`/services/${service.slug}`} 
+                    className="text-green-600 hover:text-green-900 mr-4"
+                    target="_blank"
+                  >
+                    View
+                  </Link>
                   <button 
-                    onClick={() => {
-                      void handleDelete(service.id);
-                    }} 
+                    onClick={() => void handleDelete(service.id)} 
                     className="text-red-600 hover:text-red-900"
                   >
                     Delete
