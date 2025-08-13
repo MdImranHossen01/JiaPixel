@@ -3,24 +3,25 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
-import { Suspense } from "react"; // 1. Import Suspense
-import GoogleTagManager from "./components/GoogleTagManager"; // 2. Import your GTM 
-
+import { Suspense } from "react";
+import GoogleTagManager from "./components/GoogleTagManager";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
-
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {  
-  metadataBase: new URL('https://www.jiapixel.com'), // Important!
+  metadataBase: new URL('https://www.jiapixel.com'),
   title: "Jia Pixel",
   description: "A leading digital agency in Bangladesh.",
+  verification: {
+    google: "JWpS0CTCZQueL8zbGQi3mvgV7kUrk2HDkB73M1B_aAM",
+  },
   alternates: {
     canonical: 'https://www.jiapixel.com',
   },
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
         url: 'https://www.jiapixel.com/icon.png',
         width: 1200,
         height: 630,
-        alt: 'Jia Pixel - Reliable Web Development & Digital Marketing Agency',
+        alt: 'Jia Pixel | Reliable Web Development & Digital Agency',
       },
     ],
   },
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
         url: 'https://www.jiapixel.com/icon.png',
         width: 1200,
         height: 630,
-        alt: 'Jia Pixel - Reliable Web Development & Digital Marketing Agency',
+        alt: 'Jia Pixel | Reliable Web Development & Digital Agency',
       },
     ],
   },
@@ -63,17 +64,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <meta name="google-site-verification" content="JWpS0CTCZQueL8zbGQi3mvgV7kUrk2HDkB73M1B_aAM" />
-      {/* The <head> tag is automatically populated by Next.js from your metadata */}
-      {/* <body className="min-h-screen flex flex-col {`${geistSans.variable} ${geistMono.variable} antialiased`}"> */}
-      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`}>
-        {/* 3. Add the GTM component wrapped in Suspense here */}
-        <Suspense fallback={null}>
-          <GoogleTagManager />
-        </Suspense>
-
-              {/* Add this Schema Script block here */}
+    <html lang="en" suppressHydrationWarning>
+      <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -82,19 +74,23 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "Jia Pixel",
               "url": "https://www.jiapixel.com",
-              "logo": "https://www.jiapixel.com/icon.png", // Change to your actual logo URL
+              "logo": "https://www.jiapixel.com/icon.png",
               "contactPoint": {
                 "@type": "ContactPoint",
-                "telephone": "+8801919011101", // Change to your business phone number
+                "telephone": "+8801919011101",
                 "contactType": "Customer Service"
               }
             })
           }}
         />
-      
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`} suppressHydrationWarning>
+        <Suspense fallback={null}>
+          <GoogleTagManager />
+        </Suspense>
         
         <Navbar />
-        <div className="grow-1">{children}</div>
+        <main className="flex-grow">{children}</main>
         <Footer />
       </body>
     </html>
