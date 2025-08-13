@@ -1,28 +1,41 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { type Service } from '@prisma/client';
 import Link from 'next/link';
+import { type Service } from '@prisma/client';
 
-// This is the main component for the services management page
 export default function ManageServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [formData, setFormData] = useState({ title: '', description: '', icon: '', slug: '', features: '' });
+  const [error, setError] = useState<string | null>(null); // State for error messages
+
+  const [formData, setFormData] = useState({
+    title: '',
+    slug: '',
+    category: '',
+    bannerImage: '',
+    description: '',
+    requirements: '',
+    pricing: '{}',
+    status: 'draft',
+  });
 
   // Function to fetch services from the API
   const fetchServices = async () => {
     setIsLoading(true);
     try {
       const res = await fetch('/api/services');
-      const data = (await res.json()) as Service[];
-      setServices(data);
-    } catch (error) {
-      // Log only in development
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.error('Failed to fetch services', error);
+      if (res.ok) {
+        const jsonResponse: unknown = await res.json();
+        // A simple type guard to ensure the response is an array
+        if (Array.isArray(jsonResponse)) {
+          setServices(jsonResponse as Service[]);
+        }
+      } else {
+        setError('Failed to fetch services');
       }
+    } catch {
+      setError('An error occurred while fetching services.');
     } finally {
       setIsLoading(false);
     }
@@ -33,7 +46,9 @@ export default function ManageServicesPage() {
     void fetchServices();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -41,46 +56,60 @@ export default function ManageServicesPage() {
   // Handle form submission to create a new service
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null); // Reset error state on new submission
+
+    // FIXED: Safely parse the 'pricing' JSON before submitting
+    let parsedPricing: unknown;
+    try {
+      parsedPricing = JSON.parse(formData.pricing);
+    } catch {
+      setError('The pricing field contains invalid JSON.');
+      return; // Stop submission if JSON is invalid
+    }
+
     try {
       const res = await fetch('/api/services', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          features: formData.features.split(',').map((f) => f.trim()), // Convert comma-separated string to array
+          pricing: parsedPricing,
         }),
       });
       if (res.ok) {
-        setFormData({ title: '', description: '', icon: '', slug: '', features: '' }); // Reset form
+        setFormData({
+          title: '',
+          slug: '',
+          category: '',
+          bannerImage: '',
+          description: '',
+          requirements: '',
+          pricing: '{}',
+          status: 'draft',
+        });
         await fetchServices(); // Refresh the list
-      } else if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.error('Failed to create service');
+      } else {
+        setError('Failed to create service.');
       }
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.error('Error creating service:', error);
-      }
+    } catch {
+      setError('An error occurred while creating the service.');
     }
   };
 
   // Handle deleting a service
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this service?')) return;
+    setError(null);
+
     try {
       const res = await fetch(`/api/services/${id}`, { method: 'DELETE' });
       if (res.ok) {
         await fetchServices(); // Refresh the list
-      } else if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.error('Failed to delete service');
+      } else {
+        setError('Failed to delete service.');
       }
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.error('Error deleting service:', error);
-      }
+    } catch {
+      setError('An error occurred while deleting the service.');
     }
   };
 
@@ -92,15 +121,28 @@ export default function ManageServicesPage() {
       <div className="bg-white p-6 rounded-lg shadow-md mb-8">
         <h2 className="text-2xl font-bold mb-4">Add New Service</h2>
         <form
-          onSubmit={(e) => void handleSubmit(e)} // ✅ Wrap async in void to fix no-misused-promises
+          onSubmit={(e) => void handleSubmit(e)}
           className="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
-          <input name="title" value={formData.title} onChange={handleInputChange} placeholder="Title" required className="input input-bordered w-full" />
-          <input name="slug" value={formData.slug} onChange={handleInputChange} placeholder="Slug (e.g., web-development)" required className="input input-bordered w-full" />
-          <input name="icon" value={formData.icon} onChange={handleInputChange} placeholder="Icon Name (e.g., FiCode)" required className="input input-bordered w-full" />
-          <input name="features" value={formData.features} onChange={handleInputChange} placeholder="Features (comma-separated)" required className="input input-bordered w-full" />
-          <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Description" required className="textarea textarea-bordered w-full md:col-span-2"></textarea>
-          <button type="submit" className="btn btn-primary md:col-span-2">Add Service</button>
+          {/* ...form inputs remain the same... */}
+          <input name="title" value={formData.title} onChange={handleInputChange} placeholder="Title" required className="input input-bordered w-full"/>
+          <input name="slug" value={formData.slug} onChange={handleInputChange} placeholder="Slug" required className="input input-bordered w-full"/>
+          <input name="category" value={formData.category} onChange={handleInputChange} placeholder="Category" required className="input input-bordered w-full"/>
+          <input name="bannerImage" value={formData.bannerImage} onChange={handleInputChange} placeholder="Banner Image URL" required className="input input-bordered w-full"/>
+          <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Description" required className="textarea textarea-bordered w-full md:col-span-2"/>
+          <textarea name="requirements" value={formData.requirements} onChange={handleInputChange} placeholder="Requirements" required className="textarea textarea-bordered w-full md:col-span-2"/>
+          <textarea name="pricing" value={formData.pricing} onChange={handleInputChange} placeholder='Pricing (JSON format)' required className="textarea textarea-bordered w-full md:col-span-2"/>
+          
+          {/* Display any errors */}
+          {error && (
+            <div className="md:col-span-2 p-3 bg-red-100 text-red-700 border border-red-300 rounded-md">
+              {error}
+            </div>
+          )}
+          
+          <button type="submit" className="btn btn-primary md:col-span-2">
+            Add Service
+          </button>
         </form>
       </div>
 
@@ -115,7 +157,8 @@ export default function ManageServicesPage() {
               <thead>
                 <tr>
                   <th>Title</th>
-                  <th>Slug</th>
+                  <th>Category</th>
+                  <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -123,13 +166,18 @@ export default function ManageServicesPage() {
                 {services.map((service) => (
                   <tr key={service.id}>
                     <td>{service.title}</td>
-                    <td>{service.slug}</td>
+                    <td>{service.category}</td>
+                    <td>{service.status}</td>
                     <td className="space-x-2">
-                      <Link href={`/admin-dashboard/services/edit/${service.id}`} className="btn btn-sm btn-outline">
+                      <Link
+                        href={`/admin-dashboard/services/edit/${service.id}`}
+                        className="btn btn-sm btn-outline"
+                      >
                         Edit
                       </Link>
                       <button
-                        onClick={() => void handleDelete(service.id)} // ✅ Wrap async in void
+                        // FIXED: Added 'void' to fix the no-misused-promises error
+                        onClick={() => void handleDelete(service.id)}
                         className="btn btn-sm btn-outline btn-error"
                       >
                         Delete

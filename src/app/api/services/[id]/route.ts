@@ -1,12 +1,9 @@
-import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import type { Service } from '@prisma/client';
+import { NextResponse } from 'next/server';
+import { type Service } from '@prisma/client';
 
-/* eslint-disable no-console */
-
-
-
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+// Get a single service by its ID
+export async function GET(request: Request, { params }: { params: { id: string } }) { // FIXED: Removed type annotation
   try {
     const { id } = params;
     const service = await prisma.service.findUnique({
@@ -22,33 +19,33 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(request: Request): Promise<Response> {
-  const url = new URL(request.url);
-  const id = url.pathname.split('/').pop() ?? '';
-
-  const body = (await request.json()) as Partial<Service>;
-
+// Update a specific service
+export async function PUT(request: Request, { params }: { params: { id: string } }) { // FIXED: Removed type annotation
   try {
+    const { id } = params;
+    const data = await request.json() as Partial<Service>;
+
     const updatedService = await prisma.service.update({
       where: { id },
-      data: body,
+      data,
     });
     return NextResponse.json(updatedService);
   } catch (error) {
-    console.error('Error updating service:', error);
-    return NextResponse.json({ error: 'Failed to update service' }, { status: 500 });
+    console.error("Error updating service:", error);
+    return NextResponse.json({ message: 'Could not update service' }, { status: 500 });
   }
 }
 
-export async function DELETE(request: Request): Promise<Response> {
-  const url = new URL(request.url);
-  const id = url.pathname.split('/').pop() ?? '';
-
+// Delete a specific service
+export async function DELETE(request: Request, { params }: { params: { id: string } }) { // FIXED: Removed type annotation
   try {
-    await prisma.service.delete({ where: { id } });
+    const { id } = params;
+    await prisma.service.delete({
+      where: { id },
+    });
     return NextResponse.json({ message: 'Service deleted successfully' });
   } catch (error) {
-    console.error('Error deleting service:', error);
-    return NextResponse.json({ error: 'Failed to delete service' }, { status: 500 });
+    console.error("Error deleting service:", error);
+    return NextResponse.json({ message: 'Could not delete service' }, { status: 500 });
   }
 }
