@@ -8,10 +8,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// prisma/schema.prisma
 model Service {
   id          String   @id @map("_id") @default(cuid())
   title       String
-  slug        String   @unique // Add this field
+  slug        String   @unique // Make it non-nullable and unique again
   description String
   image       String?
 }
