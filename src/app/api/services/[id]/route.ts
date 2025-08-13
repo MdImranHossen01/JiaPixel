@@ -1,15 +1,15 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function GET(
-  request: Request,
-  context: { params: Promise<{ id: string }> }
-) {
-  const { id } = await context.params;
-  
+interface Params {
+  params: { id: string };
+}
+
+// GET single service by ID
+export async function GET(_req: NextRequest, { params }: Params) {
   try {
     const service = await prisma.service.findUnique({
-      where: { id },
+      where: { id: params.id },
     });
 
     if (!service) {
@@ -23,40 +23,34 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: Request,
-  context: { params: Promise<{ id: string }> }
-) {
-  const { id } = await context.params;
-
+// PUT update service
+export async function PUT(request: NextRequest, { params }: Params) {
   try {
-    const body = (await request.json()) as {
-      title: string;
-      description: string;
-      image?: string;
-    };
+    const body = await request.json();
 
-    const service = await prisma.service.update({
-      where: { id },
-      data: body,
+    const updatedService = await prisma.service.update({
+      where: { id: params.id },
+      data: {
+        title: body.title,
+        description: body.description,
+        icon: body.icon,
+        slug: body.slug,
+        features: Array.isArray(body.features) ? body.features : [],
+      },
     });
 
-    return NextResponse.json(service);
+    return NextResponse.json(updatedService);
   } catch (err) {
     console.error('Failed to update service:', err);
     return NextResponse.json({ error: 'Failed to update service' }, { status: 500 });
   }
 }
 
-export async function DELETE(
-  request: Request,
-  context: { params: Promise<{ id: string }> }
-) {
-  const { id } = await context.params;
-
+// DELETE service
+export async function DELETE(_req: NextRequest, { params }: Params) {
   try {
     await prisma.service.delete({
-      where: { id },
+      where: { id: params.id },
     });
 
     return NextResponse.json({ message: 'Service deleted successfully' });
