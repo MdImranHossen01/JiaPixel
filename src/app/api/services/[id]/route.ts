@@ -3,58 +3,66 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+// Type for route parameters
+type RouteParams = {
+  id: string;
+};
+
+// GET handler
 export async function GET(
   _request: Request,
-  context: { params: { id: string } }
-) {
+  { params }: { params: RouteParams }
+): Promise<NextResponse> {
   try {
     const service = await prisma.service.findUnique({
-      where: { id: context.params.id },
+      where: { id: params.id },
     });
 
     return service
       ? NextResponse.json(service)
-      : NextResponse.json({ message: 'Service not found' }, { status: 404 });
-  } catch {
+      : NextResponse.json({ error: 'Service not found' }, { status: 404 });
+  } catch (error) {
     return NextResponse.json(
-      { message: 'Internal server error' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
+// PUT handler
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
-) {
+  { params }: { params: RouteParams }
+): Promise<NextResponse> {
   try {
-    const body = await request.json();
+    const data = await request.json();
     const updatedService = await prisma.service.update({
-      where: { id: context.params.id },
-      data: body,
+      where: { id: params.id },
+      data,
     });
 
     return NextResponse.json(updatedService);
-  } catch {
+  } catch (error) {
     return NextResponse.json(
-      { message: 'Internal server error' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
+// DELETE handler
 export async function DELETE(
   _request: Request,
-  context: { params: { id: string } }
-) {
+  { params }: { params: RouteParams }
+): Promise<NextResponse> {
   try {
     await prisma.service.delete({
-      where: { id: context.params.id },
+      where: { id: params.id },
     });
     return new NextResponse(null, { status: 204 });
-  } catch {
+  } catch (error) {
     return NextResponse.json(
-      { message: 'Internal server error' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
