@@ -6,12 +6,13 @@ async function main() {
     console.log('Updating services with slugs...');
     
     // Get all services that don't have a slug
+    // For MongoDB, we need to use a different approach to check for null/missing fields
     const servicesWithoutSlug = await prisma.service.findMany({
       where: {
         OR: [
           { slug: null },
           { slug: { equals: null } },
-          { slug: { isSet: false } }
+          { slug: { not: { exists: true } } }
         ]
       },
     });
