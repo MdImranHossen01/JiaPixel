@@ -1,10 +1,6 @@
 import { Metadata } from 'next';
 import { Service } from '@prisma/client';
-import ServiceDetailsClient from './ServiceDetailsClient'; // Import the new client component
-
-interface PageProps {
-  params: { slug: string };
-}
+import ServiceDetailsClient from './ServiceDetailsClient';
 
 // Fetches a single service from your API
 async function getService(slug: string): Promise<Service | null> {
@@ -18,12 +14,10 @@ async function getService(slug: string): Promise<Service | null> {
       return null;
     }
 
-    // Fix 1: Await the JSON and cast it to the correct type
     const data = await res.json() as Service;
     return data;
     
   } catch (error) {
-    // Fix 2: Add a comment to disable the ESLint rule for this line
     // eslint-disable-next-line no-console
     console.error("Failed to fetch service:", error);
     return null;
@@ -31,7 +25,7 @@ async function getService(slug: string): Promise<Service | null> {
 }
 
 // Generates dynamic metadata for the page
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const service = await getService(params.slug);
 
   if (!service) {
@@ -88,7 +82,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 // The main page component
-export default async function ServiceDetailPage({ params }: PageProps) {
+export default async function ServiceDetailPage({ params }: { params: { slug: string } }) {
   const service = await getService(params.slug);
   
   // Pass the server-fetched data to the client component for rendering
