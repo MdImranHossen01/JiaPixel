@@ -7,8 +7,7 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint",
-    "db:fix": "node scripts/fix-database.cjs"
+    "lint": "next lint"
   },
   "dependencies": {
     "@prisma/client": "^6.14.0",

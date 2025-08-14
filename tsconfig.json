@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "scripts/backfill-dates.cts"  ],
   "exclude": [
     "node_modules"
   ]
