@@ -9,14 +9,13 @@ datasource db {
 }
 
 model Service {
-  // RECOMMENDED: Using MongoDB's native ObjectId for better performance and compatibility.
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  
   title       String
-  
-  // FIXED: A unique field must not be optional.
   slug        String   @unique
-  
   description String
   image       String?
+
+  // Add these fields for tracking dates
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

@@ -23,17 +23,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '/' ? 1.0 : 0.8,
   }));
 
+  // This will now work because the schema is correct
   const services = await prisma.service.findMany({
     select: {
       slug: true,
-      createdAt: true,
+      updatedAt: true, // Using the best field for lastModified
     },
   });
 
-  // FIXED: Added an explicit type to the 'service' parameter to resolve the error.
-  const serviceUrls = services.map((service: { slug: string; createdAt: Date }) => ({
+  const serviceUrls = services.map((service: { slug: string; updatedAt: Date }) => ({
     url: `${baseUrl}/services/${service.slug}`,
-    lastModified: service.createdAt,
+    lastModified: service.updatedAt,
     changeFrequency: 'weekly',
     priority: 0.7,
   }));
