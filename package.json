@@ -10,7 +10,6 @@
     "lint": "npx eslint ./src --config eslint.config.mjs"
   },
   "dependencies": {
-    "@microsoft/clarity": "^1.0.0",
     "@prisma/client": "^6.14.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
