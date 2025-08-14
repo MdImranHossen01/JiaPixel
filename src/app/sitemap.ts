@@ -1,9 +1,11 @@
 import { MetadataRoute } from 'next';
+import prisma from '@/lib/prisma'; // 1. Import your Prisma client
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// 2. Make the function async and return a Promise
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.jiapixel.com';
 
-  // Add all your static page routes here
+  // --- Static Routes ---
   const staticRoutes = [
     '/',
     '/about',
@@ -19,23 +21,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticUrls = staticRoutes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: 'monthly', // Or 'weekly', 'daily'
+    changeFrequency: 'monthly',
     priority: route === '/' ? 1.0 : 0.8,
-  } as const));
+  }));
 
-  // If you have dynamic routes (e.g., blog posts), you would fetch them
-  // from your database or CMS here and add them to the sitemap.
-  // Example for dynamic routes:
-  // const blogPosts = await getBlogPostsFromCMS();
-  // const dynamicUrls = blogPosts.map(post => ({
-  //   url: `${baseUrl}/blog/${post.slug}`,
-  //   lastModified: new Date(post.updatedAt),
-  //   changeFrequency: 'weekly',
-  //   priority: 0.6,
-  // }));
+  // --- Dynamic Service Routes ---
+  // 3. Fetch all services from your database
+  const services = await prisma.service.findMany({
+    select: {
+      slug: true,
+      updatedAt: true,
+    },
+  });
 
+  const serviceUrls = services.map((service) => ({
+    url: `${baseUrl}/services/${service.slug}`,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    lastModified: service.updatedAt,
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
+
+  // 4. Combine static and dynamic URLs
   return [
     ...staticUrls,
-    // ...dynamicUrls, // Uncomment when you have dynamic routes
+    ...serviceUrls,
   ];
 }
