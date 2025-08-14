@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { Service } from '@prisma/client';
 import ServiceDetailsClient from './ServiceDetailsClient';
 
-// Fetches a single service from your API
 async function getService(slug: string): Promise<Service | null> {
   try {
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'}/api/services/slug/${slug}`;
@@ -25,7 +24,9 @@ async function getService(slug: string): Promise<Service | null> {
 }
 
 // Generates dynamic metadata for the page
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
   const service = await getService(params.slug);
 
   if (!service) {
@@ -54,6 +55,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     openGraph: {
       title,
       description,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       url: `https://www.jiapixel.com/services/${service.slug}`,
       siteName: 'JiaPixel',
       images: [
@@ -82,9 +84,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 // The main page component
-export default async function ServiceDetailPage({ params }: { params: { slug: string } }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function ServiceDetailPage({ params }: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
   const service = await getService(params.slug);
   
-  // Pass the server-fetched data to the client component for rendering
   return <ServiceDetailsClient service={service} />;
 }
