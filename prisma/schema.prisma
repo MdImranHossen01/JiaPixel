@@ -8,11 +8,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// prisma/schema.prisma
 model Service {
-  id          String   @id @map("_id") @default(cuid())
+  // RECOMMENDED: Using MongoDB's native ObjectId for better performance and compatibility.
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  
   title       String
-  slug        String?   @unique // Make it non-nullable and unique again
+  
+  // FIXED: A unique field must not be optional.
+  slug        String   @unique
+  
   description String
   image       String?
 }
