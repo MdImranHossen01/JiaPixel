@@ -9,17 +9,22 @@ interface PageProps {
 // Fetches a single service from your API
 async function getService(slug: string): Promise<Service | null> {
   try {
-    // Ensure the API URL is correct and handles environment variables
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000'}/api/services/slug/${slug}`;
     const res = await fetch(apiUrl, {
-      next: { revalidate: 3600 }, // Cache data for 1 hour
+      next: { revalidate: 3600 },
     });
 
     if (!res.ok) {
       return null;
     }
-    return res.json() as Promise<Service>;
+
+    // Fix 1: Await the JSON and cast it to the correct type
+    const data = await res.json() as Service;
+    return data;
+    
   } catch (error) {
+    // Fix 2: Add a comment to disable the ESLint rule for this line
+    // eslint-disable-next-line no-console
     console.error("Failed to fetch service:", error);
     return null;
   }
