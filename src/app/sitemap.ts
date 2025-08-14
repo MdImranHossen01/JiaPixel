@@ -3,7 +3,6 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.jiapixel.com';
 
-  // Add all your static page routes here
   const staticRoutes = [
     '/',
     '/about',
@@ -16,7 +15,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/privacy-policy',
   ];
 
-  const staticUrls = staticRoutes.map((route) => ({
+  // FIXED: Added the explicit type here to solve the 'changeFrequency' error.
+  const staticUrls: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
