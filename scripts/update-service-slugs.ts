@@ -1,61 +1,61 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-
 async function main(): Promise<void> {
   try {
-    console.log('Updating services with slugs...');
+    console.log('Checking and updating service slugs...');
     
-    // Get all services that don't have a slug
-    // For MongoDB, we need to use a different approach to check for null/missing fields
-    const servicesWithoutSlug = await prisma.service.findMany({
-      where: {
-        OR: [
-          { slug: null },
-          { slug: { equals: null } }
-        ]
-      },
-    });
+    // 1. Fetch ALL services to ensure every slug is correct.
+    const allServices = await prisma.service.findMany();
     
-    console.log(`Found ${servicesWithoutSlug.length} services without slugs`);
+    console.log(`Found ${allServices.length} total services to check.`);
     
-    for (const service of servicesWithoutSlug) {
-      // Generate slug from title
-      let slug = service.title
+    for (const service of allServices) {
+      // 2. Generate the ideal slug from the title.
+      const idealSlug = service.title
         .toLowerCase()
-        .replace(/[^\w\s-]/g, '') // Remove special characters
-        .replace(/\s+/g, '-') // Replace spaces with hyphens
-        .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-        .trim(); // Remove leading/trailing hyphens
-      
-      // Check if slug already exists
-      const existingService = await prisma.service.findFirst({
-        where: { slug }
-      });
-      
-      if (existingService) {
-        // If slug exists, append a number
-        let counter = 1;
-        let newSlug = `${slug}-${counter}`;
+        .replace(/[^\w\s-]/g, '')     // Remove special characters
+        .replace(/\s+/g, '-')         // Replace spaces with hyphens
+        .replace(/-+/g, '-')         // Replace multiple hyphens with single hyphen
+        .replace(/^-+|-+$/g, '');   // Remove leading/trailing hyphens
+
+      // 3. Only update if the current slug is missing or incorrect.
+      if (service.slug !== idealSlug) {
+        let finalSlug = idealSlug;
+
+        // 4. Check if the ideal slug is already taken by ANOTHER service.
+        const existingService = await prisma.service.findFirst({
+          where: {
+            slug: finalSlug,
+            NOT: {
+              id: service.id, // Exclude the current service from the check
+            },
+          },
+        });
         
-        while (await prisma.service.findFirst({ where: { slug: newSlug } })) {
-          counter++;
-          newSlug = `${slug}-${counter}`;
+        // If the slug is taken, find a unique alternative.
+        if (existingService) {
+          let counter = 1;
+          let newSlug = `${finalSlug}-${counter}`;
+          
+          while (await prisma.service.findFirst({ where: { slug: newSlug } })) {
+            counter++;
+            newSlug = `${finalSlug}-${counter}`;
+          }
+          finalSlug = newSlug;
         }
         
-        slug = newSlug;
+        // 5. Update the service with the correct, unique slug.
+        await prisma.service.update({
+          where: { id: service.id },
+          data: { slug: finalSlug }
+        });
+        
+        console.log(`Updated service "${service.title}" with new slug "${finalSlug}"`);
       }
-      
-      // Update the service with the new slug.
-      void await prisma.service.update({
-        where: { id: service.id },
-        data: { slug }
-      });
-      
-      console.log(`Updated service "${service.title}" with slug "${slug}"`);
     }
     
-    console.log('All services have been updated with slugs.');
+    console.log('Slug check and update process complete.');
   } catch (e) {
     console.error(e);
     process.exit(1);
