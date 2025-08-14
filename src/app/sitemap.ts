@@ -16,22 +16,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/privacy-policy',
   ];
 
-  const staticUrls = staticRoutes.map((route) => ({
+  // FIXED: Explicitly type the array to match the required sitemap type.
+  const staticUrls: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'monthly',
     priority: route === '/' ? 1.0 : 0.8,
   }));
 
-  // This will now work because the schema is correct
   const services = await prisma.service.findMany({
     select: {
       slug: true,
-      updatedAt: true, // Using the best field for lastModified
+      updatedAt: true,
     },
   });
 
-  const serviceUrls = services.map((service: { slug: string; updatedAt: Date }) => ({
+  // FIXED: Explicitly type this array as well for consistency and type safety.
+  const serviceUrls: MetadataRoute.Sitemap = services.map((service) => ({
     url: `${baseUrl}/services/${service.slug}`,
     lastModified: service.updatedAt,
     changeFrequency: 'weekly',
