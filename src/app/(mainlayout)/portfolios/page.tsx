@@ -5,6 +5,8 @@ import PortfoliosClient from './components/PortfoliosClient';
 import { extractTextFromProjectDescription } from '@/lib/utils';
 import { getPortfolios } from '@/lib/db-utils';
 
+export const revalidate = 31536000;
+
 // Generate metadata for SEO
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = 'https://www.jiapixel.com';

@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from 'next';
 import WritingsClient from './components/WritingsClient';
 import { getWritings } from '@/lib/db-utils';
+
+export const revalidate = 31536000;
 
 export const metadata: Metadata = {
     title: 'Writings | Jia Pixel',

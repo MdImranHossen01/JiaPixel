@@ -5,6 +5,8 @@ import ProjectsClient from "./components/ProjectsClient";
 import Link from 'next/link';
 import { getProjects } from '@/lib/db-utils';
 
+export const revalidate = 31536000;
+
 // Generate metadata for SEO
 export async function generateMetadata(): Promise<Metadata> {
     const baseUrl = "https://www.jiapixel.com";
@@ -135,17 +137,17 @@ const ProjectsPage = async () => {
                             </div>
 
                             <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border/50">
-                                <a href="/contact" className="hover:text-foreground transition-colors">
+                                <Link href="/contact" className="hover:text-foreground transition-colors">
                                     Contact Us Today
-                                </a>
+                                </Link>
                                 <span>•</span>
-                                <a href="/about" className="hover:text-foreground transition-colors">
+                                <Link href="/about" className="hover:text-foreground transition-colors">
                                     About Our Agency
-                                </a>
+                                </Link>
                                 <span>•</span>
-                                <a href="/services" className="hover:text-foreground transition-colors">
+                                <Link href="/services" className="hover:text-foreground transition-colors">
                                     Explore Our Services
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
