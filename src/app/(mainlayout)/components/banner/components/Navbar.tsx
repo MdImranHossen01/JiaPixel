@@ -96,17 +96,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
     }
   }, []);
 
-  // Fetch unread message count - optimized with session storage caching
+  // Fetch unread message count - optimized with cross-tab localStorage caching (10 min)
   useEffect(() => {
     if (session?.user?.id) {
       const updateUnreadCount = async () => {
+        if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return;
         try {
-          // Check if we fetched recently (within last 2 minutes)
-          const lastFetch = sessionStorage.getItem(`unreadFetch_${session.user.id}`);
+          // Check if we fetched recently in any tab (within last 10 minutes)
+          const lastFetch = localStorage.getItem(`unreadFetch_${session.user.id}`);
           const now = Date.now();
           
-          if (lastFetch && now - parseInt(lastFetch) < 120000) {
-            const cachedCount = sessionStorage.getItem(`unreadCount_${session.user.id}`);
+          if (lastFetch && now - parseInt(lastFetch) < 600000) {
+            const cachedCount = localStorage.getItem(`unreadCount_${session.user.id}`);
             if (cachedCount !== null) {
               setUnreadCount(parseInt(cachedCount));
               return;
@@ -121,10 +122,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             
             setUnreadCount(count);
             
-            // Cache the result only if it's a valid count
+            // Cache the result across all tabs if it's a valid count
             if (Number.isFinite(data.count)) {
-              sessionStorage.setItem(`unreadCount_${session.user.id}`, count.toString());
-              sessionStorage.setItem(`unreadFetch_${session.user.id}`, now.toString());
+              localStorage.setItem(`unreadCount_${session.user.id}`, count.toString());
+              localStorage.setItem(`unreadFetch_${session.user.id}`, now.toString());
             }
           }
         } catch (error) {
@@ -134,8 +135,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
 
       updateUnreadCount();
       
-      // Optional: Set up an interval for background updates (e.g., every 5 minutes)
-      const interval = setInterval(updateUnreadCount, 300000);
+      // Background updates every 10 minutes while tab is active
+      const interval = setInterval(updateUnreadCount, 600000);
       return () => clearInterval(interval);
     }
   }, [session?.user?.id]);
