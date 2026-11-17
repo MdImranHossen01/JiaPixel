@@ -40,6 +40,14 @@ export default function TikTokPixel({ pixelId }: { pixelId?: string }) {
 
   useEffect(() => {
     if (!sanitizedPixelId || !scriptLoaded) return;
+    if (
+      pathname.startsWith('/admin') ||
+      pathname.startsWith('/dashboard') ||
+      pathname.startsWith('/login') ||
+      pathname.startsWith('/register')
+    ) {
+      return;
+    }
     if (isFirstRender.current) {
       isFirstRender.current = false;
       import("@/lib/tiktok").then(({ ttEvent }) => {

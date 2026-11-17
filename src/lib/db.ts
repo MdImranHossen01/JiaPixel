@@ -31,12 +31,18 @@ async function connectDB() {
   }
 
   if (cached.conn) {
-    return cached.conn;
+    if (mongoose.connection.readyState === 1) {
+      return cached.conn;
+    }
+    if (mongoose.connection.readyState !== 2) {
+      cached.conn = null;
+      cached.promise = null;
+    }
   }
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false,
+      bufferCommands: true,
       dbName: DB_NAME,
       maxPoolSize: 10, // Maximum number of connections in the pool
       minPoolSize: 2,  // Minimum number of connections to maintain

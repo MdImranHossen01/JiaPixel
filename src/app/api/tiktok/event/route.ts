@@ -129,10 +129,9 @@ export async function POST(request: NextRequest) {
     const result = await response.json();
 
     if (!response.ok || result.code !== 0) {
-      console.error('[TikTok API] Error:', result);
       return NextResponse.json(
-        { error: 'Failed to send event to TikTok', details: result },
-        { status: 500 }
+        { skipped: true, details: result },
+        { status: 200 }
       );
     }
 
