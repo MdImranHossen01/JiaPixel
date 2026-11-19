@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import ZakatYear from '@/models/ZakatYear';
+import { purgeCloudflareCache } from '@/lib/cloudflareCache';
 
 export async function GET(req: NextRequest) {
     try {
@@ -32,6 +33,7 @@ export async function POST(req: NextRequest) {
             { new: true, upsert: true }
         );
 
+        await purgeCloudflareCache().catch(() => {});
         return NextResponse.json({ success: true, data: config });
     } catch (error: any) {
         return NextResponse.json({ success: false, error: error.message }, { status: 400 });

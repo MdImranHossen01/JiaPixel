@@ -97,7 +97,7 @@ export async function PUT(
     revalidatePath('/products');
     revalidatePath(`/products/${decodedSlug}`);
     revalidateTag('products', 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
     
     return NextResponse.json({
       message: 'Product updated successfully',
@@ -146,7 +146,7 @@ export async function DELETE(
     revalidatePath('/products');
     revalidatePath(`/products/${decodedSlug}`);
     revalidateTag('products', 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     // Automatically clean up all product images from Cloudflare R2
     try {

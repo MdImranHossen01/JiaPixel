@@ -91,7 +91,7 @@ export async function PUT(
     revalidatePath(`/portfolios/${decodedSlug}`);
     revalidateTag('portfolios', 'max');
     revalidateTag(`portfolio-${decodedSlug}`, 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     // If slug changed, revalidate the new slug as well
     if (portfolio.slug !== decodedSlug) {
@@ -158,7 +158,7 @@ export async function DELETE(
     revalidatePath(`/portfolios/${decodedSlug}`);
     revalidateTag('portfolios', 'max');
     revalidateTag(`portfolio-${decodedSlug}`, 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     return NextResponse.json({
       message: 'Portfolio deleted successfully'

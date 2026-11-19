@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
 
         revalidateTag('writings', 'max');
         revalidateTag(`writing-${slug}`, 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         return NextResponse.json(
             {

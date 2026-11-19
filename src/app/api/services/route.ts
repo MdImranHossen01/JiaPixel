@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
     await service.save();
     revalidateTag('services', 'max');
     revalidateTag(`service-${uniqueSlug}`, 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     return NextResponse.json(
       {

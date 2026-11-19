@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
             await post.save();
             revalidatePath('/posts');
             revalidateTag('posts', 'max');
-            purgeCloudflareCache().catch(() => {});
+            await purgeCloudflareCache().catch(() => {});
         } catch (error: any) {
             // Handle duplicate key error (E11000)
             if (error.code === 11000) {

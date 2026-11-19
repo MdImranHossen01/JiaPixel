@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
         revalidatePath(`/projects/${project.slug}`);
         revalidateTag('projects', 'max');
         revalidateTag(`project-${project.slug}`, 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         return NextResponse.json(
             {

@@ -147,7 +147,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
         revalidateTag(`post-${slug}`, 'max');
         revalidatePath('/posts');
         revalidateTag('posts', 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         return NextResponse.json({
             success: true,
@@ -199,7 +199,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
         revalidatePath(`/posts/${slug}`);
         revalidateTag('posts', 'max');
         revalidateTag(`post-${slug}`, 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         if (post.featuredImage) {
           try {

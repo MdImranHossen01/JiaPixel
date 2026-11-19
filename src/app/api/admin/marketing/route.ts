@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
     }
 
     revalidatePath('/', 'layout');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     return NextResponse.json({
       success: true,

@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
 
     revalidatePath('/products');
     revalidateTag('products', 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     return NextResponse.json(
       { message: 'Product created successfully', product },

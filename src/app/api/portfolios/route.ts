@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
     revalidatePath(`/portfolios/${portfolio.slug}`);
     revalidateTag('portfolios', 'max');
     revalidateTag(`portfolio-${portfolio.slug}`, 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     return NextResponse.json(
       { message: 'Portfolio created successfully', portfolio },

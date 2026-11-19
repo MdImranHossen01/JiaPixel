@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
     await blog.save();
     revalidateTag('blogs', 'max');
     revalidateTag(`blog-${blog.slug}`, 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     return NextResponse.json(
       {

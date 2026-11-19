@@ -132,7 +132,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
         // Revalidate the newsletter details page to show updates instantly
         revalidatePath(`/newsletters/${slug}`);
         revalidateTag(`newsletter-${slug}`, 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         return NextResponse.json({
             success: true,
@@ -184,7 +184,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
         revalidatePath('/newsletters');
         revalidatePath(`/newsletters/${slug}`);
         revalidateTag('newsletters', 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         return NextResponse.json({
             success: true,

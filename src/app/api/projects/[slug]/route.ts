@@ -212,7 +212,7 @@ export async function PUT(
         revalidatePath(`/projects/${slug}`);
         revalidateTag('projects', 'max');
         revalidateTag(`project-${slug}`, 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         // If slug changed, revalidate the new slug as well
         if (project.slug !== slug) {
@@ -266,7 +266,7 @@ export async function DELETE(
 
         revalidateTag('projects', 'max');
         revalidateTag(`project-${slug}`, 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         return NextResponse.json({
             success: true,

@@ -139,7 +139,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
         revalidatePath(`/writings/${slug}`);
         revalidateTag(`writing-${slug}`, 'max');
         revalidateTag('writings', 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         // If slug changed, revalidate the new slug as well
         if (writing.slug !== slug) {
@@ -209,7 +209,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
         }
         revalidateTag(`writing-${slug}`, 'max');
         revalidateTag('writings', 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
 
         return NextResponse.json({
             success: true,

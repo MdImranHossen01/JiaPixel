@@ -97,7 +97,7 @@ export async function PUT(
             // Revalidate current/new slug
             revalidatePath(`/${category.slug}`);
             revalidateTag(`category-${category.slug}`, 'max');
-            purgeCloudflareCache().catch(() => {});
+            await purgeCloudflareCache().catch(() => {});
             
             // If slug changed, revalidate the old slug cache too
             if (!isObjectId && id !== category.slug) {
@@ -149,7 +149,7 @@ export async function DELETE(
 
         if (category.slug) {
             revalidatePath(`/${category.slug}`);
-            purgeCloudflareCache().catch(() => {});
+            await purgeCloudflareCache().catch(() => {});
         }
 
         return NextResponse.json({ message: 'Category deleted successfully' });

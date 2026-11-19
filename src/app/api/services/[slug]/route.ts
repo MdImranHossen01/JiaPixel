@@ -182,9 +182,9 @@ export async function PUT(
     // Revalidate the service page and cache tag
     revalidateTag('services', 'max');
     revalidateTag(`service-${slug}`, 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
     revalidatePath(`/services/${slug}`);
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     // If slug changed, revalidate the new slug as well
     if (service.slug !== slug) {
@@ -246,7 +246,7 @@ export async function DELETE(
 
     revalidateTag('services', 'max');
     revalidateTag(`service-${slug}`, 'max');
-    purgeCloudflareCache().catch(() => {});
+    await purgeCloudflareCache().catch(() => {});
 
     return NextResponse.json({
       success: true,

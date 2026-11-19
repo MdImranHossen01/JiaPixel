@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
         revalidatePath(`/${category.slug}`);
         revalidateTag('categories', 'max');
         revalidateTag(`category-${category.slug}`, 'max');
-        purgeCloudflareCache().catch(() => {});
+        await purgeCloudflareCache().catch(() => {});
         return NextResponse.json(category, { status: 201 });
     } catch (error: any) {
         if (error.code === 11000) {

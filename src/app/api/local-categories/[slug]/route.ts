@@ -105,8 +105,8 @@ export async function PUT(
         if (category.slug) {
             revalidatePath(`/categories/${category.slug}`); // Update the public page path (assuming /categories/[slug])
             revalidateTag(`local-category-${category.slug}`, 'max');
-            purgeCloudflareCache().catch(() => {}); // Update the data cache tag
-            purgeCloudflareCache().catch(() => {});
+            await purgeCloudflareCache().catch(() => {}); // Update the data cache tag
+            await purgeCloudflareCache().catch(() => {});
         }
 
         return NextResponse.json({ category });
@@ -142,7 +142,7 @@ export async function DELETE(
         if (category.slug) {
             revalidatePath(`/categories/${category.slug}`);
             revalidateTag(`local-category-${category.slug}`, 'max');
-            purgeCloudflareCache().catch(() => {});
+            await purgeCloudflareCache().catch(() => {});
         }
 
         return NextResponse.json({ message: 'Category deleted successfully' });
