@@ -30,6 +30,33 @@ jobs:
       - name: Pull Vercel Production Environment
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
+      - name: Merge Build Env from GitHub Secret (Overrides Vercel Secret Placeholders)
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: |
+          if [ -n "$ENV_FILE" ]; then
+            node -e '
+              const fs = require("fs");
+              const p = ".vercel/.env.production.local";
+              const existing = fs.existsSync(p) ? fs.readFileSync(p, "utf8") : "";
+              const parse = (s) => {
+                const map = new Map();
+                for (const line of s.split(/\r?\n/)) {
+                  const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=(.*)$/);
+                  if (m) map.set(m[1], m[2]);
+                }
+                return map;
+              };
+              const merged = parse(existing);
+              for (const [k, v] of parse(process.env.ENV_FILE || "")) {
+                merged.set(k, v);
+              }
+              const out = [...merged.entries()].map(([k, v]) => `${k}=${v}`).join("\n") + "\n";
+              fs.writeFileSync(p, out);
+              console.log(`Merged ${merged.size} env vars into ${p}`);
+            '
+          fi
+
       - name: Build Project on GitHub Runner ($0 Vercel Build Cost)
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 

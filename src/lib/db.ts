@@ -1,8 +1,9 @@
-
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
-const DB_NAME = process.env.DB_NAME as string;
+function sanitizeEnv(value?: string): string {
+  if (!value) return '';
+  return value.trim().replace(/^["']+|["']+$/g, '').trim();
+}
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -23,6 +24,9 @@ if (!global.mongoose) {
 }
 
 async function connectDB() {
+  const MONGODB_URI = sanitizeEnv(process.env.MONGODB_URI).replace(/^MONGODB_URI=/i, '');
+  const DB_NAME = sanitizeEnv(process.env.DB_NAME);
+
   if (!MONGODB_URI) {
     throw new Error('Please define the MONGODB_URI environment variable');
   }

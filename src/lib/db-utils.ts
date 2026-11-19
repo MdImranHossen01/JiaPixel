@@ -13,10 +13,15 @@ import Newsletter from '@/models/Newsletter';
 // Revalidate time in seconds (1 year) - Using on-demand revalidation instead
 export const DEFAULT_REVALIDATE = 31536000;
 
+function hasValidMongoUri(): boolean {
+  const uri = (process.env.MONGODB_URI || '').trim().replace(/^["']+|["']+$/g, '');
+  return uri.startsWith('mongodb://') || uri.startsWith('mongodb+srv://');
+}
+
 export const getWritings = cache(async (limit?: number) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return [];
+      if (!hasValidMongoUri()) return [];
       await connectDB();
       const query = Writing.find().sort({ createdAt: -1 });
       if (limit) query.limit(limit);
@@ -30,7 +35,7 @@ export const getWritings = cache(async (limit?: number) => {
 export const getWritingBySlug = cache(async (slug: string) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return null;
+      if (!hasValidMongoUri()) return null;
       await connectDB();
       return JSON.parse(JSON.stringify(await Writing.findOne({ slug })
         .populate('relatedWritings')
@@ -44,7 +49,7 @@ export const getWritingBySlug = cache(async (slug: string) => {
 export const getProjects = cache(async (limit?: number) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return [];
+      if (!hasValidMongoUri()) return [];
       await connectDB();
       const query = Project.find().sort({ createdAt: -1 });
       if (limit) query.limit(limit);
@@ -58,7 +63,7 @@ export const getProjects = cache(async (limit?: number) => {
 export const getProjectBySlug = cache(async (slug: string) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return null;
+      if (!hasValidMongoUri()) return null;
       await connectDB();
       return JSON.parse(JSON.stringify(await Project.findOne({ slug }).populate('relatedProjects')));
     },
@@ -70,7 +75,7 @@ export const getProjectBySlug = cache(async (slug: string) => {
 export const getBlogs = cache(async (limit?: number) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return [];
+      if (!hasValidMongoUri()) return [];
       await connectDB();
       const query = Blog.find().sort({ createdAt: -1 });
       if (limit) query.limit(limit);
@@ -84,7 +89,7 @@ export const getBlogs = cache(async (limit?: number) => {
 export const getBlogBySlug = cache(async (slug: string) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return null;
+      if (!hasValidMongoUri()) return null;
       await connectDB();
       return JSON.parse(JSON.stringify(await Blog.findOne({ slug })
         .populate('relatedBlogs')
@@ -98,7 +103,7 @@ export const getBlogBySlug = cache(async (slug: string) => {
 export const getPortfolios = cache(async (limit?: number) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return [];
+      if (!hasValidMongoUri()) return [];
       await connectDB();
       const query = Portfolio.find().sort({ createdAt: -1 });
       if (limit) query.limit(limit);
@@ -112,7 +117,7 @@ export const getPortfolios = cache(async (limit?: number) => {
 export const getPortfolioBySlug = cache(async (slug: string) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return null;
+      if (!hasValidMongoUri()) return null;
       await connectDB();
       return JSON.parse(JSON.stringify(await Portfolio.findOne({ slug })));
     },
@@ -124,7 +129,7 @@ export const getPortfolioBySlug = cache(async (slug: string) => {
 export const getPosts = cache(async (limit?: number) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return [];
+      if (!hasValidMongoUri()) return [];
       await connectDB();
       const query = Post.find().sort({ createdAt: -1 });
       if (limit) query.limit(limit);
@@ -138,7 +143,7 @@ export const getPosts = cache(async (limit?: number) => {
 export const getPostBySlug = cache(async (slug: string) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return null;
+      if (!hasValidMongoUri()) return null;
       await connectDB();
       return JSON.parse(JSON.stringify(await Post.findOne({ slug })
         .populate('relatedPosts')
@@ -152,7 +157,7 @@ export const getPostBySlug = cache(async (slug: string) => {
 export const getServices = cache(async (limit?: number) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return [];
+      if (!hasValidMongoUri()) return [];
       await connectDB();
       const query = Service.find().sort({ title: 1 });
       if (limit) query.limit(limit);
@@ -166,7 +171,7 @@ export const getServices = cache(async (limit?: number) => {
 export const getServiceBySlug = cache(async (slug: string) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return null;
+      if (!hasValidMongoUri()) return null;
       await connectDB();
       return JSON.parse(JSON.stringify(await Service.findOne({ slug })));
     },
@@ -178,7 +183,7 @@ export const getServiceBySlug = cache(async (slug: string) => {
 export const getProducts = cache(async (limit?: number) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return [];
+      if (!hasValidMongoUri()) return [];
       await connectDB();
       const query = Product.find({ status: 'published' }).sort({ featured: -1, createdAt: -1 });
       if (limit) query.limit(limit);
@@ -192,7 +197,7 @@ export const getProducts = cache(async (limit?: number) => {
 export const getProductBySlug = cache(async (slug: string) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return null;
+      if (!hasValidMongoUri()) return null;
       await connectDB();
       return JSON.parse(JSON.stringify(await Product.findOne({ slug, status: 'published' })));
     },
@@ -204,7 +209,7 @@ export const getProductBySlug = cache(async (slug: string) => {
 export const getNewsletters = cache(async (limit?: number) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return [];
+      if (!hasValidMongoUri()) return [];
       await connectDB();
       const query = Newsletter.find().sort({ createdAt: -1 });
       if (limit) query.limit(limit);
@@ -218,7 +223,7 @@ export const getNewsletters = cache(async (limit?: number) => {
 export const getNewsletterBySlug = cache(async (slug: string) => {
   return unstable_cache(
     async () => {
-      if (!process.env.MONGODB_URI) return null;
+      if (!hasValidMongoUri()) return null;
       await connectDB();
       return JSON.parse(JSON.stringify(await Newsletter.findOne({ slug })));
     },
