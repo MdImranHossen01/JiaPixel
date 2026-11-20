@@ -26,7 +26,7 @@ export const Hero = ({
 }: HeroProps) => {
     useEffect(() => {
         trackEvent("ViewContent", {
-            content_name: includeFreeDomainAndYearHosting ? "Best Ecommerce Landing Page 8000" : "Ecommerce Landing Page",
+            content_name: includeFreeDomainAndYearHosting ? "Best Ecommerce Landing Page 8999" : "Ecommerce Landing Page",
             content_category: "Service Promotion",
             value: price,
             currency: "BDT"
