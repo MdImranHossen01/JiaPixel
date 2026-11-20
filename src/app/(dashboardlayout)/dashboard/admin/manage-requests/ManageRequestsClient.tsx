@@ -809,7 +809,7 @@ const ManageRequestsClient = () => {
 
       <div
         ref={tableRef}
-        className="-mx-2 sm:-mx-4 md:-mx-6 lg:-mx-8 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent"
+        className="bg-card rounded-lg border border-border shadow-sm overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent"
       >
         <Table className="w-full">
           <TableHeader className="bg-muted/50">
