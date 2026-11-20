@@ -62,7 +62,17 @@ export async function POST(request: NextRequest) {
         if (clientPhone !== undefined) orderData.clientPhone = clientPhone;
         if (clientAddress !== undefined) orderData.clientAddress = clientAddress;
         if (businessName !== undefined) orderData.businessName = businessName;
-        if (Array.isArray(items) && items.length > 0) orderData.items = items;
+        if (Array.isArray(items)) {
+            orderData.items = items
+                .filter((it: any) => it && (it.name?.trim() || Number(it.price || 0) > 0))
+                .map((it: any) => ({
+                    name: it.name?.trim() || (Number(it.price || 0) > 0 ? "Service / Item" : ""),
+                    description: it.description || "",
+                    quantity: Math.max(1, Number(it.quantity || 1)),
+                    price: Math.max(0, Number(it.price || 0)),
+                    link: it.link || "",
+                }));
+        }
         if (serviceCharge !== undefined && serviceCharge !== null && serviceCharge !== "") orderData.serviceCharge = Number(serviceCharge);
         if (discountType !== undefined) orderData.discountType = discountType;
         if (discountValue !== undefined && discountValue !== null && discountValue !== "") orderData.discountValue = Number(discountValue);

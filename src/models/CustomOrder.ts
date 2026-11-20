@@ -69,7 +69,7 @@ const CustomOrderSchema = new Schema<ICustomOrder>(
         businessName: { type: String, trim: true, default: "" },
         items: [
             {
-                name: { type: String, required: true, trim: true },
+                name: { type: String, required: false, trim: true, default: "" },
                 description: { type: String, default: "" },
                 quantity: { type: Number, default: 1, min: 1 },
                 price: { type: Number, default: 0, min: 0 },

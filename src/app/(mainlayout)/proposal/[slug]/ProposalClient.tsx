@@ -333,8 +333,10 @@ export default function ProposalClient({ slug }: ProposalClientProps) {
                     border-radius: 2px;
                   }
                   .prose {
-                    color: #374151;
+                    color: #1f2937;
                     font-size: 14px;
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
                   }
                   .prose mark {
                     border-radius: 3px;
@@ -343,19 +345,26 @@ export default function ProposalClient({ slug }: ProposalClientProps) {
                     print-color-adjust: exact;
                   }
                   .prose h1, .prose h2, .prose h3, .prose h4 {
-                    color: #111827;
                     font-weight: 700;
                     margin-top: 24px;
                     margin-bottom: 12px;
+                    color: inherit;
                   }
                   .prose h1 { font-size: 22px; }
                   .prose h2 { font-size: 18px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
                   .prose h3 { font-size: 15px; }
-                  .prose p { margin: 8px 0; }
+                  .prose p { margin: 8px 0; color: inherit; }
                   .prose ul { list-style-type: disc; padding-left: 24px; margin: 8px 0; }
                   .prose ol { list-style-type: decimal; padding-left: 24px; margin: 8px 0; }
-                  .prose li { margin: 4px 0; }
-                  .prose strong { font-weight: 700; color: #111827; }
+                  .prose li { margin: 4px 0; color: inherit; }
+                  .prose strong, .prose b { font-weight: 700; color: inherit; }
+                  .prose [style*="color"] {
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
+                  }
+                  .prose [style*="color"] * {
+                    color: inherit;
+                  }
                   .prose table { width: 100%; border-collapse: collapse; margin: 16px 0; }
                   .prose th, .prose td { border: 1px solid #e5e7eb; padding: 8px 12px; text-align: left; }
                   .prose th { background-color: #f9fafb; font-weight: 600; }

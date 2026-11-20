@@ -40,7 +40,7 @@ export default function ProposalItemsSection({
   setDiscountValue,
   currency,
   projects,
-  required = true,
+  required = false,
 }: ProposalItemsSectionProps) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [projectSearch, setProjectSearch] = useState("");
@@ -63,7 +63,6 @@ export default function ProposalItemsSection({
   };
 
   const removeItem = (idx: number) => {
-    if (items.length <= 1) return;
     setItems((prev) => prev.filter((_, i) => i !== idx));
   };
 
@@ -154,81 +153,90 @@ export default function ProposalItemsSection({
       )}
 
       <div className="space-y-3">
-        {items.map((item, idx) => (
-          <div
-            key={idx}
-            className="p-3 rounded-lg border border-border bg-muted/20 space-y-2"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
-              <div className="md:col-span-5 space-y-1">
-                <Label className="text-xs text-muted-foreground">Service / Item Name *</Label>
-                <Input
-                  placeholder="e.g., E-Commerce Website Development"
-                  value={item.name}
-                  onChange={(e) => updateItem(idx, "name", e.target.value)}
-                  required
-                />
-              </div>
-              <div className="md:col-span-2 space-y-1">
-                <Label className="text-xs text-muted-foreground">Qty</Label>
-                <Input
-                  type="number"
-                  min={1}
-                  value={item.quantity}
-                  onChange={(e) => updateItem(idx, "quantity", Math.max(1, Number(e.target.value)))}
-                />
-              </div>
-              <div className="md:col-span-2 space-y-1">
-                <Label className="text-xs text-muted-foreground">Unit Price ({currSym})</Label>
-                <Input
-                  type="number"
-                  min={0}
-                  value={item.price}
-                  onChange={(e) => updateItem(idx, "price", Math.max(0, Number(e.target.value)))}
-                />
-              </div>
-              <div className="md:col-span-2 space-y-1">
-                <Label className="text-xs text-muted-foreground">Line Total</Label>
-                <div className="h-9 px-3 rounded-md border border-border bg-background flex items-center font-semibold text-sm">
-                  {currSym}
-                  {(Number(item.price || 0) * Number(item.quantity || 1)).toLocaleString()}
+        {items.length === 0 ? (
+          <div className="p-4 rounded-lg border border-dashed border-border bg-muted/10 text-center space-y-2">
+            <p className="text-xs text-muted-foreground">No services or items added. Services are optional.</p>
+            <Button type="button" variant="outline" size="sm" onClick={addItem} className="gap-1.5 text-xs">
+              <Plus className="w-3.5 h-3.5" />
+              Add Service Item
+            </Button>
+          </div>
+        ) : (
+          items.map((item, idx) => (
+            <div
+              key={idx}
+              className="p-3 rounded-lg border border-border bg-muted/20 space-y-2"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+                <div className="md:col-span-5 space-y-1">
+                  <Label className="text-xs text-muted-foreground">Service / Item Name <span className="text-[10px] text-muted-foreground font-normal">(Optional)</span></Label>
+                  <Input
+                    placeholder="e.g., E-Commerce Website Development"
+                    value={item.name}
+                    onChange={(e) => updateItem(idx, "name", e.target.value)}
+                  />
+                </div>
+                <div className="md:col-span-2 space-y-1">
+                  <Label className="text-xs text-muted-foreground">Qty</Label>
+                  <Input
+                    type="number"
+                    min={1}
+                    value={item.quantity}
+                    onChange={(e) => updateItem(idx, "quantity", Math.max(1, Number(e.target.value)))}
+                  />
+                </div>
+                <div className="md:col-span-2 space-y-1">
+                  <Label className="text-xs text-muted-foreground">Unit Price ({currSym})</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    value={item.price}
+                    onChange={(e) => updateItem(idx, "price", Math.max(0, Number(e.target.value)))}
+                  />
+                </div>
+                <div className="md:col-span-2 space-y-1">
+                  <Label className="text-xs text-muted-foreground">Line Total</Label>
+                  <div className="h-9 px-3 rounded-md border border-border bg-background flex items-center font-semibold text-sm">
+                    {currSym}
+                    {(Number(item.price || 0) * Number(item.quantity || 1)).toLocaleString()}
+                  </div>
+                </div>
+                <div className="md:col-span-1 flex items-center justify-end gap-1">
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    title="Add reference link"
+                    onClick={() => setOpenLinkIdx(openLinkIdx === idx ? null : idx)}
+                  >
+                    <LinkIcon className={`w-4 h-4 ${item.link ? "text-primary" : "text-muted-foreground"}`} />
+                  </Button>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => removeItem(idx)}
+                    className="text-destructive hover:text-destructive"
+                    title="Remove item"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
-              <div className="md:col-span-1 flex items-center justify-end gap-1">
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="ghost"
-                  title="Add reference link"
-                  onClick={() => setOpenLinkIdx(openLinkIdx === idx ? null : idx)}
-                >
-                  <LinkIcon className={`w-4 h-4 ${item.link ? "text-primary" : "text-muted-foreground"}`} />
-                </Button>
-                <Button
-                  type="button"
-                  size="icon"
-                  variant="ghost"
-                  disabled={items.length <= 1}
-                  onClick={() => removeItem(idx)}
-                  className="text-destructive hover:text-destructive"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
 
-            {openLinkIdx === idx && (
-              <div className="pt-1">
-                <Input
-                  placeholder="Optional reference link (https://...)"
-                  value={item.link || ""}
-                  onChange={(e) => updateItem(idx, "link", e.target.value)}
-                  className="h-8 text-xs"
-                />
-              </div>
-            )}
-          </div>
-        ))}
+              {openLinkIdx === idx && (
+                <div className="pt-1">
+                  <Input
+                    placeholder="Optional reference link (https://...)"
+                    value={item.link || ""}
+                    onChange={(e) => updateItem(idx, "link", e.target.value)}
+                    className="h-8 text-xs"
+                  />
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </div>
 
       {/* Pricing Summary */}

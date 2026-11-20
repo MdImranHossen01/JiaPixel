@@ -11,22 +11,35 @@ import { trackEvent } from "@/lib/fpixel";
 
 const LandingCheckoutSheet = dynamic(() => import("@/components/landing/LandingCheckoutSheet").then(mod => mod.LandingCheckoutSheet));
 
-export const Hero = () => {
+interface HeroProps {
+    price?: number;
+    priceBadge?: string;
+    source?: string;
+    includeFreeDomainAndYearHosting?: boolean;
+}
+
+export const Hero = ({
+    price = 3500,
+    priceBadge = "মাত্র ৩৫০০ টাকায়",
+    source = "ecommerce-small-business",
+    includeFreeDomainAndYearHosting = false,
+}: HeroProps) => {
     useEffect(() => {
         trackEvent("ViewContent", {
-            content_name: "Ecommerce Landing Page",
+            content_name: includeFreeDomainAndYearHosting ? "Best Ecommerce Landing Page 8000" : "Ecommerce Landing Page",
             content_category: "Service Promotion",
-            value: 3500,
+            value: price,
             currency: "BDT"
         });
-    }, []);
+    }, [price, includeFreeDomainAndYearHosting]);
 
     const bannerImages = [
-        "/images/landing-pages/ecommerce-promo/banner1.webp",
-        "/images/landing-pages/ecommerce-promo/banner2.webp",
-        "/images/landing-pages/ecommerce-promo/banner3.webp",
-        "/images/landing-pages/ecommerce-promo/banner4.webp",
-        "/images/landing-pages/ecommerce-promo/banner5.webp",
+        "/images/landing-pages/ecommerce-promo/rumasworld/banner-5.webp",
+        "/images/landing-pages/ecommerce-promo/rumasworld/banner-7.webp",
+        "/images/landing-pages/ecommerce-promo/rumasworld/banner-8.webp",
+        "/images/landing-pages/ecommerce-promo/rumasworld/banner-10.webp",
+        "/images/landing-pages/ecommerce-promo/rumasworld/banner-11.webp",
+        "/images/landing-pages/ecommerce-promo/rumasworld/banner-12.webp",
     ];
 
     return (
@@ -45,7 +58,7 @@ export const Hero = () => {
                     <div className="lg:w-[40%] order-2 text-center lg:text-left space-y-6 lg:pl-8">
                         <div className="inline-flex items-center rounded-full px-4 py-1.5 text-base font-bold bg-primary/10 text-primary border border-primary/20 animate-in fade-in slide-in-from-bottom-3 duration-1000">
                             <Sparkles className="w-5 h-5 mr-2" />
-                            <span>মাত্র ৩৫০০ টাকায়</span>
+                            <span>{priceBadge}</span>
                         </div>
 
                         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70 leading-tight">
@@ -63,7 +76,7 @@ export const Hero = () => {
                                 <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                     <Sparkles className="w-3 h-3 text-primary" />
                                 </div>
-                                <span>আমরা দিচ্ছি ৪৮টিরও বেশি <Link href="#features" className="text-primary hover:underline font-bold">অ্যাডভান্সড ফিচার</Link></span>
+                                <span>আমরা দিচ্ছি ১০০টি <Link href="#features" className="text-primary hover:underline font-bold">অ্যাডভান্সড ফিচার</Link></span>
                             </li>
                             <li className="flex items-center gap-2 lg:justify-start justify-center">
                                 <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -78,10 +91,19 @@ export const Hero = () => {
                                 <span>পছন্দ হলে তারপর পেমেন্ট করুন</span>
                             </li>
 
+                            {includeFreeDomainAndYearHosting && (
+                                <li className="flex items-center gap-2 lg:justify-start justify-center">
+                                    <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                        <Sparkles className="w-3 h-3 text-primary" />
+                                    </div>
+                                    <span><span className="text-foreground font-bold">১ বছরের ফ্রি .com ডোমেইন ও ক্লাউড হোস্টিং</span></span>
+                                </li>
+                            )}
+
                         </ul>
 
                         <div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4">
-                            <LandingCheckoutSheet source="ecommerce-small-business" price={3500}>
+                            <LandingCheckoutSheet source={source} price={price}>
                                 <Button size="lg" className="rounded-full px-5 h-12 text-base font-semibold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/25 cursor-pointer">
                                     Request Order
                                 </Button>

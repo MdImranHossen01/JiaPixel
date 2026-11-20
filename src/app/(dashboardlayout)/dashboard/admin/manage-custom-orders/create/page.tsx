@@ -60,7 +60,14 @@ export default function CreateCustomOrderPage() {
             .catch(() => { });
     }, []);
 
-    const validItems = items.filter((it) => it.name.trim() !== "");
+    const validItems = items
+        .filter((it) => it.name.trim() !== "" || Number(it.price || 0) > 0)
+        .map((it) => ({
+            ...it,
+            name: it.name.trim() || (Number(it.price || 0) > 0 ? "Service / Item" : ""),
+            quantity: Math.max(1, Number(it.quantity || 1)),
+            price: Math.max(0, Number(it.price || 0)),
+        }));
     const hasNamedItems = validItems.length > 0;
     const subtotal = validItems.reduce((sum, it) => sum + Number(it.price || 0) * Number(it.quantity || 1), 0);
     const baseAmount = hasNamedItems ? subtotal : Number(manualPrice || 0);
@@ -73,16 +80,12 @@ export default function CreateCustomOrderPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!title.trim()) {
-            toast.error("Project Title is required.");
-            return;
-        }
-        if (validItems.some((it) => it.quantity < 1 || it.price < 0)) {
-            toast.error("Please enter valid quantity and price for added service items.");
+            toast.error("Offer / Project Title is required.");
             return;
         }
 
         if (!description || description.trim() === "" || description === "[]" || description === '{"type":"doc","content":[]}') {
-            toast.error("Description is required.");
+            toast.error("Proposal Description & Scope is required.");
             return;
         }
 

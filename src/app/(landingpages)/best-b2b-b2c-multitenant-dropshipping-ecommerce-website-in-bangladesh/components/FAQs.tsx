@@ -54,12 +54,12 @@ export const FAQs = () => {
                                                 Complete Platform Development
                                             </td>
                                             <td className="p-3.5 text-right text-emerald-600 dark:text-emerald-400 font-semibold">
-                                                ✅ Included (১২২টি এন্টারপ্রাইজ ফিচার)
+                                                ✅ Included (১৩৮টি এন্টারপ্রাইজ ফিচার)
                                             </td>
                                         </tr>
                                         <tr>
                                             <td className="p-3.5 font-medium text-foreground">
-                                                High-Speed Unlimited Cloud VPS হোস্টিং
+                                                High-Speed Unlimited Cloud হোস্টিং
                                             </td>
                                             <td className="p-3.5 text-right text-emerald-600 dark:text-emerald-400 font-semibold">
                                                 ✅ Included (১ম বছর সম্পূর্ণ ফ্রি)
@@ -220,8 +220,8 @@ export const FAQs = () => {
                                 <div className="flex items-start gap-2.5">
                                     <Check className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                                     <div>
-                                        <span className="font-semibold text-foreground text-sm">Cloud VPS হোস্টিং: </span>
-                                        <span className="text-xs text-muted-foreground">প্যাকেজে হাই-পারফরম্যান্স Unlimited Cloud VPS হোস্টিং ১ম বছরের জন্য সম্পূর্ণ ফ্রি অন্তর্ভুক্ত রয়েছে (পরবর্তী বছর থেকে সাধারণ সার্ভার রিনিউয়াল ফি মাত্র ৬,৫০০ টাকা প্রযোজ্য হবে)।</span>
+                                        <span className="font-semibold text-foreground text-sm">Cloud হোস্টিং: </span>
+                                        <span className="text-xs text-muted-foreground">প্যাকেজে হাই-পারফরম্যান্স Unlimited Cloud হোস্টিং ১ম বছরের জন্য সম্পূর্ণ ফ্রি অন্তর্ভুক্ত রয়েছে (পরবর্তী বছর থেকে সাধারণ সার্ভার রিনিউয়াল ফি মাত্র ৬,৫০০ টাকা প্রযোজ্য হবে)।</span>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-2.5">
@@ -263,7 +263,7 @@ export const FAQs = () => {
                                     <Check className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
                                     <div>
                                         <span className="font-semibold text-foreground text-sm">প্রজেক্ট মেইনটেন্যান্স ও লাইফটাইম সাপোর্ট: </span>
-                                        <span className="text-xs text-muted-foreground">প্ল্যাটফর্মের নিয়মিত মেইনটেন্যান্স, আপডেট ও সিকিউরিটি নিশ্চিত করতে Jiapixel টেকনিক্যাল অ্যাডমিনিস্ট্রেটর এক্সেস বজায় রাখবে। লাইফটাইম ফ্রি সাপোর্ট শুধুমাত্র Jiapixel-এর ডেডিকেটেড Cloud VPS ইনফ্রাস্ট্রাকচারে হোস্ট করা প্রজেক্টের ক্ষেত্রে প্রযোজ্য।</span>
+                                        <span className="text-xs text-muted-foreground">প্ল্যাটফর্মের নিয়মিত মেইনটেন্যান্স, আপডেট ও সিকিউরিটি নিশ্চিত করতে Jiapixel টেকনিক্যাল অ্যাডমিনিস্ট্রেটর এক্সেস বজায় রাখবে। লাইফটাইম ফ্রি সাপোর্ট শুধুমাত্র Jiapixel-এর ডেডিকেটেড Cloud ইনফ্রাস্ট্রাকচারে হোস্ট করা প্রজেক্টের ক্ষেত্রে প্রযোজ্য।</span>
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +281,7 @@ export const FAQs = () => {
                                     <div className="p-3 rounded-xl bg-background/80 border border-amber-500/20">
                                         <span className="font-bold text-amber-700 dark:text-amber-400">১. সার্ভার কনফিগারেশন ও কন্ট্রোল: </span>
                                         <span className="text-foreground/90">
-                                            আধুনিক <strong className="text-primary font-semibold">Next.js 15, React 19 ও MongoDB</strong> আর্কিটেকচারের জন্য বিশেষায়িত Node.js রানটাইম ও ক্যাশিং ইঞ্জিন প্রয়োজন — যা তৃতীয় পক্ষের সাধারণ শেয়ার্ড হোস্টিংয়ে থাকে না এবং এর ইন্টারনাল রুট সার্ভার এক্সেস আমাদের নিয়ন্ত্রণে থাকে না।
+                                            আধুনিক <strong className="text-primary font-semibold">Next.js 16, React 19 ও MongoDB</strong> আর্কিটেকচারের জন্য বিশেষায়িত Node.js রানটাইম ও ক্যাশিং ইঞ্জিন প্রয়োজন — যা তৃতীয় পক্ষের সাধারণ শেয়ার্ড হোস্টিংয়ে থাকে না এবং এর ইন্টারনাল রুট সার্ভার এক্সেস আমাদের নিয়ন্ত্রণে থাকে না।
                                         </span>
                                     </div>
                                     <div className="p-3 rounded-xl bg-background/80 border border-amber-500/20">
@@ -293,7 +293,7 @@ export const FAQs = () => {
                                     <div className="p-3 rounded-xl bg-background/80 border border-amber-500/20">
                                         <span className="font-bold text-blue-600 dark:text-blue-400">৩. অটোমেটেড সিকিউরিটি ও ক্রনজব: </span>
                                         <span className="text-foreground/90">
-                                            আমাদের ক্লাউড ভিপিএস-এ সার্বক্ষণিক <strong className="text-blue-600 dark:text-blue-400 font-semibold">অটো-ব্যাকআপ, সিকিউরিটি প্যাচ ও কুরিয়ার লাইভ স্ট্যাটাস সিঙ্ক</strong> ব্যাকগ্রাউন্ডে স্বয়ংক্রিয়ভাবে মনিটর করা হয় — যা বাইরের হোস্টিংয়ে ট্র্যাক করা সম্ভব নয়।
+                                            আমাদের ক্লাউড সার্ভারে সার্বক্ষণিক <strong className="text-blue-600 dark:text-blue-400 font-semibold">অটো-ব্যাকআপ, সিকিউরিটি প্যাচ ও কুরিয়ার লাইভ স্ট্যাটাস সিঙ্ক</strong> ব্যাকগ্রাউন্ডে স্বয়ংক্রিয়ভাবে মনিটর করা হয় — যা বাইরের হোস্টিংয়ে ট্র্যাক করা সম্ভব নয়।
                                         </span>
                                     </div>
                                 </div>
@@ -327,7 +327,7 @@ export const FAQs = () => {
                             </span>
                         </AccordionTrigger>
                         <AccordionContent className="text-muted-foreground text-sm md:text-base leading-relaxed pb-6 text-left border-t border-border/10 pt-4">
-                            হ্যাঁ, অবশ্যই আপনি চাইলে আপনার নিজস্ব যেকোনো হোস্টিং ব্যবহার করতে পারবেন। তবে এর জন্য প্যাকেজ মূল্যে কোনো প্রকার ডিসকাউন্ট দেওয়া হবে না; কারণ আমাদের প্যাকেজে ১ম বছরের জন্য হাই-কনফিগারেশন Cloud VPS হোস্টিং সম্পূর্ণ ফ্রিতে উপহার হিসেবে দেওয়া হচ্ছে। তাই আপনি নিজের হোস্টিং ব্যবহার করলেও প্যাকেজ মূল্য ১১,৫০০ টাকাই থাকবে।
+                            হ্যাঁ, অবশ্যই আপনি চাইলে আপনার নিজস্ব যেকোনো হোস্টিং ব্যবহার করতে পারবেন। তবে এর জন্য প্যাকেজ মূল্যে কোনো প্রকার ডিসকাউন্ট দেওয়া হবে না; কারণ আমাদের প্যাকেজে ১ম বছরের জন্য হাই-কনফিগারেশন Cloud হোস্টিং সম্পূর্ণ ফ্রিতে উপহার হিসেবে দেওয়া হচ্ছে। তাই আপনি নিজের হোস্টিং ব্যবহার করলেও প্যাকেজ মূল্য ১১,৫০০ টাকাই থাকবে।
                         </AccordionContent>
                     </AccordionItem>
 
@@ -357,7 +357,7 @@ export const FAQs = () => {
                             </span>
                         </AccordionTrigger>
                         <AccordionContent className="text-muted-foreground text-sm md:text-base leading-relaxed pb-6 text-left border-t border-border/10 pt-4">
-                            ২য় বছর থেকে বার্ষিক রিনিউয়াল ফি মাত্র <strong>৬,৫০০ টাকা (১ বছরের জন্য)</strong>। আমরা কোনো সাধারণ শেয়ার্ড বা ফিজিক্যাল হোস্টিং ব্যবহার করি না; এটি একটি হাই-স্পিড Cloud VPS ইনফ্রাস্ট্রাকচার — যার ফলে পিক ট্রাফিকেও আপনার ই-কমার্স ওয়েবসাইটের স্পিড ও পারফরম্যান্স থাকবে সুপার-ফাস্ট এবং ডাউন-টাইম থাকবে শূন্য।
+                            ২য় বছর থেকে বার্ষিক রিনিউয়াল ফি মাত্র <strong>৬,৫০০ টাকা (১ বছরের জন্য)</strong>। আমরা কোনো সাধারণ শেয়ার্ড বা ফিজিক্যাল হোস্টিং ব্যবহার করি না; এটি একটি হাই-স্পিড Cloud ইনফ্রাস্ট্রাকচার — যার ফলে পিক ট্রাফিকেও আপনার ই-কমার্স ওয়েবসাইটের স্পিড ও পারফরম্যান্স থাকবে সুপার-ফাস্ট এবং ডাউন-টাইম থাকবে শূন্য।
                         </AccordionContent>
                     </AccordionItem>
 
@@ -417,7 +417,7 @@ export const FAQs = () => {
                             </span>
                         </AccordionTrigger>
                         <AccordionContent className="text-muted-foreground text-sm md:text-base leading-relaxed pb-6 text-left border-t border-border/10 pt-4">
-                            লাইফটাইম সাপোর্ট মানে হচ্ছে ওয়েবসাইটটি যতদিন আমাদের অপ্টিমাইজড Cloud VPS ইনফ্রাস্ট্রাকচারে লাইভ থাকবে, ততদিন যেকোনো কারিগরি ত্রুটি বা বাগ-ফিক্সিংয়ে আমরা সম্পূর্ণ বিনামূল্যে তাৎক্ষণিক সাপোর্ট দেব। কিন্তু আপনি যদি নিজস্ব বা থার্ড-পার্টি পার্সোনাল হোস্টিং ব্যবহার করেন, সেক্ষেত্রে সার্ভার কনফিগারেশন, মেমোরি লিমিটেশন ও রুট এক্সেস আমাদের নিয়ন্ত্রণে না থাকায় সার্ভার ক্র্যাশ বা বাহ্যিক হোস্টিংজনিত সমস্যার সমাধান দেওয়া আমাদের পক্ষে সম্ভব হবে না — এজন্য নিজস্ব হোস্টিংয়ের ক্ষেত্রে এই ফ্রি সাপোর্ট প্রযোজ্য নয়।
+                            লাইফটাইম সাপোর্ট মানে হচ্ছে ওয়েবসাইটটি যতদিন আমাদের অপ্টিমাইজড Cloud ইনফ্রাস্ট্রাকচারে লাইভ থাকবে, ততদিন যেকোনো কারিগরি ত্রুটি বা বাগ-ফিক্সিংয়ে আমরা সম্পূর্ণ বিনামূল্যে তাৎক্ষণিক সাপোর্ট দেব। কিন্তু আপনি যদি নিজস্ব বা থার্ড-পার্টি পার্সোনাল হোস্টিং ব্যবহার করেন, সেক্ষেত্রে সার্ভার কনফিগারেশন, মেমোরি লিমিটেশন ও রুট এক্সেস আমাদের নিয়ন্ত্রণে না থাকায় সার্ভার ক্র্যাশ বা বাহ্যিক হোস্টিংজনিত সমস্যার সমাধান দেওয়া আমাদের পক্ষে সম্ভব হবে না — এজন্য নিজস্ব হোস্টিংয়ের ক্ষেত্রে এই ফ্রি সাপোর্ট প্রযোজ্য নয়।
                         </AccordionContent>
                     </AccordionItem>
 

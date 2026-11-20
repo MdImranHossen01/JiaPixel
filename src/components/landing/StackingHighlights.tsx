@@ -26,7 +26,7 @@ interface StackingHighlightsProps {
 
 export function StackingHighlights({ highlights }: StackingHighlightsProps) {
     return (
-        <div className="flex flex-col gap-0 md:gap-12 py-12">
+        <div className="relative flex flex-col gap-0 md:gap-12 py-12">
             {highlights.map((highlight, index) => (
                 <Card
                     key={highlight.id}

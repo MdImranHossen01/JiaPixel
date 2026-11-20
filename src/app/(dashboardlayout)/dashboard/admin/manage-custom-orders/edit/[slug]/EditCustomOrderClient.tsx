@@ -134,7 +134,15 @@ export default function EditCustomOrderClient({ slug }: EditCustomOrderClientPro
         fetchOrderDetails();
     }, [slug, router]);
 
-    const subtotal = items.reduce((sum, it) => sum + Number(it.price || 0) * Number(it.quantity || 1), 0);
+    const validItems = items
+        .filter((it) => it.name.trim() !== "" || Number(it.price || 0) > 0)
+        .map((it) => ({
+            ...it,
+            name: it.name.trim() || (Number(it.price || 0) > 0 ? "Service / Item" : ""),
+            quantity: Math.max(1, Number(it.quantity || 1)),
+            price: Math.max(0, Number(it.price || 0)),
+        }));
+    const subtotal = validItems.reduce((sum, it) => sum + Number(it.price || 0) * Number(it.quantity || 1), 0);
     const discountAmount =
         discountType === "percentage"
             ? Math.round(((subtotal + serviceCharge) * discountValue) / 100)
@@ -144,40 +152,42 @@ export default function EditCustomOrderClient({ slug }: EditCustomOrderClientPro
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!title.trim()) {
-            toast.error("Title is required.");
-            return;
-        }
-        if (items.some((it) => !it.name.trim() || it.quantity < 1 || it.price < 0)) {
-            toast.error("Please complete all service items correctly.");
+            toast.error("Offer / Project Title is required.");
             return;
         }
 
         if (!description || description.trim() === "" || description === "[]" || description === '{"type":"doc","content":[]}') {
-            toast.error("Description is required.");
+            toast.error("Proposal Description & Scope is required.");
             return;
         }
 
         setSubmitting(true);
 
         try {
+            const parseDate = (d: string) => {
+                if (!d) return null;
+                const dt = new Date(d);
+                return isNaN(dt.getTime()) ? null : dt.toISOString();
+            };
+
             const payload = {
                 title,
                 description,
                 status: currentStatus,
-                clientName,
-                clientEmail,
-                clientPhone,
-                clientAddress,
-                businessName,
-                items,
+                clientName: clientName.trim() || undefined,
+                clientEmail: clientEmail.trim() || undefined,
+                clientPhone: clientPhone.trim() || undefined,
+                clientAddress: clientAddress.trim() || undefined,
+                businessName: businessName.trim() || undefined,
+                items: validItems,
                 serviceCharge,
                 discountType,
                 discountValue,
                 discount: discountAmount,
                 price: calculatedTotal,
                 currency,
-                dueDate: dueDate ? new Date(dueDate).toISOString() : null,
-                renewDate: renewDate ? new Date(renewDate).toISOString() : null,
+                dueDate: parseDate(dueDate),
+                renewDate: parseDate(renewDate),
                 renewPrice: renewPrice !== "" && renewPrice !== undefined ? Number(renewPrice) : null,
                 adminNote: adminNote || null,
                 paymentLink: paymentLink || null,
@@ -273,7 +283,9 @@ export default function EditCustomOrderClient({ slug }: EditCustomOrderClientPro
                         {/* Client Information */}
                         <div className="bg-card rounded-lg shadow p-6 border border-border space-y-4">
                             <div>
-                                <h3 className="text-lg font-semibold text-card-foreground">Client Information</h3>
+                                <h3 className="text-lg font-semibold text-card-foreground">
+                                    Client Information <span className="text-xs font-normal text-muted-foreground">(Optional — client can also fill when ordering from proposal link)</span>
+                                </h3>
                                 <p className="text-xs text-muted-foreground">Type name, email or phone to auto-fill from existing clients</p>
                             </div>
                             <ClientAutoSuggestFields
@@ -289,6 +301,7 @@ export default function EditCustomOrderClient({ slug }: EditCustomOrderClientPro
                                 setBusinessName={setBusinessName}
                                 suggestions={suggestions}
                                 emailRequired={false}
+                                required={false}
                             />
                         </div>
 
@@ -304,6 +317,7 @@ export default function EditCustomOrderClient({ slug }: EditCustomOrderClientPro
                             setDiscountValue={setDiscountValue}
                             currency={currency}
                             projects={projects}
+                            required={false}
                         />
 
                         {/* Basic Details */}

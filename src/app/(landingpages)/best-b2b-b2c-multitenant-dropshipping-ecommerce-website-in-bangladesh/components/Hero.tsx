@@ -21,19 +21,18 @@ export const Hero = () => {
     }, []);
 
     const bannerImages = [
-        "/images/landing-pages/ecommerce-promo/banner-1.webp",
-        "/images/landing-pages/ecommerce-promo/banner-2.webp",
-        "/images/landing-pages/ecommerce-promo/banner-3.webp",
-        "/images/landing-pages/ecommerce-promo/banner-4.webp",
-        "/images/landing-pages/ecommerce-promo/banner-5.webp",
-        "/images/landing-pages/ecommerce-promo/banner-6.webp",
-        "/images/landing-pages/ecommerce-promo/banner-7.webp",
-        "/images/landing-pages/ecommerce-promo/banner-8.webp",
-        "/images/landing-pages/ecommerce-promo/banner-9.webp",
-        "/images/landing-pages/ecommerce-promo/banner-10.webp",
-        "/images/landing-pages/ecommerce-promo/banner-11.webp",
-        "/images/landing-pages/ecommerce-promo/banner-12.webp",
-        "/images/landing-pages/ecommerce-promo/banner-13.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-1.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-2.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-3.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-4.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-5.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-7.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-8.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-9.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-10.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-11.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-12.webp",
+        "/images/landing-pages/ecommerce-promo/janopriyo/banner-13.webp",
     ];
 
     return (
@@ -64,7 +63,7 @@ export const Hero = () => {
                                 <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                     <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                                 </div>
-                                <span><span className="text-primary font-bold">১০০+ এন্টারপ্রাইজ-গ্রেড ফিচার</span> সমৃদ্ধ (১ থেকে ১২২ ক্রমানুসারে)</span>
+                                <span><span className="text-primary font-bold">১৩৮টি এন্টারপ্রাইজ-গ্রেড ফিচার</span> সমৃদ্ধ (১ থেকে ১৩৮ ক্রমানুসারে)</span>
                             </li>
                             <li className="flex items-center gap-2.5 lg:justify-start justify-center">
                                 <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -76,7 +75,7 @@ export const Hero = () => {
                                 <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                                     <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
                                 </div>
-                                <span>ফ্রি <span className="text-foreground font-semibold">Unlimited Cloud VPS হোস্টিং</span> ও <span className="text-foreground font-semibold">.com ডোমেইন </span></span>
+                                <span>ফ্রি <span className="text-foreground font-semibold">Unlimited Cloud হোস্টিং</span> ও <span className="text-foreground font-semibold">.com ডোমেইন </span></span>
                             </li>
                             <li className="flex items-center gap-2.5 lg:justify-start justify-center">
                                 <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -99,7 +98,7 @@ export const Hero = () => {
                         </ul>
 
                         <div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 pt-1">
-                            <LandingCheckoutSheet source="all-in-one-ecommerce-bangladesh" price={11500}>
+                            <LandingCheckoutSheet source="best-b2b-b2c-multitenant-dropshipping-ecommerce-website-in-bangladesh" price={11500}>
                                 <Button size="lg" className="rounded-full px-7 h-12 text-base font-semibold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/25 cursor-pointer">
                                     Request Order
                                 </Button>

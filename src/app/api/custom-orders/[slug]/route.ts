@@ -263,7 +263,21 @@ export async function PUT(
 
         allowedFields.forEach(field => {
             if (field in body) {
-                sanitizedUpdate[field] = body[field];
+                if (field === "items" && Array.isArray(body.items)) {
+                    sanitizedUpdate.items = body.items
+                        .filter((it: any) => it && (it.name?.trim() || Number(it.price || 0) > 0))
+                        .map((it: any) => ({
+                            name: it.name?.trim() || (Number(it.price || 0) > 0 ? "Service / Item" : ""),
+                            description: it.description || "",
+                            quantity: Math.max(1, Number(it.quantity || 1)),
+                            price: Math.max(0, Number(it.price || 0)),
+                            link: it.link || "",
+                        }));
+                } else if (field === "convertedBillId" && !body[field]) {
+                    sanitizedUpdate[field] = null;
+                } else {
+                    sanitizedUpdate[field] = body[field];
+                }
                 hasUpdates = true;
             }
         });
@@ -287,9 +301,9 @@ export async function PUT(
 
         return NextResponse.json({ message: "Custom order updated successfully", order: updatedOrder });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error performing full update on custom order:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        return NextResponse.json({ error: error?.message || "Internal server error" }, { status: 500 });
     }
 }
 

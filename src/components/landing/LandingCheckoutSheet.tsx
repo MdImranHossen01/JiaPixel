@@ -27,9 +27,9 @@ import { trackEvent } from "@/lib/fpixel";
 
 // Zod Schema for validation
 const formSchema = z.object({
-  name: z.string().min(2, "কমপক্ষে ২ অক্ষরের নাম দিন"),
-  email: z.string().email("সঠিক ইমেইল এড্রেস দিন"),
-  phone: z.string().regex(/^01[3-9]\d{8}$/, "সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন (উদা: 01XXXXXXXXX)"),
+  name: z.string().min(2, "Please enter your full name (at least 2 characters)"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().regex(/^01[3-9]\d{8}$/, "Please enter a valid 11-digit WhatsApp number (e.g. 01XXXXXXXXX)"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -146,7 +146,7 @@ export function LandingCheckoutSheet({ children, source, price }: LandingCheckou
               <div className="w-full bg-card rounded-sm p-4 md:p-10 shadow-xl relative">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                   <div className="space-y-1">
-                    <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground ml-1">পুরো নাম (Full Name)</Label>
+                    <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground ml-1">Full Name (আপনার নাম)</Label>
                     <Input
                       id="name"
                       {...register("name")}
@@ -157,7 +157,7 @@ export function LandingCheckoutSheet({ children, source, price }: LandingCheckou
                   </div>
 
                   <div className="space-y-1">
-                    <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground ml-1">ইমেইল (Email)</Label>
+                    <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground ml-1">Email (ইমেইল)</Label>
                     <Input
                       id="email"
                       type="email"
@@ -169,7 +169,7 @@ export function LandingCheckoutSheet({ children, source, price }: LandingCheckou
                   </div>
 
                   <div className="space-y-1">
-                    <Label htmlFor="phone" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground ml-1">মোবাইল নম্বর (Mobile Number)</Label>
+                    <Label htmlFor="phone" className="text-[10px] font-black uppercase tracking-wider text-muted-foreground ml-1">WhatsApp Number (হোয়াটসঅ্যাপ নম্বর)</Label>
                     <Input
                       id="phone"
                       {...register("phone")}
@@ -187,7 +187,7 @@ export function LandingCheckoutSheet({ children, source, price }: LandingCheckou
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                        প্রসেসিং হচ্ছে...
+                        Processing...
                       </>
                     ) : (
                       <>

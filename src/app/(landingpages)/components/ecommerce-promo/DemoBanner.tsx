@@ -36,14 +36,6 @@ export const DemoBanner = () => {
                         <ExternalLink className="w-4 h-4 md:w-10 md:h-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform relative z-10 flex-shrink-0" />
                     </Link>
                 </Button>
-
-                {/* Clarification Note */}
-                <div className="mt-6 p-4 md:p-6 animate-in fade-in slide-in-from-top-4 duration-1000">
-                    <p className="text-sm md:text-lg text-center text-muted-foreground leading-relaxed">
-                        ডেমো ওয়েবসাইটটি শুধুমাত্র আমাদের কাজ এবং ফিচারগুলো দেখার জন্য। আপনার জন্য আমরা আপনার পছন্দমতো <span className="text-foreground font-semibold">থিম, লেআউট, সেকশন, কার্ড, ব্যানার, ফন্ট এবং কালার</span> কাস্টমাইজ করে তৈরি করে দেব। আপনার <span className="text-foreground font-semibold">শতভাগ পছন্দ না হওয়া পর্যন্ত</span> আমরা কাস্টমাইজেশন করে দেব।
-                    </p>
-
-                </div>
             </div>
         </section>
     );

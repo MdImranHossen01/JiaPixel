@@ -41,8 +41,8 @@ export default function ClientAutoSuggestFields({
   businessName,
   setBusinessName,
   suggestions,
-  emailRequired = true,
-  required = true,
+  emailRequired = false,
+  required = false,
 }: ClientAutoSuggestFieldsProps) {
   const [activeSuggestions, setActiveSuggestions] = useState<ClientSuggestion[]>([]);
   const [showFor, setShowFor] = useState<"name" | "email" | "phone" | null>(null);
@@ -102,7 +102,7 @@ export default function ClientAutoSuggestFields({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/30 p-4 rounded-xl border border-border">
       <div className="space-y-2 relative">
         <Label className="flex items-center gap-1.5 font-semibold">
-          <User className="w-4 h-4 text-primary" /> Client Name {required && <span className="text-red-500">*</span>}
+          <User className="w-4 h-4 text-primary" /> Client Name {required ? <span className="text-red-500">*</span> : <span className="text-xs font-normal text-muted-foreground">(Optional)</span>}
         </Label>
         <Input
           placeholder="e.g. Md. Rakibul Islam"
@@ -121,7 +121,7 @@ export default function ClientAutoSuggestFields({
       <div className="space-y-2 relative">
         <Label className="flex items-center gap-1.5 font-semibold">
           <Mail className="w-4 h-4 text-primary" /> Client Email{" "}
-          {required && emailRequired && <span className="text-red-500">*</span>}
+          {required && emailRequired ? <span className="text-red-500">*</span> : <span className="text-xs font-normal text-muted-foreground">(Optional)</span>}
         </Label>
         <Input
           type="email"
@@ -141,7 +141,7 @@ export default function ClientAutoSuggestFields({
       <div className="space-y-2 relative">
         <Label className="flex items-center gap-1.5 font-semibold">
           <Phone className="w-4 h-4 text-primary" /> WhatsApp / Phone{" "}
-          {required && <span className="text-red-500">*</span>}
+          {required ? <span className="text-red-500">*</span> : <span className="text-xs font-normal text-muted-foreground">(Optional)</span>}
         </Label>
         <Input
           placeholder="e.g. 017xxxxxxxx"
@@ -171,7 +171,7 @@ export default function ClientAutoSuggestFields({
       <div className="md:col-span-2 space-y-2">
         <Label className="flex items-center gap-1.5 font-semibold">
           <MapPin className="w-4 h-4 text-primary" /> Client Address{" "}
-          {required && <span className="text-red-500">*</span>}
+          {required ? <span className="text-red-500">*</span> : <span className="text-xs font-normal text-muted-foreground">(Optional)</span>}
         </Label>
         <Input
           placeholder="House, Road, Area, City"

@@ -188,6 +188,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 1.0,
     },
+    {
+      url: `${BASE_URL}/best-b2b-b2c-multitenant-dropshipping-ecommerce-website-in-bangladesh`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
+    {
+      url: `${BASE_URL}/ecommerce-website-for-small-business-in-bangladesh`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
+    {
+      url: `${BASE_URL}/best-ecommerce-website-for-small-business-in-bangladesh`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
   ];
 
   return [...staticRoutes, ...dynamicRoutes];

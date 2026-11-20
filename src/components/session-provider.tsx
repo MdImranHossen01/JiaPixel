@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import * as React from 'react';
@@ -12,7 +13,7 @@ function hasAuthHint(): boolean {
   try {
     if (localStorage.getItem(AUTH_HINT_KEY) === '1') return true;
     if (typeof document !== 'undefined' && document.cookie.includes(AUTH_HINT_COOKIE)) return true;
-  } catch {}
+  } catch { }
   return false;
 }
 
@@ -20,7 +21,7 @@ function clearCachedSession() {
   try {
     localStorage.removeItem(SESSION_CACHE_KEY);
     sessionStorage.removeItem(SESSION_CACHE_KEY);
-  } catch {}
+  } catch { }
 }
 
 function setAuthHint(active: boolean) {
@@ -33,7 +34,7 @@ function setAuthHint(active: boolean) {
       clearCachedSession();
       document.cookie = 'jpx_has_auth=; path=/; max-age=0; SameSite=Lax';
     }
-  } catch {}
+  } catch { }
 }
 
 function isAuthOrProtectedPath(pathname: string): boolean {
@@ -59,8 +60,8 @@ if (typeof window !== 'undefined' && !(window as any).__jpxSessionFetchPatched) 
       typeof input === 'string'
         ? input
         : input instanceof URL
-        ? input.href
-        : input?.url || '';
+          ? input.href
+          : input?.url || '';
     const method = (init?.method || (input instanceof Request ? input.method : 'GET')).toUpperCase();
     const pathname = window.location?.pathname || '';
 
@@ -72,7 +73,7 @@ if (typeof window !== 'undefined' && !(window as any).__jpxSessionFetchPatched) 
         } else {
           setAuthHint(true);
         }
-      } catch {}
+      } catch { }
     } else if (
       method !== 'GET' &&
       (urlStr.includes('/api/user') || urlStr.includes('/api/users') || urlStr.includes('/api/profile'))
@@ -82,9 +83,9 @@ if (typeof window !== 'undefined' && !(window as any).__jpxSessionFetchPatched) 
 
     // Intercept GET /api/auth/session
     if (urlStr.includes('/api/auth/session') && method === 'GET') {
-      // 1. Pure guest visitor on public page -> return null in 0ms (0 Vercel invocations)
+      // 1. Pure guest visitor on public page -> return {} in 0ms (0 Vercel invocations)
       if (!hasAuthHint() && !isAuthOrProtectedPath(pathname)) {
-        return new Response('null', {
+        return new Response('{}', {
           status: 200,
           headers: { 'Content-Type': 'application/json' },
         });
@@ -104,7 +105,7 @@ if (typeof window !== 'undefined' && !(window as any).__jpxSessionFetchPatched) 
             });
           }
         }
-      } catch {}
+      } catch { }
 
       // 3. Fetch real session from server
       const response = await originalFetch(input, init);
@@ -120,7 +121,7 @@ if (typeof window !== 'undefined' && !(window as any).__jpxSessionFetchPatched) 
           } else {
             setAuthHint(false);
           }
-        } catch {}
+        } catch { }
       }
       return response;
     }

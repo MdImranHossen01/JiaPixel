@@ -10,7 +10,7 @@ export default async function ProposalPage(props: { params: Promise<{ slug: stri
 
     return (
         <div className="min-h-screen bg-muted/30 pb-20">
-            <div className="bg-primary pt-24 pb-12 px-4 sm:px-6 lg:px-8 shadow-sm">
+            <div className="bg-primary pt-24 pb-12 px-6 sm:px-10 md:px-16 lg:px-24 xl:px-28 shadow-sm">
                 <div className="max-w-[1440px] mx-auto">
                     <h1 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
                         Project Proposal
@@ -21,7 +21,7 @@ export default async function ProposalPage(props: { params: Promise<{ slug: stri
                 </div>
             </div>
 
-            <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+            <div className="max-w-[1440px] mx-auto px-6 sm:px-10 md:px-16 lg:px-24 xl:px-28 -mt-8 relative z-10">
                 <ProposalClient slug={params.slug} />
             </div>
         </div>

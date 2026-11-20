@@ -310,10 +310,19 @@ const ManageCustomOrdersClient = () => {
             toast.error("Please fill in all required client details");
             return;
         }
-        if (billItems.some((it) => !it.name.trim() || it.quantity < 1 || it.price < 0)) {
-            toast.error("Please complete all service items correctly");
-            return;
+
+        const validBillItems = billItems
+            .filter((it) => it.name.trim() !== "" || Number(it.price || 0) > 0)
+            .map((it) => ({
+                ...it,
+                name: it.name.trim() || (Number(it.price || 0) > 0 ? "Service / Item" : "Service"),
+                quantity: Math.max(1, Number(it.quantity || 1)),
+                price: Math.max(0, Number(it.price || 0)),
+            }));
+        if (validBillItems.length === 0) {
+            validBillItems.push({ name: convertOrder.title || "Custom Service", quantity: 1, price: billTotal });
         }
+
         setConvertLoading(true);
         try {
             const res = await fetch("/api/admin/bills", {
@@ -325,7 +334,7 @@ const ManageCustomOrdersClient = () => {
                     clientPhone: billClientPhone,
                     clientAddress: billClientAddress,
                     businessName: billBusinessName,
-                    items: billItems,
+                    items: validBillItems,
                     subtotal: billSubtotal,
                     serviceCharge: billServiceCharge,
                     discountType: billDiscountType,
@@ -682,6 +691,7 @@ const ManageCustomOrdersClient = () => {
                             businessName={billBusinessName}
                             setBusinessName={setBillBusinessName}
                             suggestions={suggestions}
+                            required={true}
                         />
 
                         <ProposalItemsSection

@@ -327,6 +327,7 @@ export default function ManageChalansPage() {
               setBusinessName={setBusinessName}
               suggestions={suggestions}
               emailRequired={false}
+              required={true}
             />
 
             <div className="space-y-1.5">
