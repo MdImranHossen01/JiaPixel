@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
       name: "টেস্ট কাস্টমার",
       phone: "01700000000",
       email: "test@jiapixel.com",
-      price: 11500,
+      price: 14999,
       source: "best-b2b-b2c-multitenant-dropshipping-ecommerce-website-in-bangladesh (Test Ping)",
       details: "টেলিগ্রাম ইনস্ট্যান্ট নোটিফিকেশন ভেরিফিকেশন টেস্ট।",
     });

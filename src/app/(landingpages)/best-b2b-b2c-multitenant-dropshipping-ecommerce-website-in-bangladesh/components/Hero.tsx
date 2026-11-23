@@ -15,7 +15,7 @@ export const Hero = () => {
         trackEvent("ViewContent", {
             content_name: "All In One Ecommerce Landing Page",
             content_category: "Service Promotion",
-            value: 11500,
+            value: 14999,
             currency: "BDT"
         });
     }, []);
@@ -51,7 +51,7 @@ export const Hero = () => {
                     <div className="w-full lg:w-[42%] order-2 text-center lg:text-left space-y-6 lg:pl-6">
                         <div className="inline-flex items-center rounded-full px-4 py-1.5 text-sm md:text-base font-bold bg-primary/10 text-primary border border-primary/20 animate-in fade-in slide-in-from-bottom-3 duration-1000">
                             <Sparkles className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                            <span>মাত্র ১১,৫০০ টাকায় (সম্পূর্ণ প্যাকেজ)</span>
+                            <span>মাত্র ১৪,৯৯৯ টাকায় (সম্পূর্ণ প্যাকেজ)</span>
                         </div>
 
                         <h1 className="text-xl sm:text-2xl lg:text-[26px] xl:text-[28px] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70 leading-snug">
@@ -98,7 +98,7 @@ export const Hero = () => {
                         </ul>
 
                         <div className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 pt-1">
-                            <LandingCheckoutSheet source="best-b2b-b2c-multitenant-dropshipping-ecommerce-website-in-bangladesh" price={11500}>
+                            <LandingCheckoutSheet source="best-b2b-b2c-multitenant-dropshipping-ecommerce-website-in-bangladesh" price={14999}>
                                 <Button size="lg" className="rounded-full px-7 h-12 text-base font-semibold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/25 cursor-pointer">
                                     Request Order
                                 </Button>

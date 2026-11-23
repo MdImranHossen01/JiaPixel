@@ -249,7 +249,7 @@ export async function POST(req: NextRequest) {
         }),
         sendWebPushNotification({
           title: "🛒 নতুন অর্ডার রিকোয়েস্ট! (Jiapixel)",
-          body: `${newRequest.name || "কাস্টমার"} (${newRequest.phone}) — ৳${newRequest.price || 11500}`,
+          body: `${newRequest.name || "কাস্টমার"} (${newRequest.phone}) — ৳${newRequest.price || 14999}`,
           url: "/dashboard/admin/manage-requests",
         }),
       ]);
