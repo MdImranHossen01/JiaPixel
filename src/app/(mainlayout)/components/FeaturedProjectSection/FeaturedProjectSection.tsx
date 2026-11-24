@@ -4,12 +4,17 @@ import ProjectCard from "@/components/ProjectCard";
 import React, { useState, useEffect } from "react";
 import { GridSkeleton } from "@/components/CardSkeleton";
 
-export default function FeaturedProjectSection() {
-    const [projects, setProjects] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+export default function FeaturedProjectSection({ initialProjects }: { initialProjects?: any[] }) {
+    const [projects, setProjects] = useState<any[]>(initialProjects || []);
+    const [isLoading, setIsLoading] = useState(!initialProjects);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (initialProjects) {
+            setProjects(initialProjects);
+            setIsLoading(false);
+            return;
+        }
         const fetchProjects = async () => {
             setIsLoading(true);
             setError(null);

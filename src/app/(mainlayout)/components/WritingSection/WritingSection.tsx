@@ -17,12 +17,17 @@ interface Writing {
     createdAt?: string;
 }
 
-export default function WritingSection() {
-    const [writings, setWritings] = useState<Writing[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+export default function WritingSection({ initialWritings }: { initialWritings?: Writing[] }) {
+    const [writings, setWritings] = useState<Writing[]>(initialWritings || []);
+    const [isLoading, setIsLoading] = useState(!initialWritings);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (initialWritings) {
+            setWritings(initialWritings);
+            setIsLoading(false);
+            return;
+        }
         const fetchWritings = async () => {
             setIsLoading(true);
             setError(null);
