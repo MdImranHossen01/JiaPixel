@@ -4,16 +4,14 @@ import React, { useState, useMemo, useEffect } from "react";
 import ProjectCard from "@/components/ProjectCard";
 import ProjectHero from "./ProjectHero";
 import { Button } from "@/components/ui/button";
-import { GridSkeleton } from "@/components/CardSkeleton";
 
 interface ProjectsClientProps {
     initialProjects: any[];
 }
 
 const ProjectsClient: React.FC<ProjectsClientProps> = ({ initialProjects }) => {
-    const [projects, setProjects] = useState<any[]>(initialProjects);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [projects] = useState<any[]>(initialProjects);
+    const [error] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
 
     // Filter projects based on search
@@ -39,15 +37,13 @@ const ProjectsClient: React.FC<ProjectsClientProps> = ({ initialProjects }) => {
 
             <div className="container mx-auto px-4">
                 {/* Results Count */}
-                {searchQuery && !isLoading && (
+                {searchQuery && (
                     <div className="text-muted-foreground text-sm text-center mb-6">
                         Found {filteredProjects.length} result{filteredProjects.length !== 1 && 's'}
                     </div>
                 )}
 
-                {isLoading ? (
-                    <GridSkeleton count={8} />
-                ) : error ? (
+                {error ? (
                     /* Error State */
                     <div className="text-center py-16 bg-red-50/50 rounded-xl border border-red-100 border-dashed">
                         <div className="max-w-md mx-auto">

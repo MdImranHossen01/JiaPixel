@@ -5,16 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import PortfolioHero from "./PortfolioHero";
 import PortfolioCard from "@/components/PortfolioCard";
-import { GridSkeleton } from "@/components/CardSkeleton";
 
 interface PortfoliosClientProps {
     initialPortfolios: any[];
 }
 
 const PortfoliosClient: React.FC<PortfoliosClientProps> = ({ initialPortfolios }) => {
-    const [portfolios, setPortfolios] = useState<any[]>(initialPortfolios);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [portfolios] = useState<any[]>(initialPortfolios);
+    const [error] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
 
     // Filter portfolios based on search
@@ -45,16 +43,13 @@ const PortfoliosClient: React.FC<PortfoliosClientProps> = ({ initialPortfolios }
             <section className="pb-8 pt-12">
                 <div className="container mx-auto px-4">
                     {/* Results Count */}
-                    {searchQuery && !isLoading && (
+                    {searchQuery && (
                         <div className="text-muted-foreground text-sm text-center mb-6">
                             Found {filteredPortfolios.length} project{filteredPortfolios.length !== 1 && 's'}
                         </div>
                     )}
 
-                    {/* Loading State */}
-                    {isLoading ? (
-                        <GridSkeleton count={6} />
-                    ) : error ? (
+                    {error ? (
                         /* Error State */
                         <div className="text-center py-16 bg-red-50/50 rounded-xl border border-red-100 border-dashed">
                             <div className="max-w-md mx-auto">
