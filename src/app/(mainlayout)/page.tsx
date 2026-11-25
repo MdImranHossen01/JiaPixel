@@ -5,6 +5,8 @@ import { FAQ_DATA } from "./components/faq/constants";
 // Group components that appear together
 import MainContent from "./components/MainContent";
 
+export const revalidate = 31536000;
+
 // Loading component
 const LoadingFallback = () => (
   <div className="min-h-[400px] flex items-center justify-center">
