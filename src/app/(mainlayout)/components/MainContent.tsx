@@ -1,15 +1,17 @@
 import { unstable_cache } from "next/cache";
+import dynamic from "next/dynamic";
 import connectDB from "@/lib/db";
 import Project from "@/models/Project";
 import Writing from "@/models/Writing";
-import PortfoilioSection from "./PortfoilioSection";
-import HoverServices from "./HoverServices";
-import FaqSection from "./faq/FaqSection";
-import AboutUsSection from "./aboutus/AboutUsSection";
-import MarketingFeatures from "./MarketingFeatures";
-import SEOFeatures from "./SEOFeatures";
 import FeaturedProjectSection from "./FeaturedProjectSection/FeaturedProjectSection";
-import WritingSection from "./WritingSection/WritingSection";
+
+const AboutUsSection = dynamic(() => import("./aboutus/AboutUsSection"));
+const PortfoilioSection = dynamic(() => import("./PortfoilioSection"));
+const HoverServices = dynamic(() => import("./HoverServices"));
+const SEOFeatures = dynamic(() => import("./SEOFeatures"));
+const MarketingFeatures = dynamic(() => import("./MarketingFeatures"));
+const WritingSection = dynamic(() => import("./WritingSection/WritingSection"));
+const FaqSection = dynamic(() => import("./faq/FaqSection"));
 
 const getCachedFeaturedProjects = unstable_cache(
   async () => {
