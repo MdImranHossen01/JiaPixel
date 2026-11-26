@@ -134,10 +134,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
       };
 
       updateUnreadCount();
-      
-      // Background updates every 10 minutes while tab is active
-      const interval = setInterval(updateUnreadCount, 600000);
-      return () => clearInterval(interval);
     }
   }, [session?.user?.id]);
 
