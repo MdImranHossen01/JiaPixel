@@ -13,7 +13,7 @@ import Project from "@/models/Project";
 import LocalCategory from "@/models/LocalCategory";
 import Writing from "@/models/Writing";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 31536000;
 
 const BASE_URL = "https://www.jiapixel.com";
 

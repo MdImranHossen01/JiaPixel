@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     }
 }
 
-export const revalidate = 3600; // revalidate every hour
+export const revalidate = 31536000; // revalidate every hour
 
 export default async function BestWebDesignPage() {
     let servicesData: any[] = [];
