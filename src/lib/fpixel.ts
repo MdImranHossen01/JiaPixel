@@ -23,7 +23,7 @@ export const trackEvent = async (
   // 1. Browser Facebook Pixel Tracking
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
     const standardEvents = [
-      "AddPaymentInfo", "AddToCart", "AddToWishlist", "CompleteRegistration",
+      "PageView", "AddPaymentInfo", "AddToCart", "AddToWishlist", "CompleteRegistration",
       "Contact", "CustomizeProduct", "Donate", "FindLocation",
       "InitiateCheckout", "Lead", "Purchase", "Schedule",
       "Search", "StartTrial", "SubmitApplication", "Subscribe", "ViewContent",
