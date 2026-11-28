@@ -815,7 +815,6 @@ const ManageRequestsClient = () => {
           <TableHeader className="bg-muted/50">
             <TableRow>
               <TableHead className="w-[280px] border-r border-border">Customer Info</TableHead>
-              <TableHead>WhatsApp</TableHead>
               <TableHead>Source</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-center">Toggles</TableHead>
@@ -827,7 +826,7 @@ const ManageRequestsClient = () => {
           <TableBody>
             {requests.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={12} className="text-center py-20 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-20 text-muted-foreground">
                   <div className="flex flex-col items-center gap-2">
                     <Clock className="w-10 h-10 opacity-20" />
                     <p>No requests found matching your criteria.</p>
@@ -893,12 +892,33 @@ const ManageRequestsClient = () => {
                             <span className="truncate max-w-[200px]">{request.email}</span>
                           </div>
                         )}
-                        <div
-                          onClick={() => copyToClipboard(request.phone, "Phone number")}
-                          className="flex items-center gap-1 hover:text-primary transition-colors cursor-pointer"
-                        >
-                          <Phone className="w-3 h-3 shrink-0" />
-                          {request.phone}
+                        <div className="flex items-center gap-1.5">
+                          <span className="flex items-center gap-1">
+                            <Phone className="w-3 h-3 shrink-0" />
+                            <span>{request.phone}</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => copyToClipboard(request.phone, "Phone number")}
+                            title="Copy phone number"
+                            aria-label="Copy phone number"
+                            className="inline-flex items-center justify-center p-1 rounded hover:bg-muted text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                          >
+                            <Copy className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const cleanNum = request.phone.replace(/[^0-9]/g, '');
+                              const waNum = cleanNum.startsWith('0') ? `88${cleanNum}` : cleanNum;
+                              window.open(`https://wa.me/${waNum}`, '_blank');
+                            }}
+                            title="Open in WhatsApp"
+                            aria-label="Open in WhatsApp"
+                            className="inline-flex items-center justify-center p-1 rounded text-green-600 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-colors cursor-pointer"
+                          >
+                            <MessageCircle className="w-3.5 h-3.5" />
+                          </button>
                         </div>
                         {request.paymentNumber && (
                           <div
@@ -920,9 +940,21 @@ const ManageRequestsClient = () => {
                             <span className="italic opacity-50">Never contacted</span>
                           )}
                         </div>
-                        <div className="flex items-center gap-1 mt-0.5 text-emerald-600 dark:text-emerald-500 font-medium">
-                          <Calendar className="w-3 h-3 shrink-0" />
-                          <span>Added: {new Date(request.createdAt).toLocaleDateString("en-GB")}</span>
+                        <div className="flex flex-col gap-0.5 mt-0.5 text-emerald-600 dark:text-emerald-500 font-medium">
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3 shrink-0" />
+                            <span>Added: {new Date(request.createdAt).toLocaleDateString("en-GB")}</span>
+                          </div>
+                          <div className="flex items-center gap-1 pl-4 text-[11px] opacity-85">
+                            <Clock className="w-3 h-3 shrink-0" />
+                            <span>
+                              {new Date(request.createdAt).toLocaleTimeString("en-US", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: true,
+                              })}
+                            </span>
+                          </div>
                         </div>
                         {( (request.payment !== undefined && request.payment !== null) || (request.renewFee !== undefined && request.renewFee !== null) || request.renewDate ) && (
                           <div className="mt-2 pt-1 border-t border-dashed border-border text-[11px] space-y-0.5">
@@ -948,21 +980,6 @@ const ManageRequestsClient = () => {
                         )}
                       </div>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-green-600 hover:text-green-700 hover:bg-green-50 gap-1 h-8 px-2"
-                      onClick={() => {
-                        const cleanNum = request.phone.replace(/[^0-9]/g, '');
-                        const waNum = cleanNum.startsWith('0') ? `88${cleanNum}` : cleanNum;
-                        window.open(`https://wa.me/${waNum}`, '_blank');
-                      }}
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      <span className="hidden sm:inline">WA</span>
-                    </Button>
                   </TableCell>
                   <TableCell>
                     <Select
