@@ -4,7 +4,7 @@ export interface ILandingRequest extends Document {
   name: string;
   email: string;
   phone: string;
-  status: "requested" | "need contact" | "contacted" | "confirm" | "need to contact again" | "ordered" | "processing" | "ready to deliver" | "delivered" | "paid" | "canceled" | "fake" | "hot" | "need followup" | "a" | "b" | "c" | "d";
+  status: "requested" | "real" | "need contact" | "contacted" | "confirm" | "need to contact again" | "ordered" | "processing" | "ready to deliver" | "delivered" | "paid" | "canceled" | "fake" | "hot" | "need followup" | "a" | "b" | "c" | "d";
   source: string;
   price: number;
   details?: string;
@@ -19,6 +19,13 @@ export interface ILandingRequest extends Document {
   payment?: number;
   renewFee?: number;
   renewDate?: Date;
+  fbp?: string;
+  fbc?: string;
+  clientIp?: string;
+  clientUserAgent?: string;
+  eventSourceUrl?: string;
+  purchaseEventSent?: boolean;
+  purchaseEventSentAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -42,7 +49,7 @@ const LandingRequestSchema = new Schema<ILandingRequest>(
     },
     status: {
       type: String,
-      enum: ["requested", "need contact", "contacted", "confirm", "need to contact again", "ordered", "processing", "ready to deliver", "delivered", "paid", "canceled", "fake", "hot", "need followup", "a", "b", "c", "d"],
+      enum: ["requested", "real", "need contact", "contacted", "confirm", "need to contact again", "ordered", "processing", "ready to deliver", "delivered", "paid", "canceled", "fake", "hot", "need followup", "a", "b", "c", "d"],
       default: "requested",
     },
     source: {
@@ -94,6 +101,32 @@ const LandingRequestSchema = new Schema<ILandingRequest>(
       type: Number,
     },
     renewDate: {
+      type: Date,
+    },
+    fbp: {
+      type: String,
+      trim: true,
+    },
+    fbc: {
+      type: String,
+      trim: true,
+    },
+    clientIp: {
+      type: String,
+      trim: true,
+    },
+    clientUserAgent: {
+      type: String,
+    },
+    eventSourceUrl: {
+      type: String,
+      trim: true,
+    },
+    purchaseEventSent: {
+      type: Boolean,
+      default: false,
+    },
+    purchaseEventSentAt: {
       type: Date,
     },
   },

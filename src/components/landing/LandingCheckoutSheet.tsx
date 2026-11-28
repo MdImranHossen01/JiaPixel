@@ -74,22 +74,13 @@ export function LandingCheckoutSheet({ children, source, price }: LandingCheckou
         body: JSON.stringify({
           ...data,
           source,
-          price
+          price,
+          eventSourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
         }),
       });
 
       if (response.ok) {
-        // Track Purchase event using shared utility
-        await trackEvent("Purchase", {
-          content_name: source,
-          currency: "BDT",
-          value: price,
-        }, {
-          email: data.email,
-          phone: data.phone,
-          name: data.name
-        });
-
+        // Purchase event is fired server-side via Meta CAPI only when admin marks status as "real"
         setIsSuccess(true);
         toast.success("অর্ডার রিকোয়েস্ট সফল হয়েছে!");
       } else {

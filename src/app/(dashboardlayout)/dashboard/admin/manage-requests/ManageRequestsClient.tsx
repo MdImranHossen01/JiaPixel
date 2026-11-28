@@ -72,7 +72,7 @@ import Pagination from "@/components/ui/Pagination";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { NotificationSettingsDialog } from "@/components/admin/NotificationSettingsDialog";
 
-type RequestStatus = "requested" | "need contact" | "contacted" | "confirm" | "need to contact again" | "ordered" | "processing" | "ready to deliver" | "delivered" | "paid" | "canceled" | "fake" | "hot" | "need followup" | "a" | "b" | "c" | "d";
+type RequestStatus = "requested" | "real" | "need contact" | "contacted" | "confirm" | "need to contact again" | "ordered" | "processing" | "ready to deliver" | "delivered" | "paid" | "canceled" | "fake" | "hot" | "need followup" | "a" | "b" | "c" | "d";
 
 interface LandingRequest {
   _id: string;
@@ -94,12 +94,15 @@ interface LandingRequest {
   payment?: number;
   renewFee?: number;
   renewDate?: string;
+  purchaseEventSent?: boolean;
+  purchaseEventSentAt?: string;
   createdAt: string;
   updatedAt: string;
 }
 
 const statusOptions: { value: RequestStatus; label: string; color: string }[] = [
   { value: "requested", label: "Requested", color: "bg-slate-500" },
+  { value: "real", label: "Real", color: "bg-emerald-600" },
   { value: "need contact", label: "Need contact", color: "bg-red-700" },
   { value: "contacted", label: "Contacted", color: "bg-emerald-700" },
   { value: "confirm", label: "Confirm", color: "bg-sky-200 text-sky-800" },
@@ -368,8 +371,23 @@ const ManageRequestsClient = () => {
       });
 
       if (res.ok) {
-        toast.success(`Status updated to ${status}`);
-        setRequests(prev => prev.map(req => req._id === id ? { ...req, status: status as RequestStatus, ...additionalData } : req));
+        const data = await res.json();
+        if (data.purchaseCapiSent) {
+          toast.success("Status Real করা হয়েছে এবং Facebook-এ Purchase ইভেন্ট পাঠানো হয়েছে!");
+        } else if (data.purchaseCapiAlreadySent) {
+          toast.success("Status Real করা হয়েছে (Purchase ইভেন্ট আগেই পাঠানো ছিল)");
+        } else if (status === "real" && data.purchaseCapiError) {
+          toast.warning(`Status Real হয়েছে, তবে FB Purchase পাঠানো যায়নি: ${data.purchaseCapiError}`);
+        } else {
+          toast.success(`Status updated to ${status}`);
+        }
+        setRequests(prev => prev.map(req => req._id === id ? {
+          ...req,
+          status: status as RequestStatus,
+          ...additionalData,
+          purchaseEventSent: data.purchaseEventSent ?? req.purchaseEventSent,
+          purchaseEventSentAt: data.purchaseEventSentAt ?? req.purchaseEventSentAt,
+        } : req));
         setIsConfirmModalOpen(false);
       } else {
         toast.error("Failed to update status");
@@ -1004,24 +1022,32 @@ const ManageRequestsClient = () => {
                     </Select>
                   </TableCell>
                   <TableCell>
-                    <Select
-                      value={request.status}
-                      onValueChange={(val) => {
-                        if (val === "confirm") openConfirmModal(request);
-                        else handleStatusChange(request._id, val);
-                      }}
-                    >
-                      <SelectTrigger className={`h-8 w-[120px] text-xs font-semibold ${statusOptions.find(o => o.value === request.status)?.color} text-white border-none`}>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {statusOptions.map(opt => (
-                          <SelectItem key={opt.value} value={opt.value} className="text-xs">
-                            {opt.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="flex flex-col gap-1">
+                      <Select
+                        value={request.status}
+                        onValueChange={(val) => {
+                          if (val === "confirm") openConfirmModal(request);
+                          else handleStatusChange(request._id, val);
+                        }}
+                      >
+                        <SelectTrigger className={`h-8 w-[120px] text-xs font-semibold ${statusOptions.find(o => o.value === request.status)?.color} text-white border-none`}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {statusOptions.map(opt => (
+                            <SelectItem key={opt.value} value={opt.value} className="text-xs">
+                              {opt.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {request.purchaseEventSent && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
+                          <CheckCircle2 className="w-3 h-3 shrink-0" />
+                          FB Purchase Sent
+                        </span>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col gap-2 min-w-[100px]">

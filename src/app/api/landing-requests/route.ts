@@ -4,6 +4,7 @@ import LandingRequest from "@/models/LandingRequest";
 import { getToken } from "next-auth/jwt";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { sendWebPushNotification } from "@/lib/webpush";
+import { sendFacebookCapiEvent } from "@/lib/facebook-capi";
 
 // GET for admin dashboard
 export async function GET(req: NextRequest) {
@@ -209,13 +210,36 @@ export async function POST(req: NextRequest) {
       quickNote,
       credential,
       lastContacted,
-      paymentNumber
+      paymentNumber,
+      eventSourceUrl
     } = body;
 
     // Basic Validation
     if (!phone) {
       return NextResponse.json({ message: "Phone number is required" }, { status: 400 });
     }
+
+    const resolvedEventSourceUrl =
+      (typeof eventSourceUrl === "string" && eventSourceUrl.trim()) ||
+      req.headers.get("referer") ||
+      "";
+    const fbp = req.cookies.get("_fbp")?.value || "";
+    let fbc = req.cookies.get("_fbc")?.value || "";
+    if (!fbc && resolvedEventSourceUrl) {
+      try {
+        const fbclid = new URL(resolvedEventSourceUrl).searchParams.get("fbclid");
+        if (fbclid) {
+          fbc = `fb.1.${Date.now()}.${fbclid}`;
+        }
+      } catch {
+        // Ignore malformed URL
+      }
+    }
+    const clientIp =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "";
+    const clientUserAgent = req.headers.get("user-agent") || "";
 
     const newRequest = new LandingRequest({
       name,
@@ -229,7 +253,12 @@ export async function POST(req: NextRequest) {
       quickNote: quickNote || "",
       credential: credential || "",
       lastContacted: lastContacted || null,
-      paymentNumber
+      paymentNumber,
+      fbp: fbp || undefined,
+      fbc: fbc || undefined,
+      clientIp: clientIp || undefined,
+      clientUserAgent: clientUserAgent || undefined,
+      eventSourceUrl: resolvedEventSourceUrl || undefined,
     });
 
     await newRequest.save();
@@ -308,9 +337,14 @@ export async function PUT(req: NextRequest) {
     }
 
     // Status Whitelist Check
-    const allowedStatuses = ["requested", "need contact", "contacted", "confirm", "need to contact again", "ordered", "processing", "delivered", "paid", "canceled", "fake", "hot", "need followup", "a", "b", "c", "d"];
+    const allowedStatuses = ["requested", "real", "need contact", "contacted", "confirm", "need to contact again", "ordered", "processing", "ready to deliver", "delivered", "paid", "canceled", "fake", "hot", "need followup", "a", "b", "c", "d"];
     if (status !== undefined && !allowedStatuses.includes(status)) {
       return NextResponse.json({ message: "Invalid status" }, { status: 400 });
+    }
+
+    const existingRequest = await LandingRequest.findById(id);
+    if (!existingRequest) {
+      return NextResponse.json({ message: "Request not found" }, { status: 404 });
     }
 
     const updateData: any = {};
@@ -332,7 +366,7 @@ export async function PUT(req: NextRequest) {
     if (renewFee !== undefined) updateData.renewFee = renewFee;
     if (renewDate !== undefined) updateData.renewDate = renewDate;
 
-    const updatedRequest = await LandingRequest.findByIdAndUpdate(
+    let updatedRequest = await LandingRequest.findByIdAndUpdate(
       id,
       updateData,
       { new: true }
@@ -342,7 +376,57 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ message: "Request not found" }, { status: 404 });
     }
 
-    return NextResponse.json(updatedRequest);
+    let purchaseCapiSent = false;
+    let purchaseCapiAlreadySent = false;
+    let purchaseCapiError: string | undefined;
+
+    if (status === "real") {
+      if (existingRequest.purchaseEventSent) {
+        purchaseCapiAlreadySent = true;
+      } else {
+        const capiResult = await sendFacebookCapiEvent({
+          eventName: "Purchase",
+          eventId: `purchase_${existingRequest._id.toString()}`,
+          eventSourceUrl:
+            existingRequest.eventSourceUrl || "https://www.jiapixel.com",
+          userData: {
+            email: updatedRequest.email,
+            phone: updatedRequest.phone,
+            name: updatedRequest.name,
+            fbp: existingRequest.fbp,
+            fbc: existingRequest.fbc,
+            clientIp: existingRequest.clientIp,
+            clientUserAgent: existingRequest.clientUserAgent,
+          },
+          customData: {
+            content_name: updatedRequest.source || "ecommerce-landing-page",
+            currency: "BDT",
+            value: updatedRequest.price || 3500,
+          },
+        });
+
+        if (capiResult.sent) {
+          purchaseCapiSent = true;
+          updatedRequest = await LandingRequest.findByIdAndUpdate(
+            id,
+            {
+              purchaseEventSent: true,
+              purchaseEventSentAt: new Date(),
+            },
+            { new: true }
+          );
+        } else {
+          purchaseCapiError = capiResult.reason || capiResult.error;
+        }
+      }
+    }
+
+    return NextResponse.json({
+      ...(updatedRequest?.toObject ? updatedRequest.toObject() : updatedRequest),
+      purchaseCapiSent,
+      purchaseCapiAlreadySent,
+      ...(purchaseCapiError && { purchaseCapiError }),
+    });
   } catch (error) {
     console.error("Error updating landing request:", error);
     return NextResponse.json({ message: "Error updating request" }, { status: 500 });
