@@ -9,6 +9,35 @@ async function hashData(data: string): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+/**
+ * Validates Meta's _fbc format: fb.<subdomainIndex>.<creationTime>.<fbclid>
+ * Rejects modified/lowercased/truncated fbclid values so Meta Diagnostics does not flag them.
+ */
+export function sanitizeFbc(rawFbc?: string | null): string | undefined {
+  if (!rawFbc || typeof rawFbc !== "string") return undefined;
+  const trimmed = rawFbc.trim();
+  const match = /^fb\.\d+\.\d+\.([A-Za-z0-9_-]{10,})$/.exec(trimmed);
+  if (!match) return undefined;
+
+  const fbclid = match[1];
+  // Real Meta fbclid values are mixed-case base64url strings; all-lowercase indicates external modification
+  if (/[a-z]/.test(fbclid) && !/[A-Z]/.test(fbclid)) {
+    return undefined;
+  }
+  return trimmed;
+}
+
+export function buildValidFbcFromUrl(urlStr?: string | null): string | undefined {
+  if (!urlStr || typeof urlStr !== "string") return undefined;
+  try {
+    const fbclid = new URL(urlStr).searchParams.get("fbclid");
+    if (!fbclid) return undefined;
+    return sanitizeFbc(`fb.1.${Date.now()}.${fbclid}`);
+  } catch {
+    return undefined;
+  }
+}
+
 export interface FacebookCapiEventParams {
   eventName: string;
   eventId?: string;
@@ -61,11 +90,14 @@ export async function sendFacebookCapiEvent(
 
     const hashedEmail = rawEmail ? await hashData(rawEmail) : undefined;
 
-    let phone = rawPhone ? String(rawPhone).replace(/\D/g, "") : "";
-    if (phone && !phone.startsWith("88")) {
-      phone = "88" + phone;
-    }
-    const hashedPhone = phone ? await hashData(phone) : undefined;
+    const phoneParts = rawPhone
+      ? String(rawPhone)
+          .split(/[,/\n;]+/)
+          .map((p) => p.replace(/\D/g, ""))
+          .filter(Boolean)
+          .map((p) => (p.startsWith("88") ? p : `88${p}`))
+      : [];
+    const hashedPhones = await Promise.all(phoneParts.map((p) => hashData(p)));
     const hashedFirstName = rawFirstName
       ? await hashData(rawFirstName)
       : undefined;
@@ -73,15 +105,17 @@ export async function sendFacebookCapiEvent(
       ? await hashData(rawLastName)
       : undefined;
 
+    const validFbc = sanitizeFbc(userData.fbc);
+
     const fbUserData: Record<string, any> = {
       ...(userData.clientIp && { client_ip_address: userData.clientIp }),
       ...(userData.clientUserAgent && {
         client_user_agent: userData.clientUserAgent,
       }),
       ...(userData.fbp && { fbp: userData.fbp }),
-      ...(userData.fbc && { fbc: userData.fbc }),
+      ...(validFbc && { fbc: validFbc }),
       ...(hashedEmail && { em: [hashedEmail] }),
-      ...(hashedPhone && { ph: [hashedPhone] }),
+      ...(hashedPhones.length > 0 && { ph: hashedPhones }),
       ...(hashedFirstName && { fn: [hashedFirstName] }),
       ...(hashedLastName && { ln: [hashedLastName] }),
     };

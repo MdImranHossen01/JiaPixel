@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getEffectiveMarketingSettings } from '@/lib/marketing-settings';
+import { sanitizeFbc, buildValidFbcFromUrl } from '@/lib/facebook-capi';
 
 async function hashData(data: string): Promise<string> {
   if (!data) return '';
@@ -44,7 +45,9 @@ export async function POST(request: NextRequest) {
     const eventId = providedEventId || body.eventId || crypto.randomUUID();
 
     const fbp = request.cookies.get('_fbp')?.value;
-    const fbc = request.cookies.get('_fbc')?.value;
+    const fbc =
+      sanitizeFbc(request.cookies.get('_fbc')?.value) ||
+      buildValidFbcFromUrl(eventUrl);
 
     // Support both { email, phone, name } and { em, ph, fn, ln }
     const rawEmail = userData.email || userData.em || '';
@@ -74,8 +77,8 @@ export async function POST(request: NextRequest) {
     const fbUserData: Record<string, any> = {
       client_ip_address: ipAddress,
       client_user_agent: userAgent,
-      fbp,
-      fbc,
+      ...(fbp && { fbp }),
+      ...(fbc && { fbc }),
       ...(hashedEmail && { em: [hashedEmail] }),
       ...(hashedPhone && { ph: [hashedPhone] }),
       ...(hashedFirstName && { fn: [hashedFirstName] }),

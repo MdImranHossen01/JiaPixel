@@ -910,33 +910,42 @@ const ManageRequestsClient = () => {
                             <span className="truncate max-w-[200px]">{request.email}</span>
                           </div>
                         )}
-                        <div className="flex items-center gap-1.5">
-                          <span className="flex items-center gap-1">
-                            <Phone className="w-3 h-3 shrink-0" />
-                            <span>{request.phone}</span>
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => copyToClipboard(request.phone, "Phone number")}
-                            title="Copy phone number"
-                            aria-label="Copy phone number"
-                            className="inline-flex items-center justify-center p-1 rounded hover:bg-muted text-muted-foreground hover:text-primary transition-colors cursor-pointer"
-                          >
-                            <Copy className="w-3.5 h-3.5" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const cleanNum = request.phone.replace(/[^0-9]/g, '');
-                              const waNum = cleanNum.startsWith('0') ? `88${cleanNum}` : cleanNum;
-                              window.open(`https://wa.me/${waNum}`, '_blank');
-                            }}
-                            title="Open in WhatsApp"
-                            aria-label="Open in WhatsApp"
-                            className="inline-flex items-center justify-center p-1 rounded text-green-600 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-colors cursor-pointer"
-                          >
-                            <MessageCircle className="w-3.5 h-3.5" />
-                          </button>
+                        <div className="flex flex-col gap-0.5">
+                          {(request.phone || "")
+                            .split(/[,/\n;]+/)
+                            .map((p) => p.trim())
+                            .filter(Boolean)
+                            .map((phoneItem, idx) => (
+                              <div key={`${phoneItem}-${idx}`} className="flex items-center gap-1.5">
+                                <span className="flex items-center gap-1">
+                                  <Phone className="w-3 h-3 shrink-0" />
+                                  <span>{phoneItem}</span>
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => copyToClipboard(phoneItem, "Phone number")}
+                                  title={`Copy ${phoneItem}`}
+                                  aria-label={`Copy ${phoneItem}`}
+                                  className="inline-flex items-center justify-center p-1 rounded hover:bg-muted text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                                >
+                                  <Copy className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const cleanNum = phoneItem.replace(/[^0-9]/g, '');
+                                    if (!cleanNum) return;
+                                    const waNum = cleanNum.startsWith('0') ? `88${cleanNum}` : cleanNum;
+                                    window.open(`https://wa.me/${waNum}`, '_blank');
+                                  }}
+                                  title={`Open ${phoneItem} in WhatsApp`}
+                                  aria-label={`Open ${phoneItem} in WhatsApp`}
+                                  className="inline-flex items-center justify-center p-1 rounded text-green-600 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-colors cursor-pointer"
+                                >
+                                  <MessageCircle className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            ))}
                         </div>
                         {request.paymentNumber && (
                           <div

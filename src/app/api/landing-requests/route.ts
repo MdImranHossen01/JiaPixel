@@ -4,7 +4,7 @@ import LandingRequest from "@/models/LandingRequest";
 import { getToken } from "next-auth/jwt";
 import { sendTelegramNotification } from "@/lib/telegram";
 import { sendWebPushNotification } from "@/lib/webpush";
-import { sendFacebookCapiEvent } from "@/lib/facebook-capi";
+import { sendFacebookCapiEvent, sanitizeFbc, buildValidFbcFromUrl } from "@/lib/facebook-capi";
 
 // GET for admin dashboard
 export async function GET(req: NextRequest) {
@@ -224,17 +224,10 @@ export async function POST(req: NextRequest) {
       req.headers.get("referer") ||
       "";
     const fbp = req.cookies.get("_fbp")?.value || "";
-    let fbc = req.cookies.get("_fbc")?.value || "";
-    if (!fbc && resolvedEventSourceUrl) {
-      try {
-        const fbclid = new URL(resolvedEventSourceUrl).searchParams.get("fbclid");
-        if (fbclid) {
-          fbc = `fb.1.${Date.now()}.${fbclid}`;
-        }
-      } catch {
-        // Ignore malformed URL
-      }
-    }
+    const fbc =
+      sanitizeFbc(req.cookies.get("_fbc")?.value) ||
+      buildValidFbcFromUrl(resolvedEventSourceUrl) ||
+      "";
     const clientIp =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       req.headers.get("x-real-ip") ||
